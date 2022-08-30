@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),
-        initialRoute: "/home",
+        initialRoute: "/bottombar",
         getPages: [
           GetPage(name: "/", page: () => SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),

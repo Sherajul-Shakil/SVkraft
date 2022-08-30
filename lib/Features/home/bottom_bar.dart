@@ -19,6 +19,8 @@ class _BottomBarState extends State<BottomBar> {
     const HomeScreen(),
     const HomeScreen(),
     const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
   ];
 
   void updatePage(int page) {
@@ -30,6 +32,11 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {},
+      //   child: Icon(Icons.add),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _page,
