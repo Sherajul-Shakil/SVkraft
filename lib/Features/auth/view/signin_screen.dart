@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/Features/auth/view/forgate_password_screen.dart';
 import 'package:sv_craft/Features/auth/view/signup_screen.dart';
@@ -209,11 +210,7 @@ class SigninScreen extends StatelessWidget {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupScreen()),
-                        );
+                        Get.toNamed('/signup');
                       },
                     ),
                   ],
@@ -231,11 +228,7 @@ class SigninScreen extends StatelessWidget {
                     ),
                   ),
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ForgatePasswordScreen()),
-                    );
+                    Get.toNamed('/forgatepass');
                   },
                 ),
               ],

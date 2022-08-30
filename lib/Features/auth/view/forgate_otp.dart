@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/common/bottom_button.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 
-class OtpToHomeScreen extends StatefulWidget {
-  OtpToHomeScreen({Key? key}) : super(key: key);
+class OtpSendScreen extends StatefulWidget {
+  OtpSendScreen({Key? key}) : super(key: key);
 
   @override
-  State<OtpToHomeScreen> createState() => _OtpToHomeScreenState();
+  State<OtpSendScreen> createState() => _OtpSendScreenState();
 }
 
-class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
+class _OtpSendScreenState extends State<OtpSendScreen> {
   final _formKey = GlobalKey<FormState>();
   String initialCountry = 'NG';
   PhoneNumber number = PhoneNumber(isoCode: 'NG');
@@ -66,7 +65,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                   SizedBox(
                     height: size.height * 0.05,
                   ),
-                  Text(
+                  const Text(
                     "OTP Authentication",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -120,12 +119,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                     height: size.height * .08,
                   ),
                   BottomButtonColumn(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
+                    onTap: () {},
                     buttonText: "CONTINUE",
                     buttonIcon: Icons.arrow_right_alt_sharp,
                   ),
@@ -155,7 +149,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(
-                          //       builder: (context) => HomeScreen()),
+                          //       builder: (context) => SignupScreen()),
                           // );
                         },
                       ),

@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/common/bottom_button.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 
-class OtpSendScreen extends StatefulWidget {
-  OtpSendScreen({Key? key}) : super(key: key);
+class OtpToHomeScreen extends StatefulWidget {
+  OtpToHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<OtpSendScreen> createState() => _OtpSendScreenState();
+  State<OtpToHomeScreen> createState() => _OtpToHomeScreenState();
 }
 
-class _OtpSendScreenState extends State<OtpSendScreen> {
+class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
   final _formKey = GlobalKey<FormState>();
   String initialCountry = 'NG';
   PhoneNumber number = PhoneNumber(isoCode: 'NG');
@@ -119,7 +121,13 @@ class _OtpSendScreenState extends State<OtpSendScreen> {
                     height: size.height * .08,
                   ),
                   BottomButtonColumn(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed('/home');
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => HomeScreen()),
+                      // );
+                    },
                     buttonText: "CONTINUE",
                     buttonIcon: Icons.arrow_right_alt_sharp,
                   ),
@@ -149,7 +157,7 @@ class _OtpSendScreenState extends State<OtpSendScreen> {
                           // Navigator.push(
                           //   context,
                           //   MaterialPageRoute(
-                          //       builder: (context) => SignupScreen()),
+                          //       builder: (context) => HomeScreen()),
                           // );
                         },
                       ),

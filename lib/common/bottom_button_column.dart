@@ -16,10 +16,9 @@ class BottomButtonColumn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Positioned(
-        child: Container(
+    return Container(
       alignment: Alignment.center,
-      width: size.width * .90,
+      width: size.width * 1,
       height: size.height / 15,
       decoration: BoxDecoration(
         gradient: const LinearGradient(
@@ -55,6 +54,6 @@ class BottomButtonColumn extends StatelessWidget {
           ],
         ),
       ),
-    ));
+    );
   }
 }

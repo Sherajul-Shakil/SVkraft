@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:sv_craft/Features/auth/view/otp_to_homescreen.dart';
+import 'package:get/get.dart';
+import 'package:sv_craft/Features/auth/view/signup_otp.dart';
 import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/common/bottom_button.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
@@ -341,11 +342,12 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   BottomButtonColumn(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OtpToHomeScreen()),
-                      );
+                      Get.toNamed('/signupotp');
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => OtpToHomeScreen()),
+                      // );
                     },
                     buttonText: "SIGN UP",
                     buttonIcon: Icons.login_outlined,
@@ -372,11 +374,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => SigninScreen()),
-                          );
+                          Get.toNamed('/signin');
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => SigninScreen()),
+                          // );
                         },
                       ),
                     ],
