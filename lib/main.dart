@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/Features/auth/view/signup_screen.dart';
+import 'package:sv_craft/Features/home/widgets/filter_category.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
-import 'package:sv_craft/Features/home/market_product.dart';
+import 'package:sv_craft/Features/home/grocery_product.dart';
 import 'package:sv_craft/Features/home/product_page_test.dart';
 import 'package:sv_craft/Features/home/test.dart';
 import 'package:sv_craft/splash_screen.dart';
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/home", page: () => HomeScreen()),
           GetPage(name: "/bottombar", page: () => BottomBar()),
           GetPage(name: "/test", page: () => Testpage()),
-          GetPage(name: "/marketproduct", page: () => MarketProduct()),
+          GetPage(name: "/marketproduct", page: () => GroceryProduct()),
+          GetPage(name: "/filtercateogory", page: () => FilterCatogory()),
         ]
         //home: SplashScreen(),
         );

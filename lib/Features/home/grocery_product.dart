@@ -2,16 +2,74 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/constant/constant.dart';
 
-class MarketProduct extends StatefulWidget {
+class GroceryProduct extends StatefulWidget {
   @override
-  _MarketProductState createState() {
-    return _MarketProductState();
+  _GroceryProductState createState() {
+    return _GroceryProductState();
   }
 }
 
-class _MarketProductState extends State<MarketProduct> {
-  bool haveaccess = false;
+class _GroceryProductState extends State<GroceryProduct> {
+  //Search Box implementation
+
+  bool _searchBoolean = false;
+  List<int> _searchIndexList = [];
+
+  List<String> _list = [
+    'English Textbook',
+    'Japanese Textbook',
+    'English Vocabulary',
+    'Japanese Vocabulary'
+  ];
+
+  Widget _searchTextField() {
+    return TextField(
+      onChanged: (String s) {
+        setState(() {
+          _searchIndexList = [];
+          for (int i = 0; i < _list.length; i++) {
+            if (_list[i].contains(s)) {
+              _searchIndexList.add(i);
+            }
+          }
+        });
+      },
+      autofocus: true,
+      cursorColor: Colors.black,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
+      textInputAction: TextInputAction.search,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        hintText: 'Search',
+        hintStyle: TextStyle(
+          color: Colors.black38,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget _searchListView() {
+    return ListView.builder(
+        itemCount: _searchIndexList.length,
+        itemBuilder: (context, index) {
+          index = _searchIndexList[index];
+          return Card(child: ListTile(title: Text(_list[index])));
+        });
+  }
+
+  //Access confirmation dialog
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool haveaccess = true;
   bool accessreq = false;
   bool accessgrant = false;
   @override
@@ -36,16 +94,17 @@ class _MarketProductState extends State<MarketProduct> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        key: _scaffoldKey,
         //drawer: Drawer(backgroundColor: Colors.blue.withOpacity(0)),
+
+        //AppBar code
         appBar: AppBar(
           leadingWidth: 100,
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white10,
           elevation: 0,
           leading: Row(
-            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
-
             children: [
               SizedBox(
                 width: size.width * .02,
@@ -58,7 +117,9 @@ class _MarketProductState extends State<MarketProduct> {
                     Icons.menu,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openDrawer();
+                  },
                 ),
               ),
               SizedBox(
@@ -69,31 +130,114 @@ class _MarketProductState extends State<MarketProduct> {
                 backgroundColor: Colors.black, //<-- SEE HERE
                 child: IconButton(
                   icon: const Icon(
-                    Icons.search,
+                    Icons.filter_list,
                     color: Colors.white,
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.toNamed('/filtercateogory');
+                  },
                 ),
               ),
             ],
           ),
-          actions: [
-            CircleAvatar(
-              radius: 20,
-              backgroundColor: Colors.black, //<-- SEE HERE
-              child: IconButton(
-                icon: const Icon(
-                  Icons.filter_list,
-                  color: Colors.white,
-                ),
-                onPressed: () {},
-              ),
-            ),
-            SizedBox(
-              width: size.width * .02,
-            ),
-          ],
+          title: !_searchBoolean ? Text("") : _searchTextField(),
+          actions: !_searchBoolean
+              ? [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.black, //<-- SEE HERE
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.search,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _searchBoolean = true;
+                          _searchIndexList = [];
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * .02,
+                  ),
+                ]
+              : [
+                  CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Colors.black, //<-- SEE HERE
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.clear,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _searchBoolean = false;
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    width: size.width * .02,
+                  ),
+                ],
         ),
+
+        //Drawer code
+        drawer: Drawer(
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: [
+              const DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.redAccent,
+                ),
+                child: Text('Drawer Header'),
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.home,
+                ),
+                title: const Text('Page 1'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.train,
+                ),
+                title: const Text('Page 2'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.home,
+                ),
+                title: const Text('Page 3'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(
+                  Icons.train,
+                ),
+                title: const Text('Page 4'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          ),
+        ),
+
+        //Body code
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -117,7 +261,7 @@ class _MarketProductState extends State<MarketProduct> {
                                 color: Colors.white)),
                         SizedBox(height: size.height * .03),
                         const Text("The point of using Lorem",
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.white)),
@@ -154,16 +298,16 @@ class _MarketProductState extends State<MarketProduct> {
             ];
           },
           body: Container(
-            height: 500,
-            //color: Colors.blue,
+            height: size.height,
+            // color: Colors.blue,
             child: GridView.builder(
               padding: const EdgeInsets.only(
                   left: 15, right: 15, top: 20, bottom: 10),
-              itemCount: 100,
+              itemCount: AppImage.carouselImages.length,
               scrollDirection: Axis.vertical,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: .48,
+                childAspectRatio: .52,
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
               ),
@@ -187,33 +331,30 @@ class _MarketProductState extends State<MarketProduct> {
 
                 child: Column(
                   children: [
+                    SizedBox(height: size.height * .01),
                     Row(
                       children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.list_alt),
+                        SizedBox(width: size.width * .01),
+                        const Icon(
+                          Icons.list_alt,
                           color: Colors.black,
                         ),
-                        const Spacer(),
-                        Container(
-                          height: 20,
-                          width: 100,
-                          color: Colors.black12,
-                          child: const Text(
-                            "100 BDT/kg",
-                            textAlign: TextAlign.center,
-                          ),
+                        Spacer(),
+                        const Text(
+                          "100 BDT/kg",
+                          textAlign: TextAlign.center,
                         ),
                         const SizedBox(
                           width: 5,
                         ),
+                        SizedBox(width: size.width * .01),
                       ],
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 10, vertical: 10),
                       child: Image.network(
-                        'https://images.unsplash.com/photo-1618354691373-d851c5c3a990?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8c2hpcnR8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                        AppImage.carouselImages[index],
                         fit: BoxFit.cover,
                         width: 120,
                         height: 150,
@@ -279,14 +420,6 @@ class _MarketProductState extends State<MarketProduct> {
                                 color: Colors.black,
                               ),
                             ),
-                            Text(
-                              "also the leap into electronic",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
                           ],
                         ),
                       ],
@@ -303,7 +436,7 @@ class _MarketProductState extends State<MarketProduct> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: Colors.red,
-                              borderRadius: BorderRadius.circular(0),
+                              borderRadius: BorderRadius.circular(100),
                               boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black12, //color of shadow
@@ -316,8 +449,8 @@ class _MarketProductState extends State<MarketProduct> {
                                 )
                               ],
                             ),
-                            width: 40,
-                            height: 40,
+                            width: 35,
+                            height: 35,
                             child: const Text(
                               '-',
                               style:
@@ -327,7 +460,7 @@ class _MarketProductState extends State<MarketProduct> {
                           ),
                         ),
                         const SizedBox(
-                          width: 2,
+                          width: 8,
                         ),
                         InkWell(
                           onTap: () {},
@@ -335,7 +468,7 @@ class _MarketProductState extends State<MarketProduct> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: Colors.red,
-                              borderRadius: BorderRadius.circular(0),
+                              borderRadius: BorderRadius.circular(8),
                               boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black12, //color of shadow
@@ -348,8 +481,8 @@ class _MarketProductState extends State<MarketProduct> {
                                 )
                               ],
                             ),
-                            width: 60,
-                            height: 40,
+                            width: 50,
+                            height: 35,
                             child: const Text(
                               '10',
                               style:
@@ -359,7 +492,7 @@ class _MarketProductState extends State<MarketProduct> {
                           ),
                         ),
                         const SizedBox(
-                          width: 2,
+                          width: 8,
                         ),
                         InkWell(
                           onTap: () {},
@@ -368,7 +501,7 @@ class _MarketProductState extends State<MarketProduct> {
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: Colors.red,
-                              borderRadius: BorderRadius.circular(0),
+                              borderRadius: BorderRadius.circular(100),
                               boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black12, //color of shadow
@@ -381,12 +514,12 @@ class _MarketProductState extends State<MarketProduct> {
                                 )
                               ],
                             ),
-                            width: 40,
-                            height: 40,
+                            width: 35,
+                            height: 35,
                             child: const Text(
                               '+',
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
+                                  TextStyle(color: Colors.white, fontSize: 20),
                               textAlign: TextAlign.center,
                             ),
                           ),

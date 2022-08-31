@@ -83,9 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              onTap: () {
-                Get.toNamed('/marketproduct');
-              },
+              onTap: () {},
             ),
           ),
           Expanded(
@@ -112,7 +110,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
               ),
-              onTap: () {},
+              onTap: () {
+                Get.toNamed('/marketproduct');
+              },
             ),
           ),
           Expanded(
