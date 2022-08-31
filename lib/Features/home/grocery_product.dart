@@ -97,6 +97,14 @@ class _GroceryProductState extends State<GroceryProduct> {
         key: _scaffoldKey,
         //drawer: Drawer(backgroundColor: Colors.blue.withOpacity(0)),
 
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.toNamed('/cart');
+          },
+          child: Icon(Icons.shopping_cart_outlined),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+
         //AppBar code
         appBar: AppBar(
           leadingWidth: 100,
