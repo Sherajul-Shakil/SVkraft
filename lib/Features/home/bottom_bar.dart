@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/constant/color.dart';
 
+import '../cart/view/cart_screen.dart';
+
 class BottomBar extends StatefulWidget {
   const BottomBar({Key? key}) : super(key: key);
 
@@ -18,7 +20,7 @@ class _BottomBarState extends State<BottomBar> {
   List<Widget> pages = [
     const HomeScreen(),
     const HomeScreen(),
-    const HomeScreen(),
+    const CartScreen(),
     const HomeScreen(),
     const HomeScreen(),
   ];
@@ -85,8 +87,19 @@ class _BottomBarState extends State<BottomBar> {
               decoration: BoxDecoration(
                 border: Border(),
               ),
-              child: const Icon(
-                Icons.shopping_cart_outlined,
+              child: Badge(
+                elevation: 0,
+                badgeContent: Text(
+                  3.toString(),
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 15,
+                  ),
+                ),
+                badgeColor: Colors.white,
+                child: const Icon(
+                  Icons.shopping_cart_outlined,
+                ),
               ),
             ),
             label: 'Cart',

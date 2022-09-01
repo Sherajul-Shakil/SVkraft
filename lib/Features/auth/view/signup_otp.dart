@@ -122,7 +122,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                   ),
                   BottomButtonColumn(
                     onTap: () {
-                      Get.toNamed('/home');
+                      Get.toNamed("/bottombar");
                       // Navigator.push(
                       //   context,
                       //   MaterialPageRoute(builder: (context) => HomeScreen()),

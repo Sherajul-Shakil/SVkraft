@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               onTap: () {
-                Get.toNamed('/marketproduct');
+                Get.toNamed('/groceryproduct');
               },
             ),
           ),

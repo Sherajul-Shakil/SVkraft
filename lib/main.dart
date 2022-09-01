@@ -7,6 +7,7 @@ import 'package:sv_craft/Features/home/widgets/filter_category.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/home/grocery_product.dart';
 import 'package:sv_craft/Features/home/product_page_test.dart';
+import 'package:sv_craft/common/test.dart';
 import 'package:sv_craft/splash_screen.dart';
 import 'Features/auth/view/forgate_password_screen.dart';
 import 'Features/auth/view/forgate_otp.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),
-        initialRoute: "/cart",
+        initialRoute: "/",
         getPages: [
           GetPage(name: "/", page: () => SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),
@@ -39,9 +40,10 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/signupotp", page: () => OtpToHomeScreen()),
           GetPage(name: "/home", page: () => HomeScreen()),
           GetPage(name: "/bottombar", page: () => BottomBar()),
-          GetPage(name: "/marketproduct", page: () => GroceryProduct()),
+          GetPage(name: "/groceryproduct", page: () => GroceryProduct()),
           GetPage(name: "/filtercateogory", page: () => FilterCatogory()),
           GetPage(name: "/cart", page: () => CartScreen()),
+          GetPage(name: "/test", page: () => TestPage()),
         ]
         //home: SplashScreen(),
         );

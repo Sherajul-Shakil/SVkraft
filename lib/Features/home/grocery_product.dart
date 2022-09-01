@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/constant/constant.dart';
@@ -101,7 +102,20 @@ class _GroceryProductState extends State<GroceryProduct> {
           onPressed: () {
             Get.toNamed('/cart');
           },
-          child: Icon(Icons.shopping_cart_outlined),
+          child: Badge(
+            elevation: 0,
+            badgeContent: Text(
+              3.toString(),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 15,
+              ),
+            ),
+            badgeColor: Colors.red,
+            child: const Icon(
+              Icons.shopping_cart_outlined,
+            ),
+          ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
@@ -358,15 +372,35 @@ class _GroceryProductState extends State<GroceryProduct> {
                         SizedBox(width: size.width * .01),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10),
-                      child: Image.network(
-                        AppImage.carouselImages[index],
-                        fit: BoxFit.cover,
-                        width: 120,
-                        height: 150,
-                      ),
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 10, vertical: 10),
+                          child: Image.network(
+                            AppImage.carouselImages[index],
+                            fit: BoxFit.cover,
+                            width: 120,
+                            height: 150,
+                          ),
+                        ),
+                        Positioned(
+                            top: 20,
+                            right: 0,
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              color: Colors.yellow,
+                              child: const Text(
+                                "50% off",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.red),
+                              ),
+                            ))
+                      ],
                     ),
                     SizedBox(
                       height: size.height * .02,

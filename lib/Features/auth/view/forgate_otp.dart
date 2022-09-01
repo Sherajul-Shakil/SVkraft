@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:sv_craft/common/bottom_button.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
@@ -119,7 +120,9 @@ class _OtpSendScreenState extends State<OtpSendScreen> {
                     height: size.height * .08,
                   ),
                   BottomButtonColumn(
-                    onTap: () {},
+                    onTap: () {
+                      Get.toNamed("/bottombar");
+                    },
                     buttonText: "CONTINUE",
                     buttonIcon: Icons.arrow_right_alt_sharp,
                   ),
@@ -129,7 +132,7 @@ class _OtpSendScreenState extends State<OtpSendScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Don't get OTP?",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -138,7 +141,7 @@ class _OtpSendScreenState extends State<OtpSendScreen> {
                         ),
                       ),
                       TextButton(
-                        child: Text(
+                        child: const Text(
                           "Resend",
                           style: TextStyle(
                             color: Colors.red,
