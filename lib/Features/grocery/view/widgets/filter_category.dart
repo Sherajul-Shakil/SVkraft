@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:sv_craft/Features/home/widgets/filter_subcategory.dart';
+
+import 'filter_subcategory.dart';
 
 class FilterCatogory extends StatelessWidget {
   FilterCatogory({Key? key}) : super(key: key);

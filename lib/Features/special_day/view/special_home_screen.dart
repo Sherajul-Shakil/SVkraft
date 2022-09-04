@@ -164,7 +164,7 @@ class SpecialHomeScreen extends StatelessWidget {
                     child: GridView.builder(
                       padding: const EdgeInsets.only(
                           left: 15, right: 15, top: 20, bottom: 10),
-                      itemCount: AppImage.carouselImages.length,
+                      itemCount: AppImage.specialDayImage.length,
                       scrollDirection: Axis.horizontal,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -200,7 +200,7 @@ class SpecialHomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Image.network(
-                                AppImage.carouselImages[index],
+                                AppImage.specialDayImage[index],
                                 fit: BoxFit.cover,
                                 width: 130,
                                 height: 140,
@@ -282,7 +282,7 @@ class SpecialHomeScreen extends StatelessWidget {
                     child: GridView.builder(
                       padding: const EdgeInsets.only(
                           left: 15, right: 15, top: 20, bottom: 10),
-                      itemCount: AppImage.carouselImages.length,
+                      itemCount: AppImage.specialDayImage.length,
                       scrollDirection: Axis.horizontal,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -318,7 +318,7 @@ class SpecialHomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Image.network(
-                                AppImage.carouselImages[index],
+                                AppImage.specialDayImage[index],
                                 fit: BoxFit.cover,
                                 width: 130,
                                 height: 140,
@@ -400,7 +400,7 @@ class SpecialHomeScreen extends StatelessWidget {
                     child: GridView.builder(
                       padding: const EdgeInsets.only(
                           left: 15, right: 15, top: 20, bottom: 10),
-                      itemCount: AppImage.carouselImages.length,
+                      itemCount: AppImage.specialDayImage.length,
                       scrollDirection: Axis.horizontal,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
@@ -436,7 +436,7 @@ class SpecialHomeScreen extends StatelessWidget {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Image.network(
-                                AppImage.carouselImages[index],
+                                AppImage.specialDayImage[index],
                                 fit: BoxFit.cover,
                                 width: 130,
                                 height: 140,

@@ -207,7 +207,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('\$200',
+                    const Text('\$200',
                         style: TextStyle(
                             color: Colors.black87,
                             fontSize: 25,

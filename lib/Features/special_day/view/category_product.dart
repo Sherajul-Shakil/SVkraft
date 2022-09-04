@@ -28,7 +28,7 @@ class CategoryProuctScreen extends StatelessWidget {
                       child: GridView.builder(
                         padding: const EdgeInsets.only(
                             left: 15, right: 15, top: 20, bottom: 10),
-                        itemCount: 10,
+                        itemCount: AppImage.specialDayImage.length,
                         scrollDirection: Axis.vertical,
                         gridDelegate:
                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -64,7 +64,7 @@ class CategoryProuctScreen extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 10),
                                 child: Image.network(
-                                  'https://images.unsplash.com/photo-1606041008023-472dfb5e530f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8Zmxvd2VyfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
+                                  AppImage.specialDayImage[index],
                                   fit: BoxFit.cover,
                                   width: 130,
                                   height: 140,
