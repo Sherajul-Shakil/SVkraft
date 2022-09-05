@@ -43,6 +43,10 @@ dependencies:
   sliverbar_with_card: ^0.1.5
   flutter_collapsing_toolbar: ^1.0.0
   http: ^0.13.5
+  flutter_custom_clippers: ^2.0.0
+  icons_plus: any
+  intl: any
+  image_picker: ^0.8.4+10
 
 dev_dependencies:
   flutter_test:

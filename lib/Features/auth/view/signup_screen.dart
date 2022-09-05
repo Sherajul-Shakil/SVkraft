@@ -6,6 +6,7 @@ import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/common/bottom_button.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
+import 'package:sv_craft/constant/color.dart';
 
 class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key}) : super(key: key);
@@ -312,6 +313,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     //_isChecked = value;
                                   });
                                 },
+                                fillColor: MaterialStateProperty.all(
+                                    Appcolor.primaryColor),
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,

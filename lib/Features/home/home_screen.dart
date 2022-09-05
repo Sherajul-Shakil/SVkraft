@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             height: size.height * .08,
             width: size.width,
-            color: Colors.white,
+            color: Appcolor.primaryColor,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
@@ -42,9 +42,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   const Text(
                     'SV Kraft',
                     style: TextStyle(
-                        fontSize: 20,
+                        fontSize: 30,
                         fontWeight: FontWeight.w500,
-                        color: Colors.black),
+                        color: Appcolor.uperTextColor),
                   ),
                   CircleAvatar(
                     radius: 20,

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/constant/constant.dart';
 
+import '../../../constant/color.dart';
+
 class GroceryProduct extends StatefulWidget {
   @override
   _GroceryProductState createState() {
@@ -107,11 +109,11 @@ class _GroceryProductState extends State<GroceryProduct> {
             badgeContent: Text(
               3.toString(),
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.red,
                 fontSize: 15,
               ),
             ),
-            badgeColor: Colors.red,
+            badgeColor: Colors.transparent,
             child: const Icon(
               Icons.shopping_cart_outlined,
             ),
@@ -272,7 +274,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                   centerTitle: true,
                   title: Container(),
                   background: Container(
-                    color: Colors.red,
+                    color: Appcolor.primaryColor,
                     child: Column(
                       children: [
                         SizedBox(height: size.height * .1),
@@ -477,7 +479,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Appcolor.primaryColor,
                               borderRadius: BorderRadius.circular(100),
                               boxShadow: const [
                                 BoxShadow(
@@ -509,7 +511,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                           child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Appcolor.primaryColor,
                               borderRadius: BorderRadius.circular(8),
                               boxShadow: const [
                                 BoxShadow(
@@ -542,7 +544,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                             padding: const EdgeInsets.all(5),
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                              color: Colors.red,
+                              color: Appcolor.primaryColor,
                               borderRadius: BorderRadius.circular(100),
                               boxShadow: const [
                                 BoxShadow(

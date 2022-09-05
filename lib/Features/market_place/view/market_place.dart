@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
+import 'package:sv_craft/constant/color.dart';
 
 import '../../../constant/constant.dart';
 
@@ -50,7 +51,7 @@ class _MarketPlaceState extends State<MarketPlace> {
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         hintText: 'Search',
         hintStyle: TextStyle(
-          color: Colors.black38,
+          color: Appcolor.uperTextColor,
           fontSize: 20,
         ),
       ),
@@ -74,7 +75,7 @@ class _MarketPlaceState extends State<MarketPlace> {
       appBar: AppBar(
         leadingWidth: 300,
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Appcolor.primaryColor,
         elevation: 1,
         // leading: const Text('Market Place',
         //     style: TextStyle(
@@ -84,7 +85,7 @@ class _MarketPlaceState extends State<MarketPlace> {
         title: !_searchBoolean
             ? const Text('Market Place',
                 style: TextStyle(
-                    color: Colors.black,
+                    color: Appcolor.uperTextColor,
                     fontSize: 30,
                     fontWeight: FontWeight.bold))
             : _searchTextField(),
@@ -92,11 +93,11 @@ class _MarketPlaceState extends State<MarketPlace> {
             ? [
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.black54, //<-- SEE HERE
+                  backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
                       Icons.search,
-                      color: Colors.white,
+                      color: Appcolor.iconColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -111,11 +112,11 @@ class _MarketPlaceState extends State<MarketPlace> {
                 ),
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.black54, //<-- SEE HERE
+                  backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
                       Icons.filter_list,
-                      color: Colors.white,
+                      color: Appcolor.iconColor,
                     ),
                     onPressed: () {
                       Get.toNamed('/marketfilter');
@@ -129,11 +130,11 @@ class _MarketPlaceState extends State<MarketPlace> {
             : [
                 CircleAvatar(
                   radius: 20,
-                  backgroundColor: Colors.black54, //<-- SEE HERE
+                  backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
                       Icons.clear,
-                      color: Colors.white,
+                      color: Appcolor.iconColor,
                     ),
                     onPressed: () {
                       setState(() {
@@ -156,17 +157,17 @@ class _MarketPlaceState extends State<MarketPlace> {
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Row(
-                  children: [
-                    const Text('Today\'s Picks',
+                  children: const [
+                    Text('Today\'s Picks',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 22,
                             fontWeight: FontWeight.normal)),
                     Spacer(),
-                    Icon(Icons.location_on_sharp, color: Colors.blue),
+                    Icon(Icons.location_on_sharp, color: Appcolor.primaryColor),
                     Text('Dhaka',
                         style: TextStyle(
-                            color: Colors.blue[700],
+                            color: Appcolor.primaryColor,
                             fontSize: 18,
                             fontWeight: FontWeight.normal)),
                   ],

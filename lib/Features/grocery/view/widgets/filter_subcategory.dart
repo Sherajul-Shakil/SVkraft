@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../../constant/color.dart';
+
 class FilterSubCatogory extends StatelessWidget {
   FilterSubCatogory({Key? key, required this.category}) : super(key: key);
   final String category;
@@ -50,7 +52,7 @@ class FilterSubCatogory extends StatelessWidget {
                       child: Text(
                         '$f',
                         style: const TextStyle(
-                          color: Color(0xFF17b01b),
+                          color: Appcolor.textColor,
                           fontSize: 16.0,
                         ),
                       ),

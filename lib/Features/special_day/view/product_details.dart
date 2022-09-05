@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sv_craft/constant/color.dart';
 
 class ProductDetails extends StatefulWidget {
   const ProductDetails({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _ProductDetailsState extends State<ProductDetails> {
           child: Container(
             height: size.height * 54,
             width: size.width,
-            color: Color.fromARGB(255, 94, 26, 150),
+            color: Appcolor.primaryColor,
           ),
         ),
         Positioned(
@@ -83,12 +84,12 @@ class _ProductDetailsState extends State<ProductDetails> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Description",
+                const Text("Description",
                     style: TextStyle(
                         color: Colors.black87,
                         fontSize: 30,
                         fontWeight: FontWeight.normal)),
-                Text(
+                const Text(
                     "A flower, sometimes known as a bloom or blossom, is the reproductive structure found in flowering plantsA flower, sometimes known as a bloom or blossom, is the reproductive structure found in flowering plants",
                     style: TextStyle(
                         color: Colors.black54,
@@ -97,7 +98,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                 SizedBox(
                   height: size.height * .05,
                 ),
-                Text('Quantity',
+                const Text('Quantity',
                     style: TextStyle(
                         color: Colors.black87,
                         fontSize: 18,

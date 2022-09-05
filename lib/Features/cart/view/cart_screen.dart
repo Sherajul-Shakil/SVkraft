@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../constant/color.dart';
 import 'widgets/cart_list_tile.dart';
 
 class CartScreen extends StatefulWidget {
@@ -417,7 +418,7 @@ class _CartScreenState extends State<CartScreen> {
               // margin: const EdgeInsets.symmetric(horizontal: 20),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Appcolor.primaryColor,
                 borderRadius: BorderRadius.circular(0),
                 boxShadow: const [
                   BoxShadow(

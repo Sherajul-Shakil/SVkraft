@@ -1,17 +1,160 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../constant/color.dart';
 import '../../../constant/constant.dart';
 import '../widgets/category_card.dart';
+import 'widgets/special_drawer.dart';
 
-class SpecialHomeScreen extends StatelessWidget {
-  const SpecialHomeScreen({Key? key}) : super(key: key);
+class SpecialHomeScreen extends StatefulWidget {
+  SpecialHomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SpecialHomeScreen> createState() => _SpecialHomeScreenState();
+}
+
+class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
+  bool _searchBoolean = false;
+  List<int> _searchIndexList = [];
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  List<String> _list = [
+    'English Textbook',
+    'Japanese Textbook',
+    'English Vocabulary',
+    'Japanese Vocabulary'
+  ];
+
+  Widget _searchTextField() {
+    return TextField(
+      onChanged: (String s) {
+        setState(() {
+          _searchIndexList = [];
+          for (int i = 0; i < _list.length; i++) {
+            if (_list[i].contains(s)) {
+              _searchIndexList.add(i);
+            }
+          }
+        });
+      },
+      autofocus: true,
+      cursorColor: Colors.black,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 20,
+      ),
+      textInputAction: TextInputAction.search,
+      decoration: const InputDecoration(
+        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black)),
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
+        hintText: 'Search',
+        hintStyle: TextStyle(
+          color: Appcolor.uperTextColor,
+          fontSize: 20,
+        ),
+      ),
+    );
+  }
+
+  Widget _searchListView() {
+    return ListView.builder(
+        itemCount: _searchIndexList.length,
+        itemBuilder: (context, index) {
+          index = _searchIndexList[index];
+          return Card(child: ListTile(title: Text(_list[index])));
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
+      key: _scaffoldKey,
+      drawer: buildDrawer(),
+      appBar: AppBar(
+        // leadingWidth: 300,
+        // automaticallyImplyLeading: false,
+        backgroundColor: Appcolor.primaryColor,
+        elevation: 1,
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Appcolor.uperTextColor,
+                // size: 44, // Changing Drawer Icon Size
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
+          },
+        ),
+
+        title: !_searchBoolean
+            ? const Text('Special Day Gift',
+                style: TextStyle(
+                    color: Appcolor.uperTextColor,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold))
+            : _searchTextField(),
+        actions: !_searchBoolean
+            ? [
+                IconButton(
+                  icon: const Icon(
+                    Icons.search,
+                    color: Appcolor.uperTextColor,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _searchBoolean = true;
+                      _searchIndexList = [];
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: size.width * .02,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.shopping_cart,
+                    color: Appcolor.uperTextColor,
+                  ),
+                  onPressed: () {
+                    // Get.toNamed('/marketfilter');
+                  },
+                ),
+                SizedBox(
+                  width: size.width * .02,
+                ),
+              ]
+            : [
+                CircleAvatar(
+                  radius: 20,
+                  backgroundColor: Colors.black54, //<-- SEE HERE
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.clear,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _searchBoolean = false;
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: size.width * .02,
+                ),
+              ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

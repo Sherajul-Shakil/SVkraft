@@ -52,7 +52,7 @@ class _BottomBarState extends State<BottomBar> {
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 border: Border(
                     // top: BorderSide(
                     //   color: _page == 0
@@ -92,7 +92,7 @@ class _BottomBarState extends State<BottomBar> {
                 badgeContent: Text(
                   3.toString(),
                   style: TextStyle(
-                    color: Colors.red,
+                    color: Appcolor.primaryColor,
                     fontSize: 15,
                   ),
                 ),

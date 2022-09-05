@@ -38,7 +38,7 @@ class BottomButton extends StatelessWidget {
               end: Alignment.bottomCenter,
               colors: [
                 Appcolor.circleColor,
-                Color.fromARGB(255, 253, 251, 250),
+                Color.fromARGB(255, 207, 207, 207),
               ],
             ),
             borderRadius: BorderRadius.circular(10),
