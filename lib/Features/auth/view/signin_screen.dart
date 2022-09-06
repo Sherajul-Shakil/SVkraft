@@ -3,14 +3,29 @@ import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 
-class SigninScreen extends StatelessWidget {
+import '../controllar/signin_controllar.dart';
+
+class SigninScreen extends StatefulWidget {
   SigninScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SigninScreen> createState() => _SigninScreenState();
+}
+
+class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
+
   final _formKeyP = GlobalKey<FormState>();
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'NG');
+
+  String initialCountry = 'BD';
+
+  PhoneNumber number = PhoneNumber(isoCode: 'BD');
+
   var phone;
+
   final TextEditingController _phoneNumberController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -130,7 +145,7 @@ class SigninScreen extends StatelessWidget {
                                   child: InternationalPhoneNumberInput(
                                     onInputChanged: (PhoneNumber number) {
                                       phone = number.phoneNumber;
-                                      print(number.phoneNumber);
+                                      // print(number.phoneNumber);
                                       // setState(() {
                                       //   phone = number.phoneNumber;
                                       // });
@@ -191,6 +206,7 @@ class SigninScreen extends StatelessWidget {
                             ),
                             child: Card(
                               child: TextFormField(
+                                controller: _passwordController,
                                 decoration: const InputDecoration(
                                   hintText: '* * * * * *',
                                   prefixIcon: Icon(Icons.lock),
@@ -224,8 +240,30 @@ class SigninScreen extends StatelessWidget {
                     height: size.height * .20,
                   ),
                   BottomButtonColumn(
-                    onTap: () {
-                      Get.toNamed("/bottombar");
+                    onTap: () async {
+                      // Get.toNamed("/bottombar");
+                      var userId = await login(
+                        phone.trim(),
+                        _passwordController.text.trim(),
+                      );
+
+                      if (userId != null) {
+                        final snackBar = SnackBar(
+                          content: Text('Login Successful $userId'),
+                          action: SnackBarAction(
+                            label: '',
+                            onPressed: () {},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) =>
+                        //           HomeScreen(userId)),
+                        // );
+                        Get.toNamed('/bottombar');
+                      }
                     },
                     buttonText: "SIGN IN",
                     buttonIcon: Icons.login_outlined,

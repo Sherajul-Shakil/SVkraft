@@ -8,6 +8,7 @@ import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
 
+import '../controllar/otp_controllar.dart';
 import '../controllar/signup_controllar.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -19,13 +20,13 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
-  String initialCountry = 'NG';
-  PhoneNumber number = PhoneNumber(isoCode: 'NG');
+  String initialCountry = 'BD';
+  PhoneNumber number = PhoneNumber(isoCode: 'BD');
   var phone;
-  TextEditingController _phoneNumberController = TextEditingController();
-  TextEditingController _userNameController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _userNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -353,28 +354,30 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   BottomButtonColumn(
                     onTap: () async {
-                      var token = await register(
-                        phone.trim(),
-                        _userNameController.text.trim(),
-                        _emailController.text.trim(),
-                        _passwordController.text.trim(),
-                      );
-                      print(token);
-                      if (token != null) {
-                        final snackBar = SnackBar(
-                          content: const Text('Registration Successful'),
-                          action: SnackBarAction(
-                            label: '',
-                            onPressed: () {},
-                          ),
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        // Get.toNamed('/signupotp');
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(builder: (context) => LoginPage()),
-                        // );
-                      }
+                      // var token = await register(
+                      //   phone.trim(),
+                      //   _userNameController.text.trim(),
+                      //   _emailController.text.trim(),
+                      //   _passwordController.text.trim(),
+                      // );
+                      // print(token);
+                      // if (token != null) {
+                      //   final snackBar = SnackBar(
+                      //     content: const Text('Registration Successful'),
+                      //     action: SnackBarAction(
+                      //       label: '',
+                      //       onPressed: () {},
+                      //     ),
+                      //   );
+                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      //   Get.toNamed('/signupotp');
+                      //   // Navigator.push(
+                      //   //   context,
+                      //   //   MaterialPageRoute(builder: (context) => LoginPage()),
+                      //   // );
+                      // }
+
+                      await loginUser(phone, context);
                     },
                     buttonText: "SIGN UP",
                     buttonIcon: Icons.login_outlined,
