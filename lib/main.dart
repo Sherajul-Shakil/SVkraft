@@ -21,8 +21,14 @@ import 'Features/grocery/view/widgets/filter_category.dart';
 import 'Features/home/bottom_bar.dart';
 import 'Features/special_day/view/category_product.dart';
 import 'Features/special_day/view/product_details.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -41,7 +47,7 @@ class MyApp extends StatelessWidget {
             secondary: Appcolor.primaryColor,
           ),
         ),
-        initialRoute: "/",
+        initialRoute: "/signup",
         getPages: [
           GetPage(name: "/", page: () => const SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),
@@ -64,7 +70,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/marketplace", page: () => const MarketPlace()),
           GetPage(name: "/marketfilter", page: () => MarketFilter()),
           GetPage(name: "/profile", page: () => ProfileScreen()),
-          GetPage(name: "/editprofile", page: () => EditProfile()),
+          // GetPage(name: "/editprofile", page: () => EditProfile()),
           GetPage(name: "/test", page: () => const TestPage()),
         ]
         //home: SplashScreen(),

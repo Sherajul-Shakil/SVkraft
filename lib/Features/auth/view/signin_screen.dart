@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
-import 'package:sv_craft/Features/auth/view/forgate_password_screen.dart';
-import 'package:sv_craft/Features/auth/view/signup_screen.dart';
-import 'package:sv_craft/common/bottom_button.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 
 class SigninScreen extends StatelessWidget {
   SigninScreen({Key? key}) : super(key: key);
   final _formKey = GlobalKey<FormState>();
+  final _formKeyP = GlobalKey<FormState>();
+  String initialCountry = 'NG';
+  PhoneNumber number = PhoneNumber(isoCode: 'NG');
+  var phone;
+  final TextEditingController _phoneNumberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,7 @@ class SigninScreen extends StatelessWidget {
                   SizedBox(
                     height: size.height * 0.10,
                   ),
-                  Text(
+                  const Text(
                     "Let’s Sign You In",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -87,7 +88,7 @@ class SigninScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Username",
+                            "Phone Number",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
@@ -96,34 +97,72 @@ class SigninScreen extends StatelessWidget {
                             textAlign: TextAlign.left,
                           ),
 
-                          Container(
-                            decoration: const BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.white.withOpacity(0.1),
+                                    spreadRadius: 1,
+                                    blurRadius: 1,
+                                    offset: const Offset(0, 1),
+                                  ),
+                                ],
+                              ),
+                              child: Container(
+                                height: size.height / 15,
+                                width: size.width,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.white.withOpacity(0.1),
+                                      spreadRadius: 1,
+                                      blurRadius: 1,
+                                      offset: const Offset(0, 1),
+                                    ),
+                                  ],
                                   color: Colors.white,
-                                  blurRadius: 20.0,
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                              ],
-                            ),
-                            child: Card(
-                              child: TextFormField(
-                                decoration: const InputDecoration(
-                                  //labelText: 'Username',
-                                  hintText: "Username",
-                                  prefixIcon: Icon(Icons.person_outline),
-                                  border: InputBorder.none,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: InternationalPhoneNumberInput(
+                                    onInputChanged: (PhoneNumber number) {
+                                      phone = number.phoneNumber;
+                                      print(number.phoneNumber);
+                                      // setState(() {
+                                      //   phone = number.phoneNumber;
+                                      // });
+                                    },
+                                    onInputValidated: (bool value) {
+                                      print(value);
+                                    },
+                                    selectorConfig: const SelectorConfig(
+                                      selectorType:
+                                          PhoneInputSelectorType.BOTTOM_SHEET,
+                                    ),
+                                    ignoreBlank: false,
+                                    autoValidateMode: AutovalidateMode.disabled,
+                                    selectorTextStyle:
+                                        const TextStyle(color: Colors.black),
+                                    initialValue: number,
+                                    textFieldController: _phoneNumberController,
+                                    formatInput: false,
+                                    keyboardType:
+                                        const TextInputType.numberWithOptions(
+                                      signed: true,
+                                      decimal: true,
+                                    ),
+                                    validator: (v) => v!.isEmpty
+                                        ? "Field Can't be Empty"
+                                        : null,
+                                    inputBorder: InputBorder.none,
+                                    onSaved: (PhoneNumber number) {
+                                      print('On Saved: $number');
+                                    },
+                                  ),
                                 ),
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
-                                    return 'This field is required';
-                                  }
-                                  if (value.trim().length < 4) {
-                                    return 'Username must be at least 4 characters in length';
-                                  }
-                                  // Return null if the entered username is valid
-                                  return null;
-                                },
-                                //onChanged: (value) => _userName = value,
                               ),
                             ),
                           ),
@@ -152,7 +191,7 @@ class SigninScreen extends StatelessWidget {
                             ),
                             child: Card(
                               child: TextFormField(
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: '* * * * * *',
                                   prefixIcon: Icon(Icons.lock),
                                   suffixIcon: Icon(Icons.remove_red_eye),

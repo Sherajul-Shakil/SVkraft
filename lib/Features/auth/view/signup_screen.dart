@@ -8,6 +8,8 @@ import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
 
+import '../controllar/signup_controllar.dart';
+
 class SignupScreen extends StatefulWidget {
   SignupScreen({Key? key}) : super(key: key);
 
@@ -19,12 +21,14 @@ class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   String initialCountry = 'NG';
   PhoneNumber number = PhoneNumber(isoCode: 'NG');
-
+  var phone;
+  TextEditingController _phoneNumberController = TextEditingController();
+  TextEditingController _userNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    TextEditingController _phoneNumberController = TextEditingController();
-    var phone;
 
     return SafeArea(
         child: Scaffold(
@@ -67,7 +71,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   SizedBox(
                     height: size.height * 0.05,
                   ),
-                  Text(
+                  const Text(
                     "Getting Started",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -138,10 +142,10 @@ class _SignupScreenState extends State<SignupScreen> {
                                   padding: const EdgeInsets.only(left: 8.0),
                                   child: InternationalPhoneNumberInput(
                                     onInputChanged: (PhoneNumber number) {
-                                      phone = number;
-                                      // print(number.phoneNumber);
+                                      phone = number.phoneNumber;
+                                      print(number.phoneNumber);
                                       // setState(() {
-                                      //   var phone = number.phoneNumber;
+                                      //   phone = number.phoneNumber;
                                       // });
                                     },
                                     onInputValidated: (bool value) {
@@ -195,12 +199,14 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             child: Card(
                               child: TextFormField(
-                                decoration: InputDecoration(
+                                controller: _userNameController,
+                                decoration: const InputDecoration(
                                   //labelText: 'Username',
                                   hintText: "Username",
                                   prefixIcon: Icon(Icons.person_outline),
                                   border: InputBorder.none,
                                 ),
+
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
                                     return 'This field is required';
@@ -219,7 +225,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             height: 25,
                           ),
                           Text(
-                            "Username",
+                            "Email",
                             style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
@@ -238,10 +244,11 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             child: Card(
                               child: TextFormField(
-                                decoration: InputDecoration(
+                                controller: _emailController,
+                                decoration: const InputDecoration(
                                   //labelText: 'Username',
-                                  hintText: "Username",
-                                  prefixIcon: Icon(Icons.person_outline),
+                                  hintText: "Email",
+                                  prefixIcon: Icon(Icons.email),
                                   border: InputBorder.none,
                                 ),
                                 validator: (value) {
@@ -281,7 +288,8 @@ class _SignupScreenState extends State<SignupScreen> {
                             ),
                             child: Card(
                               child: TextFormField(
-                                decoration: InputDecoration(
+                                controller: _passwordController,
+                                decoration: const InputDecoration(
                                   hintText: '* * * * * *',
                                   prefixIcon: Icon(Icons.lock),
                                   suffixIcon: Icon(Icons.remove_red_eye),
@@ -344,13 +352,29 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: size.height * .05,
                   ),
                   BottomButtonColumn(
-                    onTap: () {
-                      Get.toNamed('/signupotp');
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => OtpToHomeScreen()),
-                      // );
+                    onTap: () async {
+                      var token = await register(
+                        phone.trim(),
+                        _userNameController.text.trim(),
+                        _emailController.text.trim(),
+                        _passwordController.text.trim(),
+                      );
+                      print(token);
+                      if (token != null) {
+                        final snackBar = SnackBar(
+                          content: const Text('Registration Successful'),
+                          action: SnackBarAction(
+                            label: '',
+                            onPressed: () {},
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        // Get.toNamed('/signupotp');
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(builder: (context) => LoginPage()),
+                        // );
+                      }
                     },
                     buttonText: "SIGN UP",
                     buttonIcon: Icons.login_outlined,
@@ -370,7 +394,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       TextButton(
-                        child: Text(
+                        child: const Text(
                           "Sign in",
                           style: TextStyle(
                             color: Colors.black,
