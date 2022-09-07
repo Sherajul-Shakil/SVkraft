@@ -67,7 +67,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                   SizedBox(
                     height: size.height * 0.05,
                   ),
-                  Text(
+                  const Text(
                     "OTP Authentication",
                     style: TextStyle(
                       fontWeight: FontWeight.w700,
@@ -88,28 +88,10 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                   SizedBox(
                     height: 35,
                   ),
-
-                  //OTP input
-                  //     Form(
-                  //   key: _loginFormKey,
-                  //   child: OTPTextField(
-                  //     length: 4,
-                  //     width: MediaQuery.of(context).size.width,
-                  //     fieldWidth: 80,
-                  //     style: TextStyle(
-                  //         fontSize: 17
-                  //     ),
-                  //     textFieldAlignment: MainAxisAlignment.spaceAround,
-                  //     fieldStyle: FieldStyle.underline,
-                  //     onCompleted: (pin) {
-                  //       print("Completed: " + pin);
-                  //     },
-                  //   ),
-                  // ),
                   OTPTextField(
-                    length: 4,
+                    length: 6,
                     width: MediaQuery.of(context).size.width,
-                    fieldWidth: 70,
+                    fieldWidth: 25,
                     style: TextStyle(fontSize: 30),
                     textFieldAlignment: MainAxisAlignment.spaceAround,
                     fieldStyle: FieldStyle.underline,
@@ -137,7 +119,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         "Don't get OTP?",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
@@ -146,7 +128,7 @@ class _OtpToHomeScreenState extends State<OtpToHomeScreen> {
                         ),
                       ),
                       TextButton(
-                        child: Text(
+                        child: const Text(
                           "Resend",
                           style: TextStyle(
                             color: Colors.red,

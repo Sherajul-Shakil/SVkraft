@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _userNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -168,9 +170,20 @@ class _SignupScreenState extends State<SignupScreen> {
                                       signed: true,
                                       decimal: true,
                                     ),
-                                    validator: (v) => v!.isEmpty
-                                        ? "Field Can't be Empty"
-                                        : null,
+                                    // validator: (v) => v!.isEmpty
+                                    //     ? "Field Can't be Empty"
+                                    //     : null,
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
+                                        return 'This field is required';
+                                      }
+                                      if (value.trim().length < 9) {
+                                        return 'Number must be at least 11 characters in length';
+                                      }
+                                      // Return null if the entered username is valid
+                                      return null;
+                                    },
                                     inputBorder: InputBorder.none,
                                     onSaved: (PhoneNumber number) {
                                       print('On Saved: $number');
@@ -256,8 +269,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                   if (value == null || value.trim().isEmpty) {
                                     return 'This field is required';
                                   }
-                                  if (value.trim().length < 4) {
-                                    return 'Username must be at least 4 characters in length';
+                                  if (!value.trim().contains("@")) {
+                                    return 'Email must contain @ sign ';
                                   }
                                   // Return null if the entered username is valid
                                   return null;
@@ -266,7 +279,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 25,
                           ),
                           Text(
@@ -279,9 +292,9 @@ class _SignupScreenState extends State<SignupScreen> {
                             textAlign: TextAlign.left,
                           ),
                           Container(
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               boxShadow: [
-                                new BoxShadow(
+                                BoxShadow(
                                   color: Colors.white,
                                   blurRadius: 20.0,
                                 ),
@@ -354,30 +367,35 @@ class _SignupScreenState extends State<SignupScreen> {
                   ),
                   BottomButtonColumn(
                     onTap: () async {
-                      // var token = await register(
-                      //   phone.trim(),
-                      //   _userNameController.text.trim(),
-                      //   _emailController.text.trim(),
-                      //   _passwordController.text.trim(),
-                      // );
-                      // print(token);
-                      // if (token != null) {
-                      //   final snackBar = SnackBar(
-                      //     content: const Text('Registration Successful'),
-                      //     action: SnackBarAction(
-                      //       label: '',
-                      //       onPressed: () {},
-                      //     ),
-                      //   );
-                      //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                      //   Get.toNamed('/signupotp');
-                      //   // Navigator.push(
-                      //   //   context,
-                      //   //   MaterialPageRoute(builder: (context) => LoginPage()),
-                      //   // );
-                      // }
+                      if (_formKey.currentState!.validate()) {
+                        var token = await register(
+                          phone.trim(),
+                          _userNameController.text.trim(),
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                        );
+                        print(token);
+                        if (token != null) {
+                          final snackBar = SnackBar(
+                            content: const Text('Registration Successful'),
+                            action: SnackBarAction(
+                              label: '',
+                              onPressed: () {},
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          // Get.toNamed('/signupotp');
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => LoginPage()),
+                          // );
+                        } else {
+                          const CircularProgressIndicator();
+                        }
 
-                      await loginUser(phone, context);
+                        await loginUser(phone, context);
+                        // Get.toNamed('/signupotp');
+                      }
                     },
                     buttonText: "SIGN UP",
                     buttonIcon: Icons.login_outlined,
@@ -405,11 +423,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                         onPressed: () {
                           Get.toNamed('/signin');
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => SigninScreen()),
-                          // );
                         },
                       ),
                     ],

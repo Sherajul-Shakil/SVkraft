@@ -296,7 +296,9 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   color: Colors.black54,
                                   fontSize: 20,
                                   fontWeight: FontWeight.normal)),
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed("/specialcategoryproduct");
+                          },
                         ),
                       ],
                     ),
@@ -414,7 +416,9 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   color: Colors.black54,
                                   fontSize: 20,
                                   fontWeight: FontWeight.normal)),
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed("/specialcategoryproduct");
+                          },
                         ),
                       ],
                     ),
@@ -532,7 +536,9 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   color: Colors.black54,
                                   fontSize: 20,
                                   fontWeight: FontWeight.normal)),
-                          onTap: () {},
+                          onTap: () {
+                            Get.toNamed("/specialcategoryproduct");
+                          },
                         ),
                       ],
                     ),

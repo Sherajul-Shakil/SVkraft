@@ -38,6 +38,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    bool sign = true;
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'SV Kraft',
@@ -71,7 +72,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/marketfilter", page: () => MarketFilter()),
           GetPage(name: "/profile", page: () => ProfileScreen()),
           // GetPage(name: "/editprofile", page: () => EditProfile()),
-          GetPage(name: "/test", page: () => const TestPage()),
+          GetPage(name: "/test", page: () => TestPage()),
         ]
         //home: SplashScreen(),
         );
