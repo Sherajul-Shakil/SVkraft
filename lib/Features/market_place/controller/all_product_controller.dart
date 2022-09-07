@@ -13,8 +13,6 @@ class AllProductController extends GetxController {
     return token;
   }
 
-  List<Datum> allProductList = [];
-
   Future<List<Datum>?> GetAllProduct(String textToken) async {
     try {
       const url = "http://mamun.click/api/product/all";
@@ -25,11 +23,11 @@ class AllProductController extends GetxController {
         'Authorization': 'Bearer $textToken',
       });
 
-      print(response.body);
+      // print(response.body);
       if (response.statusCode == 200) {
         final allProduct = allProductFromJson(response.body);
 
-        print('proooooooooooooooooooo ${allProduct.data.toString()}');
+        //print('proooooooooooooooooooo ${allProduct.data.toString()}');
 
         return allProduct.data;
       } else {

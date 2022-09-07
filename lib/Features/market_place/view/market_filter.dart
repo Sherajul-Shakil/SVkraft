@@ -266,13 +266,13 @@ class _MarketFilterState extends State<MarketFilter> {
 
                   child: InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MarketProductDetails(
-                                  imageLink: AppImage.marketPlaceImage[index],
-                                )),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //       builder: (context) => MarketProductDetails(
+                      //             imageLink: AppImage.marketPlaceImage[index],
+                      //           )),
+                      // );
                     },
                     child: Column(
                       children: [

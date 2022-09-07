@@ -208,7 +208,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                   ? FutureBuilder<List<Datum>?>(
                       future: _allProductController.GetAllProduct(tokenp),
                       builder: (context, snapshot) {
-                        print('inside buil;der\n' + snapshot.data.toString());
+                        // print('inside buil;der\n' + snapshot.data.toString());
 
                         if (!snapshot.hasData || snapshot.data == null) {
                           return const Center(
@@ -258,8 +258,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               MarketProductDetails(
-                                                imageLink: AppImage
-                                                    .marketPlaceImage[index],
+                                                id: data[index].id,
+                                                token: tokenp,
                                               )),
                                     );
                                   },

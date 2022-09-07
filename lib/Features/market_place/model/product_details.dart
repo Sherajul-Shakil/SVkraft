@@ -19,12 +19,12 @@ class ProductDetails {
 
   bool success;
   String message;
-  Data data;
+  ProductDetailsData data;
 
   factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
         success: json["success"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: ProductDetailsData.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -34,8 +34,8 @@ class ProductDetails {
       };
 }
 
-class Data {
-  Data({
+class ProductDetailsData {
+  ProductDetailsData({
     required this.id,
     required this.categoryId,
     required this.productName,
@@ -63,9 +63,10 @@ class Data {
   int inStock;
   DateTime createdAt;
   DateTime updatedAt;
-  List<Image> image;
+  List<ProductImage> image;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory ProductDetailsData.fromJson(Map<String, dynamic> json) =>
+      ProductDetailsData(
         id: json["id"],
         categoryId: json["category_id"],
         productName: json["product_name"],
@@ -78,7 +79,8 @@ class Data {
         inStock: json["in_stock"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        image: List<Image>.from(json["image"].map((x) => Image.fromJson(x))),
+        image: List<ProductImage>.from(
+            json["image"].map((x) => ProductImage.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,18 +100,18 @@ class Data {
       };
   @override
   String toString() {
-    return 'Data{id: $id, categoryId: $categoryId, productName: $productName, description: $description, price: $price, quantity: $quantity, colors: $colors, sizes: $sizes, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image},';
+    return 'ProductDetailsData{id: $id, categoryId: $categoryId, productName: $productName, description: $description, price: $price, quantity: $quantity, colors: $colors, sizes: $sizes, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image},';
   }
 }
 
-class Image {
-  Image({
+class ProductImage {
+  ProductImage({
     required this.filePath,
   });
 
   String filePath;
 
-  factory Image.fromJson(Map<String, dynamic> json) => Image(
+  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
         filePath: json["file_path"],
       );
 
