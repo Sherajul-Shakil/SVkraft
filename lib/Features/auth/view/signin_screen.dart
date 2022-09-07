@@ -11,18 +11,6 @@ class SigninScreen extends StatelessWidget {
   final SigninController _signinController = Get.put(SigninController());
   final _formKey = GlobalKey<FormState>();
 
-  // final _formKeyP = GlobalKey<FormState>();
-
-  // String initialCountry = 'BD';
-
-  // PhoneNumber number = PhoneNumber(isoCode: 'BD');
-
-  // var phone;
-
-  // final TextEditingController _phoneNumberController = TextEditingController();
-
-  // final TextEditingController _passwordController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -253,14 +241,14 @@ class SigninScreen extends StatelessWidget {
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
                         // Get.toNamed("/bottombar");
-                        var userId = await _signinController.login(
+                        var tokenId = await _signinController.login(
                           _signinController.phone.trim(),
                           _signinController.passwordController.text.trim(),
                         );
                         const CircularProgressIndicator();
-                        if (userId != null) {
+                        if (tokenId != null) {
                           final snackBar = SnackBar(
-                            content: Text('Login Successful $userId'),
+                            content: Text('Login Successful $tokenId'),
                             action: SnackBarAction(
                               label: '',
                               onPressed: () {},
@@ -271,7 +259,7 @@ class SigninScreen extends StatelessWidget {
                           //   context,
                           //   MaterialPageRoute(
                           //       builder: (context) =>
-                          //           HomeScreen(userId)),
+                          //           BottomAppBar(tokenId)),
                           // );
                           Get.toNamed('/bottombar');
                         }

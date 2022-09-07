@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
+import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/constant/color.dart';
 
@@ -14,10 +18,32 @@ class MarketPlace extends StatefulWidget {
 }
 
 class _MarketPlaceState extends State<MarketPlace> {
+  final SigninController _signinController = Get.put(SigninController());
+  final AllProductController _allProductController =
+      Get.put(AllProductController());
+  var tokenp;
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    }); //.then((value) => _allProductController.GetAllProduct(tokenp))
+  }
+
+  Future<void> setTokenToVariable() async {
+    final token = await _allProductController.getToken();
+    // print('token = ' + token);
+    setState(() {
+      tokenp = token;
+    });
+  }
+
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
 
-  List<String> _list = [
+  // ignore: prefer_final_fields
+  final List<String> _list = [
     'English Textbook',
     'Japanese Textbook',
     'English Vocabulary',
@@ -70,6 +96,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print(tokenp);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -177,91 +204,119 @@ class _MarketPlaceState extends State<MarketPlace> {
             Container(
               height: size.height - 120,
               color: Colors.white,
-              child: GridView.builder(
-                padding: const EdgeInsets.only(
-                    left: 10, right: 10, top: 20, bottom: 10),
-                itemCount: AppImage.marketPlaceImage.length,
-                scrollDirection: Axis.vertical,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: .79,
-                  mainAxisSpacing: 1,
-                  crossAxisSpacing: 1,
-                ),
-                itemBuilder: (BuildContext context, int index) => Container(
-                  // color: Colors.red,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(5),
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12, //color of shadow
-                        spreadRadius: 0, //spread radius
-                        blurRadius: 0, // blur radius
-                        offset: Offset(0, 0), // changes position of shadow
-                        //first paramerter of offset is left-right
-                        //second parameter is top to down
-                      )
-                    ],
-                  ),
+              child: tokenp != null
+                  ? FutureBuilder<List<Datum>?>(
+                      future: _allProductController.GetAllProduct(tokenp),
+                      builder: (context, snapshot) {
+                        print('inside buil;der\n' + snapshot.data.toString());
 
-                  child: InkWell(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => MarketProductDetails(
-                                  imageLink: AppImage.marketPlaceImage[index],
-                                )),
-                      );
-                    },
-                    child: Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 5, vertical: 5),
-                          child: Image.network(
-                            AppImage.marketPlaceImage[index],
-                            fit: BoxFit.cover,
-                            height: 200,
-                            width: 180,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              Text('500 kr',
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.normal)),
-                              SizedBox(
-                                width: 5,
+                        if (!snapshot.hasData || snapshot.data == null) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          if (snapshot.data!.isEmpty) {
+                            return const Center(
+                                child: Text('No Product Found'));
+                          } else {
+                            final data = snapshot.data;
+                            return GridView.builder(
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 20, bottom: 10),
+                              itemCount: data!.length,
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: .79,
+                                mainAxisSpacing: 1,
+                                crossAxisSpacing: 1,
                               ),
-                              SizedBox(
-                                width: 130.0,
-                                child: Text(
-                                  "Super Drone LR574",
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  softWrap: false,
-                                  style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 16.0),
+                              itemBuilder: (BuildContext context, int index) =>
+                                  Container(
+                                // color: Colors.red,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12, //color of shadow
+                                      spreadRadius: 0, //spread radius
+                                      blurRadius: 0, // blur radius
+                                      offset: Offset(
+                                          0, 0), // changes position of shadow
+                                      //first paramerter of offset is left-right
+                                      //second parameter is top to down
+                                    )
+                                  ],
+                                ),
+
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              MarketProductDetails(
+                                                imageLink: AppImage
+                                                    .marketPlaceImage[index],
+                                              )),
+                                    );
+                                  },
+                                  child: Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 5),
+                                        child: Image.network(
+                                          'http://mamun.click/${data[index].image[0].filePath}',
+                                          fit: BoxFit.contain,
+                                          height: 180,
+                                          width: 170,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 6),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text('${data[index].price} Kr',
+                                                maxLines: 3,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.normal)),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            SizedBox(
+                                              width: 110.0,
+                                              child: Text(
+                                                data[index].productName,
+                                                overflow: TextOverflow.ellipsis,
+                                                softWrap: false,
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    fontSize: 16.0),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                            );
+                          }
+                        }
+                      })
+                  : const Center(child: CircularProgressIndicator()),
             ),
           ],
         ),

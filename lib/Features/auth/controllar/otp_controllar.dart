@@ -10,7 +10,7 @@ import '../../../common/bottom_button_column.dart';
 final _codeController = TextEditingController();
 Future loginUser(String phone, BuildContext context) async {
   FirebaseAuth _auth = FirebaseAuth.instance;
-
+  var user;
   _auth.verifyPhoneNumber(
     phoneNumber: phone,
     timeout: const Duration(seconds: 60),
@@ -26,6 +26,7 @@ Future loginUser(String phone, BuildContext context) async {
                 builder: (context) => BottomAppBar(
                     // user: result.user,
                     )));
+        user = result.user;
       } else {
         print("Error");
       }
@@ -91,7 +92,7 @@ Future loginUser(String phone, BuildContext context) async {
                         ),
                         OTPbutton(
                           onTap: () async {
-                            Get.toNamed("/bottombar");
+                            // Get.toNamed("/bottombar");
                             // Navigator.push(
                             //   context,
                             //   MaterialPageRoute(builder: (context) => HomeScreen()),
@@ -108,6 +109,8 @@ Future loginUser(String phone, BuildContext context) async {
                                 await _auth.signInWithCredential(credential);
 
                             if (result.user != null) {
+                              user = result.user;
+                              print('userrrrrrrrrrrrrrrrrrrrrrrrrrrr $user');
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
