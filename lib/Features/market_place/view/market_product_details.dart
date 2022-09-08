@@ -20,8 +20,10 @@ class MarketProductDetails extends StatefulWidget {
 class _MarketProductDetailsState extends State<MarketProductDetails> {
   final ProductDetailsController _productDetailsController =
       Get.put(ProductDetailsController());
+
   @override
   Widget build(BuildContext context) {
+    print('idddddddddddddddddddddddddd ${widget.id}');
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(

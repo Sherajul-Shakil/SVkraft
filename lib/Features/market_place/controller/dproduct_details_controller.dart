@@ -10,6 +10,7 @@ class ProductDetailsController extends GetxController {
   Future<ProductDetailsData?> getProductDetails(
       String textToken, int id) async {
     try {
+      print('tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn $id   $textToken');
       const url = "http://mamun.click/api/product/find/";
 
       http.Response response = await http.get(Uri.parse('$url$id'), headers: {
@@ -18,18 +19,15 @@ class ProductDetailsController extends GetxController {
         'Authorization': 'Bearer $textToken',
       });
 
-      print(response.body);
       if (response.statusCode == 200) {
         final productDetails = productDetailsFromJson(response.body);
-
-        print('proooooooooooooooooooo ${productDetails.data.toString()}');
 
         return productDetails.data;
       } else {
         print('Product Not Found');
       }
     } catch (e) {
-      print(e.toString());
+      print('Try exception ${e.toString()}');
       return null;
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -5,7 +7,10 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
+import 'package:sv_craft/Features/market_place/controller/market_search_controller.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
+import 'package:sv_craft/Features/market_place/model/market_category.dart';
 import 'package:sv_craft/Features/market_place/view/market_filter.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/constant/color.dart';
@@ -22,19 +27,26 @@ class MarketPlace extends StatefulWidget {
 
 class _MarketPlaceState extends State<MarketPlace> {
   final SigninController _signinController = Get.put(SigninController());
+  final MarketSearchController _maeketSearchController =
+      Get.put(MarketSearchController());
+  final MarketCategoryController _marketCategoryController =
+      Get.put(MarketCategoryController());
   final AllProductController _allProductController =
       Get.put(AllProductController());
 
   TextEditingController _cityNameController = TextEditingController();
   TextEditingController _categoryController = TextEditingController();
+  TextEditingController _searchController = TextEditingController();
   String? selectedCategory;
 
   var tokenp;
+  bool _isSearched = false;
+  var searchedData;
 
   final _formKey = GlobalKey<FormState>();
 
-  final List<String> _categoty = ["All", "Mobile", "iPhone", "Laptop", "Watch"];
-
+  final List<String> _categoty = [];
+//"All", "Mobile", "iPhone", "Laptop", "Watch"
   @override
   void initState() {
     super.initState();
@@ -65,20 +77,23 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   Widget _searchTextField() {
     return TextField(
-      onChanged: (String s) {
-        setState(() {
-          _searchIndexList = [];
-          for (int i = 0; i < _list.length; i++) {
-            if (_list[i].contains(s)) {
-              _searchIndexList.add(i);
-            }
-          }
-        });
+      controller: _searchController,
+      onSubmitted: (String s) async {
+        final searchProduct =
+            await _maeketSearchController.getmarketSearchProduct(tokenp, s);
+
+        if (searchProduct != null) {
+          setState(() {
+            _isSearched = true;
+            searchedData = searchProduct;
+            print('searchProduct = ${searchProduct![0].productName}');
+          });
+        }
       },
       autofocus: true,
       cursorColor: Colors.black,
       style: TextStyle(
-        color: Colors.black,
+        color: Colors.white,
         fontSize: 20,
       ),
       textInputAction: TextInputAction.search,
@@ -95,15 +110,6 @@ class _MarketPlaceState extends State<MarketPlace> {
         ),
       ),
     );
-  }
-
-  Widget _searchListView() {
-    return ListView.builder(
-        itemCount: _searchIndexList.length,
-        itemBuilder: (context, index) {
-          index = _searchIndexList[index];
-          return Card(child: ListTile(title: Text(_list[index])));
-        });
   }
 
   @override
@@ -158,8 +164,25 @@ class _MarketPlaceState extends State<MarketPlace> {
                       FontAwesome.sliders,
                       color: Appcolor.iconColor,
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       // Get.toNamed('/marketfilter');
+                      final category = await _marketCategoryController
+                          .getmarketCategoryProduct(tokenp);
+                      if (category != null) {
+                        for (var task in category) {
+                          _categoty.add(task.categoryName);
+                        }
+                      }
+                      print(category![0].categoryName);
+
+                      // _categoty.add(category![0].categoryName.toString());
+                      // category.then(
+                      //     (value) => _categoty.add(value![0].categoryName));
+                      // category.then(
+                      //     (value) => _categoty.add(value![0].categoryName));
+                      // category.then(
+                      //     (value) => _categoty.add(value![0].categoryName));
+
                       Get.bottomSheet(
                         SingleChildScrollView(
                           child: Form(
@@ -343,21 +366,22 @@ class _MarketPlaceState extends State<MarketPlace> {
                                         onPressed: () async {
                                           if (_formKey.currentState!
                                               .validate()) {
-                                            // if (selectedCategory != null) {
-                                            // print(selectedCategory);
+                                            if (selectedCategory != null) {
+                                              print(selectedCategory);
 
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MarketFilter(
-                                                          token: tokenp,
-                                                          selectedCategory:
-                                                              selectedCategory!,
-                                                          cityName:
-                                                              _cityNameController
-                                                                  .text)),
-                                            );
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        MarketFilter(
+                                                            token: tokenp,
+                                                            selectedCategory:
+                                                                selectedCategory!,
+                                                            cityName:
+                                                                _cityNameController
+                                                                    .text)),
+                                              );
+                                            }
                                           }
 
                                           // } else {}
@@ -426,6 +450,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                     onPressed: () {
                       setState(() {
                         _searchBoolean = false;
+                        _isSearched = false;
                       });
                     },
                   ),
@@ -461,123 +486,232 @@ class _MarketPlaceState extends State<MarketPlace> {
                 ),
               ),
             ),
-            Container(
-              height: size.height - 120,
-              color: Colors.white,
-              child: tokenp != null
-                  ? FutureBuilder<List<Datum>?>(
-                      future: _allProductController.GetAllProduct(tokenp),
-                      builder: (context, snapshot) {
-                        // print('inside buil;der\n' + snapshot.data.toString());
+            _isSearched
+                ? Container(
+                    height: size.height - 120,
+                    color: Colors.white,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.only(
+                          left: 10, right: 10, top: 20, bottom: 10),
+                      itemCount: searchedData.length,
+                      scrollDirection: Axis.vertical,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: .79,
+                        mainAxisSpacing: 1,
+                        crossAxisSpacing: 1,
+                      ),
+                      itemBuilder: (BuildContext context, int index) =>
+                          Container(
+                        // color: Colors.red,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(5),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black12, //color of shadow
+                              spreadRadius: 0, //spread radius
+                              blurRadius: 0, // blur radius
+                              offset:
+                                  Offset(0, 0), // changes position of shadow
+                              //first paramerter of offset is left-right
+                              //second parameter is top to down
+                            )
+                          ],
+                        ),
 
-                        if (!snapshot.hasData || snapshot.data == null) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          if (snapshot.data!.isEmpty) {
-                            return const Center(
-                                child: Text('No Product Found'));
-                          } else {
-                            final data = snapshot.data;
-                            return GridView.builder(
-                              padding: const EdgeInsets.only(
-                                  left: 10, right: 10, top: 20, bottom: 10),
-                              itemCount: data!.length,
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: .79,
-                                mainAxisSpacing: 1,
-                                crossAxisSpacing: 1,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => MarketProductDetails(
+                                        id: searchedData[index].id,
+                                        token: tokenp,
+                                      )),
+                            );
+                          },
+                          child: Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 5),
+                                child: Image.network(
+                                  'http://mamun.click/${searchedData[index].image[0].filePath}',
+                                  fit: BoxFit.contain,
+                                  height: 180,
+                                  width: 170,
+                                ),
                               ),
-                              itemBuilder: (BuildContext context, int index) =>
-                                  Container(
-                                // color: Colors.red,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(5),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12, //color of shadow
-                                      spreadRadius: 0, //spread radius
-                                      blurRadius: 0, // blur radius
-                                      offset: Offset(
-                                          0, 0), // changes position of shadow
-                                      //first paramerter of offset is left-right
-                                      //second parameter is top to down
-                                    )
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 6),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text('${searchedData[index].price} Kr',
+                                        maxLines: 3,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.normal)),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
+                                    SizedBox(
+                                      width: 110.0,
+                                      child: Text(
+                                        searchedData[index].productName,
+                                        overflow: TextOverflow.ellipsis,
+                                        softWrap: false,
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.normal,
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
                                   ],
                                 ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(
+                    height: size.height - 120,
+                    color: Colors.white,
+                    child: tokenp != null
+                        ? FutureBuilder<List<Datum>?>(
+                            future: _allProductController.GetAllProduct(tokenp),
+                            builder: (context, snapshot) {
+                              // print(
+                              //     'inside buildertrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr\n' +
+                              //         snapshot.data.toString());
 
-                                child: InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              MarketProductDetails(
-                                                id: data[index].id,
-                                                token: tokenp,
-                                              )),
-                                    );
-                                  },
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 5, vertical: 5),
-                                        child: Image.network(
-                                          'http://mamun.click/${data[index].image[0].filePath}',
-                                          fit: BoxFit.contain,
-                                          height: 180,
-                                          width: 170,
-                                        ),
+                              if (!snapshot.hasData || snapshot.data == null) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              } else {
+                                if (snapshot.data!.isEmpty) {
+                                  return const Center(
+                                      child: Text('No Product Found'));
+                                } else {
+                                  final data = snapshot.data;
+                                  return GridView.builder(
+                                    padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 20,
+                                        bottom: 10),
+                                    itemCount: data!.length,
+                                    scrollDirection: Axis.vertical,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      childAspectRatio: .79,
+                                      mainAxisSpacing: 1,
+                                      crossAxisSpacing: 1,
+                                    ),
+                                    itemBuilder:
+                                        (BuildContext context, int index) =>
+                                            Container(
+                                      // color: Colors.red,
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors
+                                                .black12, //color of shadow
+                                            spreadRadius: 0, //spread radius
+                                            blurRadius: 0, // blur radius
+                                            offset: Offset(0,
+                                                0), // changes position of shadow
+                                            //first paramerter of offset is left-right
+                                            //second parameter is top to down
+                                          )
+                                        ],
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 6),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
+
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MarketProductDetails(
+                                                      id: data[index].id,
+                                                      token: tokenp,
+                                                    )),
+                                          );
+                                        },
+                                        child: Column(
                                           children: [
-                                            Text('${data[index].price} Kr',
-                                                maxLines: 3,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.normal)),
-                                            SizedBox(
-                                              width: 5,
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 5,
+                                                      vertical: 5),
+                                              child: Image.network(
+                                                'http://mamun.click/${data[index].image[0].filePath}',
+                                                fit: BoxFit.contain,
+                                                height: 180,
+                                                width: 170,
+                                              ),
                                             ),
-                                            SizedBox(
-                                              width: 110.0,
-                                              child: Text(
-                                                data[index].productName,
-                                                overflow: TextOverflow.ellipsis,
-                                                softWrap: false,
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    fontSize: 16.0),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 6),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      '${data[index].price} Kr',
+                                                      maxLines: 3,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 16,
+                                                          fontWeight: FontWeight
+                                                              .normal)),
+                                                  SizedBox(
+                                                    width: 5,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 110.0,
+                                                    child: Text(
+                                                      data[index].productName,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      softWrap: false,
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                          fontSize: 16.0),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          }
-                        }
-                      })
-                  : const Center(child: CircularProgressIndicator()),
-            ),
+                                    ),
+                                  );
+                                }
+                              }
+                            })
+                        : const Center(child: CircularProgressIndicator()),
+                  ),
           ],
         ),
       ),
