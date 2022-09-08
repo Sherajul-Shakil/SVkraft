@@ -1,13 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
+import 'package:sv_craft/Features/market_place/view/market_filter.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/constant/color.dart';
 
+import '../../../common/bottom_button_column.dart';
 import '../../../constant/constant.dart';
 
 class MarketPlace extends StatefulWidget {
@@ -21,7 +24,17 @@ class _MarketPlaceState extends State<MarketPlace> {
   final SigninController _signinController = Get.put(SigninController());
   final AllProductController _allProductController =
       Get.put(AllProductController());
+
+  TextEditingController _cityNameController = TextEditingController();
+  TextEditingController _categoryController = TextEditingController();
+  String? selectedCategory;
+
   var tokenp;
+
+  final _formKey = GlobalKey<FormState>();
+
+  final List<String> _categoty = ["All", "Mobile", "iPhone", "Laptop", "Watch"];
+
   @override
   void initState() {
     super.initState();
@@ -96,7 +109,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print(tokenp);
+    //print(tokenp);
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
@@ -142,11 +155,258 @@ class _MarketPlaceState extends State<MarketPlace> {
                   backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
-                      Icons.filter_list,
+                      FontAwesome.sliders,
                       color: Appcolor.iconColor,
                     ),
                     onPressed: () {
-                      Get.toNamed('/marketfilter');
+                      // Get.toNamed('/marketfilter');
+                      Get.bottomSheet(
+                        SingleChildScrollView(
+                          child: Form(
+                            key: _formKey,
+                            child: Container(
+                              height: size.height,
+                              color: Colors.white,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text(
+                                      'Filter with Category and Area name',
+                                      style: TextStyle(
+                                          color: Appcolor.primaryColor,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.normal),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text('CATEGORY',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.normal)),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 5, horizontal: 20),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                        color: Colors.indigo,
+                                        borderRadius:
+                                            BorderRadius.circular(10)),
+                                    child: DropdownButton<String>(
+                                      value: selectedCategory,
+
+                                      onChanged: (value2) {
+                                        setState(() {
+                                          selectedCategory = value2!;
+                                          print(selectedCategory);
+                                          //showToast();
+                                        });
+                                      },
+                                      hint: const Center(
+                                          child: Text(
+                                        'Select Category',
+                                        style: TextStyle(color: Colors.white),
+                                      )),
+                                      // Hide the default underline
+                                      underline: Container(),
+                                      // set the color of the dropdown menu
+                                      dropdownColor: Colors.white,
+                                      icon: const Icon(
+                                        Icons.arrow_downward,
+                                        color: Colors.white,
+                                      ),
+                                      isExpanded: true,
+
+                                      // The list of options
+                                      items: _categoty
+                                          .map((e) => DropdownMenuItem(
+                                                value: e,
+                                                child: Container(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: Text(
+                                                    e,
+                                                    style: const TextStyle(
+                                                        fontSize: 18),
+                                                  ),
+                                                ),
+                                              ))
+                                          .toList(),
+
+                                      // Customize the selected item
+                                      selectedItemBuilder:
+                                          (BuildContext context) => _categoty
+                                              .map((e) => Center(
+                                                    child: Text(
+                                                      e,
+                                                      style: const TextStyle(
+                                                          fontSize: 18,
+                                                          color: Colors.white,
+                                                          fontStyle:
+                                                              FontStyle.italic,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    child: Text('PLATS',
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.normal)),
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 20),
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        new BoxShadow(
+                                          color: Colors.white,
+                                          blurRadius: 20.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Card(
+                                      child: TextFormField(
+                                        controller: _cityNameController,
+                                        decoration: const InputDecoration(
+                                          //labelText: 'Username',
+                                          hintText: "Area Name",
+                                          prefixIcon: Icon(Icons.location_city),
+                                          border: InputBorder.none,
+                                        ),
+
+                                        validator: (value) {
+                                          if (value == null ||
+                                              value.trim().isEmpty) {
+                                            return 'This field is required';
+                                          }
+                                          // if (value.trim().length < 4) {
+                                          //   return 'Username must be at least 4 characters in length';
+                                          // }
+                                          // Return null if the entered username is valid
+                                          return null;
+                                        },
+                                        //onChanged: (value) => _userName = value,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 80),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      width: size.width * 1,
+                                      height: size.height / 20,
+                                      decoration: BoxDecoration(
+                                        gradient: const LinearGradient(
+                                          begin: Alignment.topCenter,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Appcolor.circleColor,
+                                            Color.fromARGB(255, 253, 251, 250),
+                                          ],
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: TextButton(
+                                        onPressed: () async {
+                                          if (_formKey.currentState!
+                                              .validate()) {
+                                            // if (selectedCategory != null) {
+                                            // print(selectedCategory);
+
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MarketFilter(
+                                                          token: tokenp,
+                                                          selectedCategory:
+                                                              selectedCategory!,
+                                                          cityName:
+                                                              _cityNameController
+                                                                  .text)),
+                                            );
+                                          }
+
+                                          // } else {}
+                                          // Get.toNamed("/bottombar");
+
+                                          //Get.toNamed('/bottombar');
+                                          // Get.toNamed("/bottombar");
+
+                                          //Get.toNamed('/bottombar');
+                                          // Get.toNamed("/bottombar");
+
+                                          //Get.toNamed('/bottombar');
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(width: size.width * 0.25),
+                                            const Text(
+                                              'Filter',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 18,
+                                                  color: Colors.white),
+                                            ),
+                                            SizedBox(width: 30),
+                                            const Icon(
+                                              FontAwesome.sliders,
+                                              color: Colors.white,
+                                              size: 20.0,
+                                              //weight: IconWeight.bold
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        barrierColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(0),
+                          //side: BorderSide(width: 5, color: Colors.black),
+                        ),
+                        enableDrag: false,
+                      );
                     },
                   ),
                 ),

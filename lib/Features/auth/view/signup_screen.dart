@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
+import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
 
 import '../../../common/otp_botton.dart';
+import '../../home/bottom_bar.dart';
 import '../controllar/signup_controllar.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -27,6 +29,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  var otpUser;
+
   final _codeController = TextEditingController();
 
   Future loginUser(String phone, BuildContext context) async {
@@ -41,12 +45,31 @@ class _SignupScreenState extends State<SignupScreen> {
         UserCredential result = await _auth.signInWithCredential(credential);
 
         if (result.user != null) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const BottomAppBar(
-                      //  user: result.user,
-                      )));
+          var token = await register(
+            phone.trim(),
+            _userNameController.text.trim(),
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+          print(token);
+          if (token != null) {
+            print('11111111111111111111111111111111111111111111111111111');
+            final snackBar = SnackBar(
+              content: const Text('Registration Successful'),
+              action: SnackBarAction(
+                label: '',
+                onPressed: () {},
+              ),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            // Get.toNamed('/signupotp');
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(builder: (context) => LoginPage()),
+            // );
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SigninScreen()));
+          }
         } else {
           print("Error");
         }
@@ -62,129 +85,71 @@ class _SignupScreenState extends State<SignupScreen> {
             barrierDismissible: false,
             builder: (context) {
               return AlertDialog(
+                title: const Text("Insert the code?"),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: Get.size.height * 0.05,
-                          ),
-                          const Text(
-                            "OTP Authentication",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              fontSize: 24,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "An authentication code has been sent to\n(+00) 999 999 999",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 14,
-                              color: Colors.grey.withOpacity(0.8),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 35,
-                          ),
-                          OTPTextField(
-                            length: 6,
-                            width: MediaQuery.of(context).size.width,
-                            fieldWidth: 25,
-                            style: TextStyle(fontSize: 18),
-                            textFieldAlignment: MainAxisAlignment.spaceAround,
-                            fieldStyle: FieldStyle.underline,
-                            onCompleted: (pin) {
-                              print("Completed: " + pin);
-                            },
-                          ),
-                          SizedBox(
-                            height: Get.size.height * .06,
-                          ),
-                          OTPbutton(
-                            onTap: () async {
-                              // Get.toNamed("/bottombar");
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(builder: (context) => HomeScreen()),
-                              // );
-
-                              final code = _codeController.text.trim();
-                              AuthCredential credential =
-                                  PhoneAuthProvider.credential(
-                                verificationId: verificationId,
-                                smsCode: code,
-                              );
-
-                              UserCredential result =
-                                  await _auth.signInWithCredential(credential);
-
-                              if (result.user != null) {
-                                var user = result.user;
-                                print('userrrrrrrrrrrrrrrrrrrrrrrrrrrr $user');
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const BottomAppBar(
-                                                // user: result.user,
-                                                )));
-                              } else {
-                                print("Error");
-                              }
-                            },
-                            buttonText: "CONFIRM",
-                            buttonIcon: Icons.arrow_right_alt_sharp,
-                          ),
-                          SizedBox(
-                            height: Get.size.height * .02,
-                          ),
-                        ],
-                      ),
-                    )
+                    TextField(
+                      controller: _codeController,
+                      keyboardType:
+                          const TextInputType.numberWithOptions(signed: true),
+                    ),
                   ],
                 ),
-                // actions: <Widget>[
-                //   FlatButton(
-                //     child: const Text("Confirm"),
-                //     textColor: Colors.white,
-                //     color: Colors.blue,
-                //     onPressed: () async {
-                //       // String comingSms = (await AltSmsAutofill().listenForSms)!;
-                //       // String aStr =
-                //       //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
-                //       // String otp = aStr.substring(0, 6);
+                actions: <Widget>[
+                  FlatButton(
+                    child: const Text("Confirm"),
+                    textColor: Colors.white,
+                    color: Colors.blue,
+                    onPressed: () async {
+                      // String comingSms = (await AltSmsAutofill().listenForSms)!;
+                      // String aStr =
+                      //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
+                      // String otp = aStr.substring(0, 6);
 
-                //       // final code = otp;
-                //       // print(comingSms);
-                //       final code = _codeController.text.trim();
-                //       AuthCredential credential = PhoneAuthProvider.credential(
-                //           verificationId: verificationId, smsCode: code);
+                      // final code = otp;
+                      // print(comingSms);
+                      final code = _codeController.text.trim();
+                      AuthCredential credential = PhoneAuthProvider.credential(
+                          verificationId: verificationId, smsCode: code);
 
-                //       UserCredential result =
-                //           await _auth.signInWithCredential(credential);
+                      UserCredential result =
+                          await _auth.signInWithCredential(credential);
 
-                //       if (result.user != null) {
-                //         Navigator.push(
-                //             context,
-                //             MaterialPageRoute(
-                //                 builder: (context) => BottomAppBar(
-                //                     //user: result.user,
-                //                     )));
-                //       } else {
-                //         print("Error");
-                //       }
-                //     },
-                //   )
-                // ],
+                      if (result.user != null) {
+                        var token = await register(
+                          phone.trim(),
+                          _userNameController.text.trim(),
+                          _emailController.text.trim(),
+                          _passwordController.text.trim(),
+                        );
+                        print(token);
+                        if (token != null) {
+                          print('2222222222222222222222222222222222222');
+                          final snackBar = SnackBar(
+                            content: const Text('Registration Successful'),
+                            action: SnackBarAction(
+                              label: '',
+                              onPressed: () {},
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          // Get.toNamed('/signupotp');
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => LoginPage()),
+                          // );
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SigninScreen()));
+                        }
+                      } else {
+                        print("Error");
+                      }
+                    },
+                  )
+                ],
               );
             });
       },
@@ -193,9 +158,46 @@ class _SignupScreenState extends State<SignupScreen> {
       },
     );
   }
+
+  // Future getUser({required String verificationId}) async {
+  //   FirebaseAuth _auth = FirebaseAuth.instance;
+  //   final code = _codeController.text.trim();
+  //   AuthCredential credential = PhoneAuthProvider.credential(
+  //       verificationId: verificationId, smsCode: code);
+
+  //   UserCredential result = await _auth.signInWithCredential(credential);
+
+  //   if (result.user != null) {
+  //     var token = await register(
+  //       phone.trim(),
+  //       _userNameController.text.trim(),
+  //       _emailController.text.trim(),
+  //       _passwordController.text.trim(),
+  //     );
+  //     print(token);
+  //     if (token != null) {
+  //       final snackBar = SnackBar(
+  //         content: const Text('Registration Successful 1'),
+  //         action: SnackBarAction(
+  //           label: '',
+  //           onPressed: () {},
+  //         ),
+  //       );
+  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //       Get.toNamed('/signin');
+  //       // Navigator.push(
+  //       //   context,
+  //       //   MaterialPageRoute(builder: (context) => LoginPage()),
+  //       // );
+  //     }
+  //   } else {
+  //     print("Error");
+  //   }
+  // }
+
   // Future loginUser(String phone, BuildContext context) async {
   //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   var user;
+
   //   _auth.verifyPhoneNumber(
   //     phoneNumber: phone,
   //     timeout: const Duration(seconds: 60),
@@ -205,18 +207,31 @@ class _SignupScreenState extends State<SignupScreen> {
   //       UserCredential result = await _auth.signInWithCredential(credential);
 
   //       if (result.user != null) {
-  //         Navigator.push(
-  //             context,
-  //             MaterialPageRoute(
-  //                 builder: (context) => BottomAppBar(
-  //                     // user: result.user,
-  //                     )));
-  //         user = result.user;
+  //         var token = await register(
+  //           phone.trim(),
+  //           _userNameController.text.trim(),
+  //           _emailController.text.trim(),
+  //           _passwordController.text.trim(),
+  //         );
+  //         print(token);
+  //         if (token != null) {
+  //           final snackBar = SnackBar(
+  //             content: const Text('Registration Successful 2'),
+  //             action: SnackBarAction(
+  //               label: '',
+  //               onPressed: () {},
+  //             ),
+  //           );
+  //           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  //           Get.toNamed('/signin');
+  //           // Navigator.push(
+  //           //   context,
+  //           //   MaterialPageRoute(builder: (context) => LoginPage()),
+  //           // );
+  //         }
   //       } else {
   //         print("Error");
   //       }
-
-  //       //This callback would gets called when verification is done auto maticlly
   //     },
   //     verificationFailed: (Exception exception) {
   //       print(exception);
@@ -227,130 +242,58 @@ class _SignupScreenState extends State<SignupScreen> {
   //           barrierDismissible: false,
   //           builder: (context) {
   //             return AlertDialog(
-  //               // title: const Text("Insert the code?"),
+  //               title: const Text("Insert the code?"),
   //               content: Column(
   //                 mainAxisSize: MainAxisSize.min,
   //                 children: <Widget>[
-  //                   Padding(
-  //                     padding: const EdgeInsets.symmetric(horizontal: 30),
-  //                     child: Column(
-  //                       crossAxisAlignment: CrossAxisAlignment.start,
-  //                       mainAxisAlignment: MainAxisAlignment.start,
-  //                       children: [
-  //                         SizedBox(
-  //                           height: Get.size.height * 0.05,
-  //                         ),
-  //                         const Text(
-  //                           "OTP Authentication",
-  //                           style: TextStyle(
-  //                             fontWeight: FontWeight.w700,
-  //                             fontSize: 24,
-  //                           ),
-  //                         ),
-  //                         SizedBox(
-  //                           height: 10,
-  //                         ),
-  //                         Text(
-  //                           "An authentication code has been sent to\n(+00) 999 999 999",
-  //                           style: TextStyle(
-  //                             fontWeight: FontWeight.w500,
-  //                             fontSize: 14,
-  //                             color: Colors.grey.withOpacity(0.8),
-  //                           ),
-  //                         ),
-  //                         SizedBox(
-  //                           height: 35,
-  //                         ),
-  //                         OTPTextField(
-  //                           length: 6,
-  //                           width: MediaQuery.of(context).size.width,
-  //                           fieldWidth: 25,
-  //                           style: TextStyle(fontSize: 18),
-  //                           textFieldAlignment: MainAxisAlignment.spaceAround,
-  //                           fieldStyle: FieldStyle.underline,
-  //                           onCompleted: (pin) {
-  //                             print("Completed: " + pin);
-  //                           },
-  //                         ),
-  //                         SizedBox(
-  //                           height: Get.size.height * .06,
-  //                         ),
-  //                         OTPbutton(
-  //                           onTap: () async {
-  //                             // Get.toNamed("/bottombar");
-  //                             // Navigator.push(
-  //                             //   context,
-  //                             //   MaterialPageRoute(builder: (context) => HomeScreen()),
-  //                             // );
-
-  //                             final code = _codeController.text.trim();
-  //                             AuthCredential credential =
-  //                                 PhoneAuthProvider.credential(
-  //                               verificationId: verificationId,
-  //                               smsCode: code,
-  //                             );
-
-  //                             UserCredential result =
-  //                                 await _auth.signInWithCredential(credential);
-
-  //                             if (result.user != null) {
-  //                               // user = result.user;
-  //                               // print('userrrrrrrrrrrrrrrrrrrrrrrrrrrr $user');
-  //                               Navigator.push(
-  //                                   context,
-  //                                   MaterialPageRoute(
-  //                                       builder: (context) =>
-  //                                           const BottomAppBar(
-  //                                               // user: result.user,
-  //                                               )));
-  //                             } else {
-  //                               print("Error");
-  //                             }
-  //                           },
-  //                           buttonText: "CONFIRM",
-  //                           buttonIcon: Icons.arrow_right_alt_sharp,
-  //                         ),
-  //                         SizedBox(
-  //                           height: Get.size.height * .02,
-  //                         ),
-  //                       ],
-  //                     ),
-  //                   )
+  //                   TextField(
+  //                     controller: _codeController,
+  //                     keyboardType:
+  //                         const TextInputType.numberWithOptions(signed: true),
+  //                   ),
   //                 ],
   //               ),
-  //               // actions: <Widget>[
-  //               //   FlatButton(
-  //               //     child: const Text("Confirm"),
-  //               //     textColor: Colors.white,
-  //               //     color: Colors.blue,
-  //               //     onPressed: () async {
-  //               //       // String comingSms = (await AltSmsAutofill().listenForSms)!;
-  //               //       // String aStr =
-  //               //       //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
-  //               //       // String otp = aStr.substring(0, 6);
+  //               actions: <Widget>[
+  //                 FlatButton(
+  //                   child: const Text("Confirm"),
+  //                   textColor: Colors.white,
+  //                   color: Colors.blue,
+  //                   onPressed: () async {
+  //                     // var userValue =
+  //                     getUser(verificationId: verificationId).then(
+  //                       (value) async {
+  //                         if (value != null) {
+  //                           var token = await register(
+  //                             phone.trim(),
+  //                             _userNameController.text.trim(),
+  //                             _emailController.text.trim(),
+  //                             _passwordController.text.trim(),
+  //                           );
+  //                           print(token);
+  //                           if (token != null) {
+  //                             final snackBar = SnackBar(
+  //                               content:
+  //                                   const Text('Registration Successful 3'),
+  //                               action: SnackBarAction(
+  //                                 label: '',
+  //                                 onPressed: () {},
+  //                               ),
+  //                             );
+  //                             ScaffoldMessenger.of(context)
+  //                                 .showSnackBar(snackBar);
+  //                             Get.toNamed('/signin');
+  //                             // Navigator.push(
+  //                             //   context,
+  //                             //   MaterialPageRoute(builder: (context) => LoginPage()),
+  //                             // );
+  //                           }
+  //                         }
+  //                       },
+  //                     );
 
-  //               //       // final code = otp;
-  //               //       // print(comingSms);
-  //               //       final code = _codeController.text.trim();
-  //               //       AuthCredential credential = PhoneAuthProvider.credential(
-  //               //           verificationId: verificationId, smsCode: code);
-
-  //               //       UserCredential result =
-  //               //           await _auth.signInWithCredential(credential);
-
-  //               //       if (result.user != null) {
-  //               //         Navigator.push(
-  //               //             context,
-  //               //             MaterialPageRoute(
-  //               //                 builder: (context) => BottomAppBar(
-  //               //                     // user: result.user,
-  //               //                     )));
-  //               //       } else {
-  //               //         print("Error");
-  //               //       }
-  //               //     },
-  //               //   )
-  //               // ],
+  //                   },
+  //                 )
+  //               ],
   //             );
   //           });
   //     },
@@ -699,30 +642,39 @@ class _SignupScreenState extends State<SignupScreen> {
                   BottomButtonColumn(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        var token = await register(
-                          phone.trim(),
-                          _userNameController.text.trim(),
-                          _emailController.text.trim(),
-                          _passwordController.text.trim(),
-                        );
-                        print(token);
-                        if (token != null) {
-                          final snackBar = SnackBar(
-                            content: const Text('Registration Successful'),
-                            action: SnackBarAction(
-                              label: '',
-                              onPressed: () {},
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          // Get.toNamed('/signupotp');
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => LoginPage()),
-                          // );
-                        }
+                        // var token = await register(
+                        //   phone.trim(),
+                        //   _userNameController.text.trim(),
+                        //   _emailController.text.trim(),
+                        //   _passwordController.text.trim(),
+                        // );
+                        // print(token);
+                        // if (token != null) {
+                        //   final snackBar = SnackBar(
+                        //     content: const Text('Registration Successful'),
+                        //     action: SnackBarAction(
+                        //       label: '',
+                        //       onPressed: () {},
+                        //     ),
+                        //   );
+                        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        //   // Get.toNamed('/signupotp');
+                        //   // Navigator.push(
+                        //   //   context,
+                        //   //   MaterialPageRoute(builder: (context) => LoginPage()),
+                        //   // );
+                        // }
 
                         await loginUser(phone, context);
+                        // var usercreated =
+                        // if (usercreated != null) {
+                        //   print('Print from ui ${otpUser}');
+                        // }
+                        //  else {
+                        //   print(
+                        //       'No userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+                        // }
+
                         // Get.toNamed('/signupotp');
                       }
                     },
