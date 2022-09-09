@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/market_place/controller/market_filter_controller.dart';
 import 'package:sv_craft/Features/market_place/model/market_filter_model.dart';
-
-import '../../../constant/constant.dart';
-import 'market_product_details.dart';
+import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 
 class MarketFilter extends StatefulWidget {
   MarketFilter(
@@ -27,9 +25,6 @@ class _MarketFilterState extends State<MarketFilter> {
       Get.put(MarketFilterController());
   @override
   Widget build(BuildContext context) {
-    print(widget.token);
-    print(widget.selectedCategory);
-    print(widget.cityName);
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
@@ -119,13 +114,15 @@ class _MarketFilterState extends State<MarketFilter> {
 
                             child: InkWell(
                               onTap: () {
-                                // Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => MarketProductDetails(
-                                //             imageLink: AppImage.marketPlaceImage[index],
-                                //           )),
-                                // );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MarketProductDetails(
+                                            id: data[index].id,
+                                            token: widget.token,
+                                          )),
+                                );
                               },
                               child: Column(
                                 children: [

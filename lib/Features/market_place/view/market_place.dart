@@ -1,22 +1,16 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/market_search_controller.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
-import 'package:sv_craft/Features/market_place/model/market_category.dart';
 import 'package:sv_craft/Features/market_place/view/market_filter.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/constant/color.dart';
-
-import '../../../common/bottom_button_column.dart';
-import '../../../constant/constant.dart';
 
 class MarketPlace extends StatefulWidget {
   const MarketPlace({Key? key}) : super(key: key);
@@ -56,6 +50,14 @@ class _MarketPlaceState extends State<MarketPlace> {
     }); //.then((value) => _allProductController.GetAllProduct(tokenp))
   }
 
+  @override
+  ondispose() {
+    _cityNameController.dispose();
+    _categoryController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+
   Future<void> setTokenToVariable() async {
     final token = await _allProductController.getToken();
     // print('token = ' + token);
@@ -78,7 +80,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   Widget _searchTextField() {
     return TextField(
       controller: _searchController,
-      onSubmitted: (String s) async {
+      onChanged: (String s) async {
         final searchProduct =
             await _maeketSearchController.getmarketSearchProduct(tokenp, s);
 
@@ -184,277 +186,260 @@ class _MarketPlaceState extends State<MarketPlace> {
                       // category.then(
                       //     (value) => _category.add(value![0].categoryName));
 
-                      Get.bottomSheet(
-                        SingleChildScrollView(
-                          child: Form(
-                            key: _formKey,
-                            child: Container(
-                              height: size.height,
-                              color: Colors.white,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text(
-                                      'Filter with Category and Area name',
+                      Get.defaultDialog(
+                        title: '',
+
+                        content: Form(
+                          key: _formKey,
+                          child: Container(
+                            // height: size.height * .8,
+                            width: size.width,
+                            color: Colors.white,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text(
+                                    'Filter with Category and Area name',
+                                    style: TextStyle(
+                                        color: Appcolor.primaryColor,
+                                        fontSize: 25,
+                                        fontWeight: FontWeight.normal),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text('CATEGORY',
                                       style: TextStyle(
-                                          color: Appcolor.primaryColor,
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.normal),
-                                      textAlign: TextAlign.center,
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal)),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20),
+                                  margin: const EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 20),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                      color: Colors.indigo,
+                                      borderRadius: BorderRadius.circular(10)),
+                                  child: DropdownButton<String>(
+                                    onChanged: (value2) {
+                                      setState(() {
+                                        selectedCategory = value2!;
+                                        print(selectedCategory);
+                                        //showToast();
+                                      });
+                                    },
+                                    value: selectedCategory,
+
+                                    hint: Center(
+                                        child: Text(
+                                      selectedCategory ?? 'Select Category',
+                                      style: TextStyle(color: Colors.white),
+                                    )),
+
+                                    // Hide the default underline
+                                    underline: Container(),
+                                    // set the color of the dropdown menu
+                                    dropdownColor: Colors.white,
+                                    icon: const Icon(
+                                      Icons.arrow_downward,
+                                      color: Colors.white,
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text('CATEGORY',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal)),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20),
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 5, horizontal: 20),
-                                    width: double.infinity,
-                                    decoration: BoxDecoration(
-                                        color: Colors.indigo,
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: DropdownButton<String>(
-                                      onChanged: (value2) {
-                                        setState(() {
-                                          selectedCategory = value2!;
-                                          print(selectedCategory);
-                                          //showToast();
-                                        });
-                                      },
-                                      value: selectedCategory,
+                                    isExpanded: true,
 
-                                      hint: Center(
-                                          child: Text(
-                                        selectedCategory ?? 'Select Category',
-                                        style: TextStyle(color: Colors.white),
-                                      )),
-
-                                      // Hide the default underline
-                                      underline: Container(),
-                                      // set the color of the dropdown menu
-                                      dropdownColor: Colors.white,
-                                      icon: const Icon(
-                                        Icons.arrow_downward,
-                                        color: Colors.white,
-                                      ),
-                                      isExpanded: true,
-
-                                      // The list of options
-                                      // items: _category
-                                      //     .map((e) =>
-                                      //     selectedCategory==e? DropdownMenuItem(
-                                      //           value: e,
-                                      //           child: Container(
-                                      //             alignment:
-                                      //                 Alignment.centerLeft,
-                                      //             child: Text(
-                                      //               e,
-                                      //               style: const TextStyle(
-                                      //                   fontSize: 18),
-                                      //             ),
-                                      //           ),
-                                      //         ))
-                                      //     .toList(),
-                                      items: _category.map((item) {
-                                        if (item == selectedCategory) {
-                                          return DropdownMenuItem(
-                                            value: item,
-                                            child: Container(
-                                                height: 48.0,
-                                                width: double.infinity,
-                                                color: Colors.grey,
-                                                child: Align(
-                                                  alignment:
-                                                      Alignment.centerLeft,
-                                                  child: Text(
-                                                    item,
-                                                  ),
-                                                )),
-                                          );
-                                        } else {
-                                          return DropdownMenuItem(
-                                            value: item,
-                                            child: Text(item),
-                                          );
-                                        }
-                                      }).toList(),
-
-                                      // Customize the selected item
-                                      selectedItemBuilder:
-                                          (BuildContext context) =>
-                                              _category.map((e) {
-                                        print('inside selected builder : $e');
-                                        return Center(
-                                          child: Text(
-                                            e,
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                color: Colors.white,
-                                                fontStyle: FontStyle.italic,
-                                                fontWeight: FontWeight.bold),
-                                          ),
+                                    // The list of options
+                                    // items: _category
+                                    //     .map((e) =>
+                                    //     selectedCategory==e? DropdownMenuItem(
+                                    //           value: e,
+                                    //           child: Container(
+                                    //             alignment:
+                                    //                 Alignment.centerLeft,
+                                    //             child: Text(
+                                    //               e,
+                                    //               style: const TextStyle(
+                                    //                   fontSize: 18),
+                                    //             ),
+                                    //           ),
+                                    //         ))
+                                    //     .toList(),
+                                    items: _category.map((item) {
+                                      if (item == selectedCategory) {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Container(
+                                              height: 48.0,
+                                              width: double.infinity,
+                                              color: Colors.grey,
+                                              child: Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  item,
+                                                ),
+                                              )),
                                         );
-                                      }).toList(),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Text('PLATS',
-                                        style: TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.normal)),
-                                  ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Container(
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    decoration: BoxDecoration(
-                                      boxShadow: [
-                                        new BoxShadow(
-                                          color: Colors.white,
-                                          blurRadius: 20.0,
-                                        ),
-                                      ],
-                                    ),
-                                    child: Card(
-                                      child: TextFormField(
-                                        controller: _cityNameController,
-                                        decoration: const InputDecoration(
-                                          //labelText: 'Username',
-                                          hintText: "Area Name",
-                                          prefixIcon: Icon(Icons.location_city),
-                                          border: InputBorder.none,
-                                        ),
+                                      } else {
+                                        return DropdownMenuItem(
+                                          value: item,
+                                          child: Text(item),
+                                        );
+                                      }
+                                    }).toList(),
 
-                                        validator: (value) {
-                                          if (value == null ||
-                                              value.trim().isEmpty) {
-                                            return 'This field is required';
-                                          }
-                                          // if (value.trim().length < 4) {
-                                          //   return 'Username must be at least 4 characters in length';
-                                          // }
-                                          // Return null if the entered username is valid
-                                          return null;
-                                        },
-                                        //onChanged: (value) => _userName = value,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 80),
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      width: size.width * 1,
-                                      height: size.height / 20,
-                                      decoration: BoxDecoration(
-                                        gradient: const LinearGradient(
-                                          begin: Alignment.topCenter,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Appcolor.circleColor,
-                                            Color.fromARGB(255, 253, 251, 250),
-                                          ],
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: TextButton(
-                                        onPressed: () async {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            if (selectedCategory != null) {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        MarketFilter(
-                                                            token: tokenp,
-                                                            selectedCategory:
-                                                                selectedCategory!,
-                                                            cityName:
-                                                                _cityNameController
-                                                                    .text)),
-                                              );
-                                              // _category.clear();
-                                            }
-                                          }
-
-                                          // } else {}
-                                          // Get.toNamed("/bottombar");
-
-                                          //Get.toNamed('/bottombar');
-                                          // Get.toNamed("/bottombar");
-
-                                          //Get.toNamed('/bottombar');
-                                          // Get.toNamed("/bottombar");
-
-                                          //Get.toNamed('/bottombar');
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox(width: size.width * 0.25),
-                                            const Text(
-                                              'Filter',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 18,
-                                                  color: Colors.white),
-                                            ),
-                                            SizedBox(width: 30),
-                                            const Icon(
-                                              FontAwesome.sliders,
+                                    // Customize the selected item
+                                    selectedItemBuilder:
+                                        (BuildContext context) =>
+                                            _category.map((e) {
+                                      print('inside selected builder : $e');
+                                      return Center(
+                                        child: Text(
+                                          e,
+                                          style: const TextStyle(
+                                              fontSize: 18,
                                               color: Colors.white,
-                                              size: 20.0,
-                                              //weight: IconWeight.bold
-                                            ),
-                                          ],
+                                              fontStyle: FontStyle.italic,
+                                              fontWeight: FontWeight.bold),
                                         ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  child: Text('PLATS',
+                                      style: TextStyle(
+                                          color: Colors.black,
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.normal)),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.symmetric(horizontal: 20),
+                                  decoration: BoxDecoration(
+                                    boxShadow: [
+                                      new BoxShadow(
+                                        color: Colors.white,
+                                        blurRadius: 20.0,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Card(
+                                    child: TextFormField(
+                                      controller: _cityNameController,
+                                      decoration: const InputDecoration(
+                                        //labelText: 'Username',
+                                        hintText: "Area Name",
+                                        prefixIcon: Icon(Icons.location_city),
+                                        border: InputBorder.none,
+                                      ),
+
+                                      validator: (value) {
+                                        if (value == null ||
+                                            value.trim().isEmpty) {
+                                          return 'This field is required';
+                                        }
+                                        // if (value.trim().length < 4) {
+                                        //   return 'Username must be at least 4 characters in length';
+                                        // }
+                                        // Return null if the entered username is valid
+                                        return null;
+                                      },
+                                      //onChanged: (value) => _userName = value,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 80),
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    width: size.width * 1,
+                                    height: size.height / 20,
+                                    decoration: BoxDecoration(
+                                      gradient: const LinearGradient(
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        colors: [
+                                          Appcolor.circleColor,
+                                          Color.fromARGB(255, 253, 251, 250),
+                                        ],
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: TextButton(
+                                      onPressed: () async {
+                                        if (_formKey.currentState!.validate()) {
+                                          if (selectedCategory != null) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MarketFilter(
+                                                          token: tokenp,
+                                                          selectedCategory:
+                                                              selectedCategory!,
+                                                          cityName:
+                                                              _cityNameController
+                                                                  .text)),
+                                            );
+                                            // _category.clear();
+                                          }
+                                        }
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          // SizedBox(width: size.width * 0.15),
+                                          Text(
+                                            'Filter',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 18,
+                                                color: Colors.white),
+                                          ),
+                                          // SizedBox(width: 30),
+                                          // const Icon(
+                                          //   FontAwesome.sliders,
+                                          //   color: Colors.white,
+                                          //   size: 20.0,
+                                          //   //weight: IconWeight.bold
+                                          // ),
+                                        ],
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        barrierColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          //side: BorderSide(width: 5, color: Colors.black),
-                        ),
-                        enableDrag: false,
+                        // barrierColor: Colors.white,
+                        // shape: RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.circular(0),
+                        //   //side: BorderSide(width: 5, color: Colors.black),
+                        // ),
+                        // enableDrag: false,
                       );
                     },
                   ),
