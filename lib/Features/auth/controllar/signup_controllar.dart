@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:sv_craft/Features/common/typedefs.dart';
 
-Future register(String phone, username, email, password) async {
+Future<String?> register(String phone, username, email, password) async {
   Map data = {
     'email': email,
     'phone': phone,
@@ -22,12 +23,16 @@ Future register(String phone, username, email, password) async {
     },
   );
   print(response.body);
-  print(response.statusCode);
-  if (response.statusCode == 200) {
-    //Or put here your next screen using Navigator.push() method
-    print('success');
+  //print(response.statusCode);
+
+  if (((jsonDecode(response.body) as JSON)['success'] as bool) == true) {
+    print('Success From controller');
+    final token = (jsonDecode(response.body) as JSON)['data']['token'];
+    print('TOken from controller: $token');
+    return token;
   } else {
-    print('error');
+    print('Error fron controller');
+    return null;
   }
 }
 // class SignupController extends GetxController {

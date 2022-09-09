@@ -37,13 +37,13 @@ class ProductDetails {
 class ProductDetailsData {
   ProductDetailsData({
     required this.id,
-    required this.categoryId,
     required this.productName,
     required this.description,
     required this.price,
     required this.quantity,
     required this.colors,
     required this.sizes,
+    required this.location,
     required this.productCode,
     required this.inStock,
     required this.createdAt,
@@ -52,46 +52,46 @@ class ProductDetailsData {
   });
 
   int id;
-  int categoryId;
   String productName;
   String description;
   int price;
   int quantity;
   String colors;
   String sizes;
+  String location;
   String productCode;
   int inStock;
   DateTime createdAt;
   DateTime updatedAt;
-  List<ProductImage> image;
+  List<DetailsImage> image;
 
   factory ProductDetailsData.fromJson(Map<String, dynamic> json) =>
       ProductDetailsData(
         id: json["id"],
-        categoryId: json["category_id"],
         productName: json["product_name"],
         description: json["description"],
         price: json["price"],
         quantity: json["quantity"],
         colors: json["colors"],
         sizes: json["sizes"],
+        location: json["location"],
         productCode: json["product_code"],
         inStock: json["in_stock"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        image: List<ProductImage>.from(
-            json["image"].map((x) => ProductImage.fromJson(x))),
+        image: List<DetailsImage>.from(
+            json["image"].map((x) => DetailsImage.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "category_id": categoryId,
         "product_name": productName,
         "description": description,
         "price": price,
         "quantity": quantity,
         "colors": colors,
         "sizes": sizes,
+        "location": location,
         "product_code": productCode,
         "in_stock": inStock,
         "created_at": createdAt.toIso8601String(),
@@ -100,18 +100,19 @@ class ProductDetailsData {
       };
   @override
   String toString() {
-    return 'ProductDetailsData{id: $id, categoryId: $categoryId, productName: $productName, description: $description, price: $price, quantity: $quantity, colors: $colors, sizes: $sizes, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image},';
+    // TODO: implement toString
+    return 'ProductDetailsData{id: $id, productName: $productName, description: $description, price: $price, quantity: $quantity, colors: $colors, sizes: $sizes, location: $location, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image}';
   }
 }
 
-class ProductImage {
-  ProductImage({
+class DetailsImage {
+  DetailsImage({
     required this.filePath,
   });
 
   String filePath;
 
-  factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
+  factory DetailsImage.fromJson(Map<String, dynamic> json) => DetailsImage(
         filePath: json["file_path"],
       );
 

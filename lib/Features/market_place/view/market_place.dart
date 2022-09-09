@@ -45,7 +45,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final List<String> _categoty = [];
+  final List<String> _category = [];
 //"All", "Mobile", "iPhone", "Laptop", "Watch"
   @override
   void initState() {
@@ -86,7 +86,7 @@ class _MarketPlaceState extends State<MarketPlace> {
           setState(() {
             _isSearched = true;
             searchedData = searchProduct;
-            print('searchProduct = ${searchProduct![0].productName}');
+            // print('searchProduct = ${searchProduct[0].productName}');
           });
         }
       },
@@ -168,20 +168,21 @@ class _MarketPlaceState extends State<MarketPlace> {
                       // Get.toNamed('/marketfilter');
                       final category = await _marketCategoryController
                           .getmarketCategoryProduct(tokenp);
+                      print(category.toString());
+                      _category.clear();
                       if (category != null) {
                         for (var task in category) {
-                          _categoty.add(task.categoryName);
+                          _category.add(task.categoryName);
                         }
                       }
-                      print(category![0].categoryName);
 
-                      // _categoty.add(category![0].categoryName.toString());
+                      // _category.add(category![0].categoryName.toString());
                       // category.then(
-                      //     (value) => _categoty.add(value![0].categoryName));
+                      //     (value) => _category.add(value![0].categoryName));
                       // category.then(
-                      //     (value) => _categoty.add(value![0].categoryName));
+                      //     (value) => _category.add(value![0].categoryName));
                       // category.then(
-                      //     (value) => _categoty.add(value![0].categoryName));
+                      //     (value) => _category.add(value![0].categoryName));
 
                       Get.bottomSheet(
                         SingleChildScrollView(
@@ -232,8 +233,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                                         borderRadius:
                                             BorderRadius.circular(10)),
                                     child: DropdownButton<String>(
-                                      value: selectedCategory,
-
                                       onChanged: (value2) {
                                         setState(() {
                                           selectedCategory = value2!;
@@ -241,11 +240,14 @@ class _MarketPlaceState extends State<MarketPlace> {
                                           //showToast();
                                         });
                                       },
-                                      hint: const Center(
+                                      value: selectedCategory,
+
+                                      hint: Center(
                                           child: Text(
-                                        'Select Category',
+                                        selectedCategory ?? 'Select Category',
                                         style: TextStyle(color: Colors.white),
                                       )),
+
                                       // Hide the default underline
                                       underline: Container(),
                                       // set the color of the dropdown menu
@@ -257,37 +259,61 @@ class _MarketPlaceState extends State<MarketPlace> {
                                       isExpanded: true,
 
                                       // The list of options
-                                      items: _categoty
-                                          .map((e) => DropdownMenuItem(
-                                                value: e,
-                                                child: Container(
+                                      // items: _category
+                                      //     .map((e) =>
+                                      //     selectedCategory==e? DropdownMenuItem(
+                                      //           value: e,
+                                      //           child: Container(
+                                      //             alignment:
+                                      //                 Alignment.centerLeft,
+                                      //             child: Text(
+                                      //               e,
+                                      //               style: const TextStyle(
+                                      //                   fontSize: 18),
+                                      //             ),
+                                      //           ),
+                                      //         ))
+                                      //     .toList(),
+                                      items: _category.map((item) {
+                                        if (item == selectedCategory) {
+                                          return DropdownMenuItem(
+                                            value: item,
+                                            child: Container(
+                                                height: 48.0,
+                                                width: double.infinity,
+                                                color: Colors.grey,
+                                                child: Align(
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: Text(
-                                                    e,
-                                                    style: const TextStyle(
-                                                        fontSize: 18),
+                                                    item,
                                                   ),
-                                                ),
-                                              ))
-                                          .toList(),
+                                                )),
+                                          );
+                                        } else {
+                                          return DropdownMenuItem(
+                                            value: item,
+                                            child: Text(item),
+                                          );
+                                        }
+                                      }).toList(),
 
                                       // Customize the selected item
                                       selectedItemBuilder:
-                                          (BuildContext context) => _categoty
-                                              .map((e) => Center(
-                                                    child: Text(
-                                                      e,
-                                                      style: const TextStyle(
-                                                          fontSize: 18,
-                                                          color: Colors.white,
-                                                          fontStyle:
-                                                              FontStyle.italic,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ))
-                                              .toList(),
+                                          (BuildContext context) =>
+                                              _category.map((e) {
+                                        print('inside selected builder : $e');
+                                        return Center(
+                                          child: Text(
+                                            e,
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                                fontStyle: FontStyle.italic,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        );
+                                      }).toList(),
                                     ),
                                   ),
                                   const SizedBox(
@@ -367,8 +393,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                                           if (_formKey.currentState!
                                               .validate()) {
                                             if (selectedCategory != null) {
-                                              print(selectedCategory);
-
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -381,6 +405,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                                 _cityNameController
                                                                     .text)),
                                               );
+                                              // _category.clear();
                                             }
                                           }
 

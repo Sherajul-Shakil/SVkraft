@@ -51,7 +51,7 @@ class _SignupScreenState extends State<SignupScreen> {
             _emailController.text.trim(),
             _passwordController.text.trim(),
           );
-          print(token);
+          print('Token from ui $token');
           if (token != null) {
             print('11111111111111111111111111111111111111111111111111111');
             final snackBar = SnackBar(
@@ -71,7 +71,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 MaterialPageRoute(builder: (context) => SigninScreen()));
           }
         } else {
-          print("Error");
+          print("Error from ui");
         }
 
         //This callback would gets called when verification is done auto maticlly
@@ -109,6 +109,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                       // final code = otp;
                       // print(comingSms);
+
                       final code = _codeController.text.trim();
                       AuthCredential credential = PhoneAuthProvider.credential(
                           verificationId: verificationId, smsCode: code);
@@ -126,26 +127,15 @@ class _SignupScreenState extends State<SignupScreen> {
                         print(token);
                         if (token != null) {
                           print('2222222222222222222222222222222222222');
-                          final snackBar = SnackBar(
-                            content: const Text('Registration Successful'),
-                            action: SnackBarAction(
-                              label: '',
-                              onPressed: () {},
-                            ),
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          // Get.toNamed('/signupotp');
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => LoginPage()),
-                          // );
+
+                          Navigator.of(context).pop();
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => SigninScreen()));
                         }
                       } else {
-                        print("Error");
+                        print("Error from ui 2");
                       }
                     },
                   )

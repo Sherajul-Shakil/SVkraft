@@ -18,13 +18,18 @@ class ProductDetailsController extends GetxController {
         'Accept': 'application/json',
         'Authorization': 'Bearer $textToken',
       });
+      // print(response.body);
+      print(response.statusCode);
 
       if (response.statusCode == 200) {
+        print("object");
         final productDetails = productDetailsFromJson(response.body);
-
+        print("******");
+        print(productDetails.data);
         return productDetails.data;
       } else {
         print('Product Not Found');
+        return null;
       }
     } catch (e) {
       print('Try exception ${e.toString()}');

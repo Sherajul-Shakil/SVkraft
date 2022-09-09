@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             secondary: Appcolor.primaryColor,
           ),
         ),
-        initialRoute: "/marketplace",
+        initialRoute: "/bottombar",
         getPages: [
           GetPage(name: "/", page: () => const SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),

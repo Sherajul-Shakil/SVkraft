@@ -16,9 +16,6 @@ class MarketCategoryController extends GetxController {
 
       if (response.statusCode == 200) {
         final marketCategory = marketCategoryFromJson(response.body);
-
-        print('proooooooooooooooooooo ${marketCategory.data[0].categoryName}');
-        // print(marketCategory.data[1].categoryName);s
         return marketCategory.data;
       } else {
         print('User not found');
