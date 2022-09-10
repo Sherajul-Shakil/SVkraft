@@ -23,7 +23,7 @@ Widget buildDrawer() {
         ),
         ListTile(
           leading: Text(
-            'PRODUCTS'.toUpperCase(),
+            'Meat'.toUpperCase(),
             style: const TextStyle(fontSize: 18, color: Colors.black54),
           ),
           trailing: const Icon(
@@ -36,7 +36,7 @@ Widget buildDrawer() {
         ),
         ListTile(
           leading: Text(
-            'FLOWERS'.toUpperCase(),
+            'Seafood'.toUpperCase(),
             style: TextStyle(fontSize: 18, color: Colors.black54),
           ),
           trailing: const Icon(
@@ -49,7 +49,7 @@ Widget buildDrawer() {
         ),
         ListTile(
           leading: Text(
-            'GIFTS'.toUpperCase(),
+            'Beverage'.toUpperCase(),
             style: const TextStyle(fontSize: 18, color: Colors.black54),
           ),
           trailing: const Icon(
@@ -62,7 +62,7 @@ Widget buildDrawer() {
         ),
         ListTile(
           leading: Text(
-            'OCCATIONS'.toUpperCase(),
+            'Pharmacy'.toUpperCase(),
             style: TextStyle(fontSize: 18, color: Colors.black54),
           ),
           trailing: const Icon(
@@ -75,7 +75,7 @@ Widget buildDrawer() {
         ),
         ListTile(
           leading: Text(
-            'SPECIAL OCCATIONS'.toUpperCase(),
+            'Bakery'.toUpperCase(),
             style: TextStyle(fontSize: 18, color: Colors.black54),
           ),
           trailing: const Icon(

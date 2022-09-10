@@ -1,8 +1,11 @@
 import 'dart:async';
+import 'dart:ui';
 
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:sv_craft/Features/grocery/view/widgets/grocery_drawer.dart';
 import 'package:sv_craft/constant/constant.dart';
 
 import '../../../constant/color.dart';
@@ -19,6 +22,7 @@ class _GroceryProductState extends State<GroceryProduct> {
 
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
+  var product = 0;
 
   List<String> _list = [
     'English Textbook',
@@ -98,6 +102,7 @@ class _GroceryProductState extends State<GroceryProduct> {
     return SafeArea(
       child: Scaffold(
         key: _scaffoldKey,
+        drawer: buildDrawer(),
         //drawer: Drawer(backgroundColor: Colors.blue.withOpacity(0)),
 
         floatingActionButton: FloatingActionButton(
@@ -154,7 +159,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                 backgroundColor: Colors.black, //<-- SEE HERE
                 child: IconButton(
                   icon: const Icon(
-                    Icons.filter_list,
+                    FontAwesome.sliders,
                     color: Colors.white,
                   ),
                   onPressed: () {
@@ -164,7 +169,16 @@ class _GroceryProductState extends State<GroceryProduct> {
               ),
             ],
           ),
-          title: !_searchBoolean ? Text("") : _searchTextField(),
+          title: !_searchBoolean
+              ? Text(
+                  "Grocery Products",
+                  style: TextStyle(
+                    color: Appcolor.primaryColor,
+                    fontSize: 26,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              : _searchTextField(),
           actions: !_searchBoolean
               ? [
                   CircleAvatar(
@@ -210,56 +224,56 @@ class _GroceryProductState extends State<GroceryProduct> {
         ),
 
         //Drawer code
-        drawer: Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: Colors.redAccent,
-                ),
-                child: Text('Drawer Header'),
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.home,
-                ),
-                title: const Text('Page 1'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.train,
-                ),
-                title: const Text('Page 2'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.home,
-                ),
-                title: const Text('Page 3'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading: const Icon(
-                  Icons.train,
-                ),
-                title: const Text('Page 4'),
-                onTap: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
-          ),
-        ),
+        // drawer: Drawer(
+        //   child: ListView(
+        //     // Important: Remove any padding from the ListView.
+        //     padding: EdgeInsets.zero,
+        //     children: [
+        //       const DrawerHeader(
+        //         decoration: BoxDecoration(
+        //           color: Colors.redAccent,
+        //         ),
+        //         child: Text('Drawer Header'),
+        //       ),
+        //       ListTile(
+        //         leading: const Icon(
+        //           Icons.home,
+        //         ),
+        //         title: const Text('Page 1'),
+        //         onTap: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //       ListTile(
+        //         leading: const Icon(
+        //           Icons.train,
+        //         ),
+        //         title: const Text('Page 2'),
+        //         onTap: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //       ListTile(
+        //         leading: const Icon(
+        //           Icons.home,
+        //         ),
+        //         title: const Text('Page 3'),
+        //         onTap: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //       ListTile(
+        //         leading: const Icon(
+        //           Icons.train,
+        //         ),
+        //         title: const Text('Page 4'),
+        //         onTap: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //     ],
+        //   ),
+        // ),
 
         //Body code
         body: NestedScrollView(

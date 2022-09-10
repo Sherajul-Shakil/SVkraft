@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/market_place/controller/dproduct_details_controller.dart';
 import 'package:sv_craft/Features/market_place/model/product_details.dart';
+import 'package:sv_craft/constant/color.dart';
 
 class MarketProductDetails extends StatefulWidget {
   const MarketProductDetails({
@@ -81,7 +83,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              Text('${data.price} kr',
+                              Text('Price : ${data.price} kr',
                                   style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 20,
@@ -121,7 +123,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                           Text(
                                             'Add to cart',
                                             style: TextStyle(
-                                                color: Colors.black,
+                                                color: Appcolor.primaryColor,
                                                 fontSize: 25),
                                             textAlign: TextAlign.center,
                                           ),
@@ -129,8 +131,8 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                             width: 10,
                                           ),
                                           Icon(
-                                            Icons.shopping_cart,
-                                            color: Colors.black,
+                                            FontAwesome.cart_plus,
+                                            color: Appcolor.primaryColor,
                                             size: 25,
                                           )
                                         ],

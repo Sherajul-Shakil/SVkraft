@@ -20,7 +20,7 @@ class MarketPlace extends StatefulWidget {
 }
 
 class _MarketPlaceState extends State<MarketPlace> {
-  final SigninController _signinController = Get.put(SigninController());
+  // final SigninController _signinController = Get.put(SigninController());
   final MarketSearchController _maeketSearchController =
       Get.put(MarketSearchController());
   final MarketCategoryController _marketCategoryController =
@@ -390,7 +390,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
                                           if (selectedCategory != null) {
-                                            Navigator.push(
+                                            Navigator.pushReplacement(
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>

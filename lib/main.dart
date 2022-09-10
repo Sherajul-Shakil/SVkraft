@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             secondary: Appcolor.primaryColor,
           ),
         ),
-        initialRoute: "/bottombar",
+        initialRoute: "/specialhome",
         getPages: [
           GetPage(name: "/", page: () => const SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),
@@ -62,12 +62,12 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/filtercateogory", page: () => FilterCatogory()),
           GetPage(name: "/cart", page: () => const CartScreen()),
           GetPage(name: "/specialhome", page: () => SpecialHomeScreen()),
-          GetPage(
-              name: "/specialcategoryproduct",
-              page: () => const CategoryProuctScreen()),
-          GetPage(
-              name: "/specialproductdetails",
-              page: () => const ProductDetails()),
+          // GetPage(
+          //     name: "/specialcategoryproduct",
+          //     page: () => CategoryProuctScreen()),
+          // GetPage(
+          //     name: "/specialproductdetails",
+          //     page: () => const ProductDetails()),
           GetPage(name: "/marketplace", page: () => const MarketPlace()),
           //GetPage(name: "/marketfilter", page: () => const MarketFilter()),
           GetPage(name: "/profile", page: () => ProfileScreen()),

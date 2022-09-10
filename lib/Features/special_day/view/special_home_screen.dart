@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
+import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
+import 'package:sv_craft/Features/special_day/view/category_product.dart';
+import 'package:sv_craft/Features/special_day/view/product_details.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/constant.dart';
-import '../widgets/category_card.dart';
+import 'widgets/category_card.dart';
 import 'widgets/special_drawer.dart';
 
 class SpecialHomeScreen extends StatefulWidget {
@@ -14,10 +19,33 @@ class SpecialHomeScreen extends StatefulWidget {
 }
 
 class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
+  final AllProductController _allProductController =
+      Get.put(AllProductController());
+  final SpecialAllProductController _specialAllProductController =
+      Get.put(SpecialAllProductController());
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
+  var id;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  var tokenp;
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    }); //.then((value) => _allProductController.GetAllProduct(tokenp))
+  }
+
+  Future<void> setTokenToVariable() async {
+    final token = await _allProductController.getToken();
+    // print('token = ' + token);
+    setState(() {
+      tokenp = token;
+    });
+  }
 
   List<String> _list = [
     'English Textbook',
@@ -205,7 +233,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                 ],
               ),
               width: size.width,
-              height: size.width * .81,
+              // height: size.width * .81,
               child: Column(
                 children: [
                   Row(
@@ -217,7 +245,16 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                         boxColor: Color.fromARGB(255, 194, 106, 194),
                         textColor: Color.fromARGB(255, 255, 255, 255),
                         onTap: () {
-                          Get.toNamed("/specialcategoryproduct");
+                          //Get.toNamed("/specialcategoryproduct");
+                          //Navigate to category product page
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CategoryProuctScreen(
+                                      token: tokenp,
+                                      id: 2,
+                                    )),
+                          );
                         },
                       ),
                       CategoryCard(
@@ -303,99 +340,139 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    height: size.height * .3,
-                    // color: Colors.blue,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 20, bottom: 10),
-                      itemCount: AppImage.specialDayImage.length,
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        childAspectRatio: 1.35,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemBuilder: (BuildContext context, int index) =>
-                          Container(
-                        // color: Colors.red,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12, //color of shadow
-                              spreadRadius: 2, //spread radius
-                              blurRadius: 5, // blur radius
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
-                              //first paramerter of offset is left-right
-                              //second parameter is top to down
-                            )
-                          ],
-                        ),
+                  InkWell(
+                    child: Container(
+                      height: size.height * .3,
+                      // color: Colors.blue,
+                      child: FutureBuilder<List<SpecialAllProductData>?>(
+                          future: _specialAllProductController
+                              .getSpecialAllProduct(tokenp, 2),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (snapshot.data!.isEmpty) {
+                                //snapshot.data!.isEmpty
+                                return const Center(
+                                    child: Text('No Product Found'));
+                              } else {
+                                final data = snapshot.data;
+                                id = data![0].id;
+                                return GridView.builder(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, top: 20, bottom: 10),
+                                  itemCount: data!.length,
+                                  scrollDirection: Axis.horizontal,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                    childAspectRatio: 1.35,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          Container(
+                                    // color: Colors.red,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color:
+                                              Colors.black12, //color of shadow
+                                          spreadRadius: 2, //spread radius
+                                          blurRadius: 5, // blur radius
+                                          offset: Offset(0,
+                                              1), // changes position of shadow
+                                          //first paramerter of offset is left-right
+                                          //second parameter is top to down
+                                        )
+                                      ],
+                                    ),
 
-                        child: Column(
-                          children: [
-                            //SizedBox(height: size.height * .01),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Image.network(
-                                AppImage.specialDayImage[index],
-                                fit: BoxFit.cover,
-                                width: 130,
-                                height: 140,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.height * .02,
-                            ),
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text(
-                                      "Product Name",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                      textAlign: TextAlign.start,
+                                    child: Column(
+                                      children: [
+                                        //SizedBox(height: size.height * .01),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Image.network(
+                                            'http://mamun.click/${data![index].image}',
+                                            fit: BoxFit.cover,
+                                            width: 130,
+                                            height: 140,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: size.width * .4,
+                                                  child: Text(
+                                                    data[index].name,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.start,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Price: ${data[index].price}",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "SAR805.00",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * .02,
-                            ),
-                          ],
-                        ),
-                        // height: 147,
-                        // width: ,
-                      ),
+                                    // height: 147,
+                                    // width: ,
+                                  ),
+                                );
+                              }
+                            }
+                          }),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductDetails(
+                                  id: id,
+                                  token: tokenp,
+                                )),
+                      );
+                    },
                   ),
 
                   //2nd row
@@ -423,101 +500,140 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    height: size.height * .3,
-                    // color: Colors.blue,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 20, bottom: 10),
-                      itemCount: AppImage.specialDayImage.length,
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        childAspectRatio: 1.35,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemBuilder: (BuildContext context, int index) =>
-                          Container(
-                        // color: Colors.red,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12, //color of shadow
-                              spreadRadius: 2, //spread radius
-                              blurRadius: 5, // blur radius
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
-                              //first paramerter of offset is left-right
-                              //second parameter is top to down
-                            )
-                          ],
-                        ),
+                  InkWell(
+                    child: Container(
+                      height: size.height * .3,
+                      // color: Colors.blue,
+                      child: FutureBuilder<List<SpecialAllProductData>?>(
+                          future: _specialAllProductController
+                              .getSpecialAllProduct(tokenp, 2),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (snapshot.data!.isEmpty) {
+                                //snapshot.data!.isEmpty
+                                return const Center(
+                                    child: Text('No Product Found'));
+                              } else {
+                                final data = snapshot.data;
+                                id = data![0].id;
+                                return GridView.builder(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, top: 20, bottom: 10),
+                                  itemCount: data!.length,
+                                  scrollDirection: Axis.horizontal,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                    childAspectRatio: 1.35,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          Container(
+                                    // color: Colors.red,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color:
+                                              Colors.black12, //color of shadow
+                                          spreadRadius: 2, //spread radius
+                                          blurRadius: 5, // blur radius
+                                          offset: Offset(0,
+                                              1), // changes position of shadow
+                                          //first paramerter of offset is left-right
+                                          //second parameter is top to down
+                                        )
+                                      ],
+                                    ),
 
-                        child: Column(
-                          children: [
-                            //SizedBox(height: size.height * .01),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Image.network(
-                                AppImage.specialDayImage[index],
-                                fit: BoxFit.cover,
-                                width: 130,
-                                height: 140,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.height * .02,
-                            ),
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text(
-                                      "Product Name",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                      textAlign: TextAlign.start,
+                                    child: Column(
+                                      children: [
+                                        //SizedBox(height: size.height * .01),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Image.network(
+                                            'http://mamun.click/${data![index].image}',
+                                            fit: BoxFit.cover,
+                                            width: 130,
+                                            height: 140,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: size.width * .4,
+                                                  child: Text(
+                                                    data[index].name,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.start,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Price: ${data[index].price}",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "SAR805.00",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * .02,
-                            ),
-                          ],
-                        ),
-                        // height: 147,
-                        // width: ,
-                      ),
+                                    // height: 147,
+                                    // width: ,
+                                  ),
+                                );
+                              }
+                            }
+                          }),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductDetails(
+                                  id: id,
+                                  token: tokenp,
+                                )),
+                      );
+                    },
                   ),
-
                   //3rd row
                   Padding(
                     padding: const EdgeInsets.only(
@@ -543,99 +659,139 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    height: size.height * .3,
-                    // color: Colors.blue,
-                    child: GridView.builder(
-                      padding: const EdgeInsets.only(
-                          left: 15, right: 15, top: 20, bottom: 10),
-                      itemCount: AppImage.specialDayImage.length,
-                      scrollDirection: Axis.horizontal,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 1,
-                        childAspectRatio: 1.35,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemBuilder: (BuildContext context, int index) =>
-                          Container(
-                        // color: Colors.red,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12, //color of shadow
-                              spreadRadius: 2, //spread radius
-                              blurRadius: 5, // blur radius
-                              offset:
-                                  Offset(0, 1), // changes position of shadow
-                              //first paramerter of offset is left-right
-                              //second parameter is top to down
-                            )
-                          ],
-                        ),
+                  InkWell(
+                    child: Container(
+                      height: size.height * .3,
+                      // color: Colors.blue,
+                      child: FutureBuilder<List<SpecialAllProductData>?>(
+                          future: _specialAllProductController
+                              .getSpecialAllProduct(tokenp, 2),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (snapshot.data!.isEmpty) {
+                                //snapshot.data!.isEmpty
+                                return const Center(
+                                    child: Text('No Product Found'));
+                              } else {
+                                final data = snapshot.data;
+                                id = data![0].id;
+                                return GridView.builder(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, top: 20, bottom: 10),
+                                  itemCount: data!.length,
+                                  scrollDirection: Axis.horizontal,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 1,
+                                    childAspectRatio: 1.35,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          Container(
+                                    // color: Colors.red,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color:
+                                              Colors.black12, //color of shadow
+                                          spreadRadius: 2, //spread radius
+                                          blurRadius: 5, // blur radius
+                                          offset: Offset(0,
+                                              1), // changes position of shadow
+                                          //first paramerter of offset is left-right
+                                          //second parameter is top to down
+                                        )
+                                      ],
+                                    ),
 
-                        child: Column(
-                          children: [
-                            //SizedBox(height: size.height * .01),
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10),
-                              child: Image.network(
-                                AppImage.specialDayImage[index],
-                                fit: BoxFit.cover,
-                                width: 130,
-                                height: 140,
-                              ),
-                            ),
-                            SizedBox(
-                              height: size.height * .02,
-                            ),
-                            Row(
-                              children: [
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text(
-                                      "Product Name",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                      textAlign: TextAlign.start,
+                                    child: Column(
+                                      children: [
+                                        //SizedBox(height: size.height * .01),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Image.network(
+                                            'http://mamun.click/${data![index].image}',
+                                            fit: BoxFit.cover,
+                                            width: 130,
+                                            height: 140,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Container(
+                                                  width: size.width * .4,
+                                                  child: Text(
+                                                    data[index].name,
+                                                    style: const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.start,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                Text(
+                                                  "Price: ${data[index].price}",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      "SAR805.00",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: size.height * .02,
-                            ),
-                          ],
-                        ),
-                        // height: 147,
-                        // width: ,
-                      ),
+                                    // height: 147,
+                                    // width: ,
+                                  ),
+                                );
+                              }
+                            }
+                          }),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProductDetails(
+                                  id: id,
+                                  token: tokenp,
+                                )),
+                      );
+                    },
                   ),
                 ],
               ),
