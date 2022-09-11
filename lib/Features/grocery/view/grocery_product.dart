@@ -117,6 +117,9 @@ class _GroceryProductState extends State<GroceryProduct> {
     Future.delayed(Duration.zero, () async {
       setTokenToVariable();
     });
+    Future.delayed(Duration(seconds: 2), () async {
+      Center(child: CircularProgressIndicator());
+    });
   }
 
   @override
@@ -477,195 +480,209 @@ class _GroceryProductState extends State<GroceryProduct> {
                     // width: ,
                   ),
                 )
-              : Container(
-                  height: size.height,
-                  // color: Colors.blue,
-                  child: FutureBuilder<List<GroceryAllProductData>?>(
-                      future: _groceryAllProductController
-                          .getGroceryAllProduct(tokenp),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData || snapshot.data == null) {
-                          return const Center(
-                              child: CircularProgressIndicator());
-                        } else {
-                          if (snapshot.data!.isEmpty) {
-                            return const Center(
-                                child: Text('No Product Found'));
-                          } else {
-                            final data = snapshot.data;
-                            return GridView.builder(
-                              padding: const EdgeInsets.only(
-                                  left: 15, right: 15, top: 20, bottom: 10),
-                              itemCount: data!.length,
-                              scrollDirection: Axis.vertical,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                childAspectRatio: .48,
-                                mainAxisSpacing: 10,
-                                crossAxisSpacing: 10,
-                              ),
-                              itemBuilder: (BuildContext context, int index) =>
-                                  Container(
-                                //color: Colors.green,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12, //color of shadow
-                                      spreadRadius: 2, //spread radius
-                                      blurRadius: 5, // blur radius
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
-                                      //first paramerter of offset is left-right
-                                      //second parameter is top to down
-                                    )
-                                  ],
-                                ),
+              : tokenp == null
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Container(
+                      height: size.height,
+                      // color: Colors.blue,
+                      child: FutureBuilder<List<GroceryAllProductData>?>(
+                          future: _groceryAllProductController
+                              .getGroceryAllProduct(tokenp),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData || snapshot.data == null) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              if (snapshot.data!.isEmpty) {
+                                return const Center(
+                                    child: Text('No Product Found'));
+                              } else {
+                                final data = snapshot.data;
+                                return GridView.builder(
+                                  padding: const EdgeInsets.only(
+                                      left: 15, right: 15, top: 20, bottom: 10),
+                                  itemCount: data!.length,
+                                  scrollDirection: Axis.vertical,
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    childAspectRatio: .48,
+                                    mainAxisSpacing: 10,
+                                    crossAxisSpacing: 10,
+                                  ),
+                                  itemBuilder:
+                                      (BuildContext context, int index) =>
+                                          Container(
+                                    //color: Colors.green,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color:
+                                              Colors.black12, //color of shadow
+                                          spreadRadius: 2, //spread radius
+                                          blurRadius: 5, // blur radius
+                                          offset: Offset(0,
+                                              2), // changes position of shadow
+                                          //first paramerter of offset is left-right
+                                          //second parameter is top to down
+                                        )
+                                      ],
+                                    ),
 
-                                child: Column(
-                                  children: [
-                                    SizedBox(height: size.height * .01),
-                                    Row(
+                                    child: Column(
                                       children: [
-                                        SizedBox(width: size.width * .01),
-                                        const Icon(
-                                          Icons.list_alt,
-                                          color: Colors.black,
+                                        SizedBox(height: size.height * .01),
+                                        Row(
+                                          children: [
+                                            SizedBox(width: size.width * .01),
+                                            const Icon(
+                                              Icons.list_alt,
+                                              color: Colors.black,
+                                            ),
+                                            Spacer(),
+                                            Text(
+                                              data[index]
+                                                  .marketPrice
+                                                  .toString(),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            const SizedBox(
+                                              width: 5,
+                                            ),
+                                            SizedBox(width: size.width * .01),
+                                          ],
                                         ),
-                                        Spacer(),
-                                        Text(
-                                          data[index].marketPrice.toString(),
-                                          textAlign: TextAlign.center,
+                                        Stack(
+                                          children: [
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10,
+                                                      vertical: 10),
+                                              child: Image.network(
+                                                // 'http://mamun.click/${data[index].image}' ??
+                                                'http://mamun.click/${data[index].image}',
+                                                fit: BoxFit.cover,
+                                                width: 120,
+                                                height: 150,
+                                              ),
+                                            ),
+                                            Positioned(
+                                                top: 20,
+                                                right: 0,
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  color: Colors.yellow,
+                                                  child: Text(
+                                                    "${data[index].offPrice.toString()}% off",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.red),
+                                                  ),
+                                                ))
+                                          ],
                                         ),
-                                        const SizedBox(
-                                          width: 5,
+                                        SizedBox(
+                                          height: size.height * .02,
                                         ),
-                                        SizedBox(width: size.width * .01),
-                                      ],
-                                    ),
-                                    Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10),
-                                          child: Image.network(
-                                            // 'http://mamun.click/${data[index].image}' ??
-                                            'http://mamun.click/${data[index].image}',
-                                            fit: BoxFit.cover,
-                                            width: 120,
-                                            height: 150,
-                                          ),
-                                        ),
-                                        Positioned(
-                                            top: 20,
-                                            right: 0,
-                                            child: Container(
-                                              height: 50,
-                                              width: 50,
-                                              color: Colors.yellow,
-                                              child: Text(
-                                                "${data[index].offPrice.toString()}% off",
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontSize: 20,
+                                        Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  data[index].name,
+                                                  style: TextStyle(
+                                                    fontSize: 12,
                                                     fontWeight: FontWeight.w500,
-                                                    color: Colors.red),
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * .02,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              data[index].name,
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Text(
-                                              "${data[index].price} kr",
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * .02,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: 50,
-                                              width: size.width * .4,
-                                              child: Text(
-                                                data[index].description ?? "",
-                                                style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
+                                                    color: Colors.black,
+                                                  ),
+                                                  textAlign: TextAlign.start,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 3,
-                                              ),
+                                                Text(
+                                                  "${data[index].price} kr",
+                                                  style: TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ],
                                             ),
-                                            // Text(
-                                            //   "also the leap into electronic",
-                                            //   style: TextStyle(
-                                            //     fontSize: 12,
-                                            //     fontWeight: FontWeight.w500,
-                                            //     color: Colors.black,
-                                            //   ),
-                                            // ),
                                           ],
                                         ),
+                                        SizedBox(
+                                          height: size.height * .02,
+                                        ),
+                                        Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  height: 50,
+                                                  width: size.width * .4,
+                                                  child: Text(
+                                                    data[index].description ??
+                                                        "",
+                                                    style: TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    maxLines: 3,
+                                                  ),
+                                                ),
+                                                // Text(
+                                                //   "also the leap into electronic",
+                                                //   style: TextStyle(
+                                                //     fontSize: 12,
+                                                //     fontWeight: FontWeight.w500,
+                                                //     color: Colors.black,
+                                                //   ),
+                                                // ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: size.height * .01,
+                                        ),
+                                        GroceryCount(
+                                          index: index,
+                                        )
                                       ],
                                     ),
-                                    SizedBox(
-                                      height: size.height * .01,
-                                    ),
-                                    GroceryCount(
-                                      index: index,
-                                    )
-                                  ],
-                                ),
-                                // height: 147,
-                                // width: ,
-                              ),
-                            );
-                          }
-                        }
-                      }),
-                ),
+                                    // height: 147,
+                                    // width: ,
+                                  ),
+                                );
+                              }
+                            }
+                          }),
+                    ),
         ),
       ),
     );

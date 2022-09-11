@@ -7,6 +7,7 @@ import '../models/logout_model.dart';
 class LogoutController extends GetxController {
   Future<String?> logout(String textToken) async {
     try {
+      print('token = $textToken');
       var url = "http://mamun.click/api/logout";
 
       http.Response response = await http.get(Uri.parse(url), headers: {
