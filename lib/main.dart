@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/home", page: () => const HomeScreen()),
           GetPage(name: "/bottombar", page: () => const BottomBar()),
           GetPage(name: "/groceryproduct", page: () => GroceryProduct()),
-          GetPage(name: "/filtercateogory", page: () => FilterCatogory()),
+          // GetPage(name: "/filtercateogory", page: () => FilterCatogory()),
           GetPage(name: "/cart", page: () => const CartScreen()),
           GetPage(name: "/specialhome", page: () => SpecialHomeScreen()),
           // GetPage(

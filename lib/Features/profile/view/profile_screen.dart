@@ -1,13 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/constant/color.dart';
 import 'package:icons_plus/icons_plus.dart';
+import '../controller/logout_controller.dart';
 import 'custom_shape.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  final LogoutController _logoutController = Get.put(LogoutController());
+  var tokenp;
+
+  final AllProductController _allProductController =
+      Get.put(AllProductController());
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    }); //.then((value) => _allProductController.GetAllProduct(tokenp))
+  }
+
+  Future<void> setTokenToVariable() async {
+    final token = await _allProductController.getToken();
+    // print('token = ' + token);
+    setState(() {
+      tokenp = token;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print('from setstate $tokenp');
     return Scaffold(
         body: Column(
       children: [
@@ -38,10 +69,12 @@ class ProfileScreen extends StatelessWidget {
               //left: 120,
               right: 10,
               child: IconButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    var message = await _logoutController.logout(tokenp);
+                    print(message);
                     Get.toNamed("/");
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     FontAwesome.power_off,
                     color: Appcolor.uperTextColor,
                     size: 30,
@@ -104,8 +137,9 @@ class ProfileScreen extends StatelessWidget {
                           color: Colors.black54,
                         ),
                       ),
-                      onTap: () {
+                      onTap: () async {
                         // Navigator.pop(context);
+                        // _logoutController.logout();
                       },
                     ),
                     Divider(

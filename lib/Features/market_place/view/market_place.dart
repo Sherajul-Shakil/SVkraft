@@ -28,9 +28,9 @@ class _MarketPlaceState extends State<MarketPlace> {
   final AllProductController _allProductController =
       Get.put(AllProductController());
 
-  TextEditingController _cityNameController = TextEditingController();
-  TextEditingController _categoryController = TextEditingController();
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _cityNameController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
   String? selectedCategory;
 
   var tokenp;
@@ -63,6 +63,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     // print('token = ' + token);
     setState(() {
       tokenp = token;
+      _allProductController.tokenGlobal = token;
     });
   }
 

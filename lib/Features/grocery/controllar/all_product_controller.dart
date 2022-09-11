@@ -1,22 +1,13 @@
 import 'package:get/get.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
+import 'package:sv_craft/Features/grocery/model/all_product_model.dart';
 
-class AllProductController extends GetxController {
-  getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString('auth-token');
-    print(token);
-    return token;
-  }
-
-  String? tokenGlobal;
-  Future<List<Datum>?> GetAllProduct(String textToken) async {
+class GroceryAllProductController extends GetxController {
+  Future<List<GroceryAllProductData>?> getGroceryAllProduct(
+      String textToken) async {
     try {
-      const url = "http://mamun.click/api/product/all";
+      const url = "http://mamun.click/api/groceries/all";
 
       http.Response response = await http.get(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
@@ -26,7 +17,7 @@ class AllProductController extends GetxController {
 
       // print(response.body);
       if (response.statusCode == 200) {
-        final allProduct = allProductFromJson(response.body);
+        final allProduct = groceryAllProductFromJson(response.body);
 
         //print('proooooooooooooooooooo ${allProduct.data.toString()}');
 

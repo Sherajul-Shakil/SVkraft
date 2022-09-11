@@ -45,7 +45,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
 
   Future<void> setTokenToVariable() async {
     final token = await _allProductController.getToken();
-    // print('token = ' + token);
+    print('token = ' + token);
     setState(() {
       tokenp = token;
     });

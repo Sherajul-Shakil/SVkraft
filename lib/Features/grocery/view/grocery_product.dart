@@ -1,11 +1,17 @@
 import 'dart:async';
 import 'dart:ui';
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:sv_craft/Features/grocery/controllar/all_product_controller.dart';
+import 'package:sv_craft/Features/grocery/controllar/category_controller.dart';
+import 'package:sv_craft/Features/grocery/controllar/searched_product_con.dart';
+import 'package:sv_craft/Features/grocery/model/all_product_model.dart';
+import 'package:sv_craft/Features/grocery/view/widgets/filter_category.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_drawer.dart';
+import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
+import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/constant/constant.dart';
 
 import '../../../constant/color.dart';
@@ -18,30 +24,53 @@ class GroceryProduct extends StatefulWidget {
 }
 
 class _GroceryProductState extends State<GroceryProduct> {
-  //Search Box implementation
+  final AllProductController _allProductController =
+      Get.put(AllProductController());
+  final GroceryAllProductController _groceryAllProductController =
+      Get.put(GroceryAllProductController());
+  final GrocerySearchController _grocerySearchController =
+      Get.put(GrocerySearchController());
+
+  // Variable
+  var tokenp;
+  bool _isSearched = false;
+  var searchedData;
+
+  final TextEditingController _searchController = TextEditingController();
+
+  // @override
+  // void onDispose() {
+  //   _searchController.dispose();
+  //   super.dispose();
+  // }
+
+  Future<void> setTokenToVariable() async {
+    final token = await _allProductController.getToken();
+    // print('token = ' + token);
+    setState(() {
+      tokenp = token;
+    });
+  }
 
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
   var product = 0;
 
-  List<String> _list = [
-    'English Textbook',
-    'Japanese Textbook',
-    'English Vocabulary',
-    'Japanese Vocabulary'
-  ];
-
   Widget _searchTextField() {
     return TextField(
-      onChanged: (String s) {
-        setState(() {
-          _searchIndexList = [];
-          for (int i = 0; i < _list.length; i++) {
-            if (_list[i].contains(s)) {
-              _searchIndexList.add(i);
-            }
-          }
-        });
+      controller: _searchController,
+      onChanged: (String name) async {
+        final searchProduct = await _grocerySearchController
+            .getGrocerySearchProduct(tokenp, name);
+        print(name);
+
+        if (searchProduct != null) {
+          setState(() {
+            _isSearched = true;
+            searchedData = searchProduct;
+            // print('searchProduct = ${searchedData[0].name}');
+          });
+        }
       },
       autofocus: true,
       cursorColor: Colors.black,
@@ -58,20 +87,11 @@ class _GroceryProductState extends State<GroceryProduct> {
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         hintText: 'Search',
         hintStyle: TextStyle(
-          color: Colors.black38,
+          color: Appcolor.uperTextColor,
           fontSize: 20,
         ),
       ),
     );
-  }
-
-  Widget _searchListView() {
-    return ListView.builder(
-        itemCount: _searchIndexList.length,
-        itemBuilder: (context, index) {
-          index = _searchIndexList[index];
-          return Card(child: ListTile(title: Text(_list[index])));
-        });
   }
 
   //Access confirmation dialog
@@ -94,10 +114,14 @@ class _GroceryProductState extends State<GroceryProduct> {
                 : Timer(const Duration(seconds: 1), () {
                     _showMyDialog();
                   });
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    print('tokenp = ' + tokenp.toString());
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -163,7 +187,12 @@ class _GroceryProductState extends State<GroceryProduct> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Get.toNamed('/filtercateogory');
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => FilterCatogory(
+                                  token: tokenp,
+                                )));
                   },
                 ),
               ),
@@ -213,6 +242,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                       onPressed: () {
                         setState(() {
                           _searchBoolean = false;
+                          _isSearched = false;
                         });
                       },
                     ),
@@ -222,58 +252,6 @@ class _GroceryProductState extends State<GroceryProduct> {
                   ),
                 ],
         ),
-
-        //Drawer code
-        // drawer: Drawer(
-        //   child: ListView(
-        //     // Important: Remove any padding from the ListView.
-        //     padding: EdgeInsets.zero,
-        //     children: [
-        //       const DrawerHeader(
-        //         decoration: BoxDecoration(
-        //           color: Colors.redAccent,
-        //         ),
-        //         child: Text('Drawer Header'),
-        //       ),
-        //       ListTile(
-        //         leading: const Icon(
-        //           Icons.home,
-        //         ),
-        //         title: const Text('Page 1'),
-        //         onTap: () {
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: const Icon(
-        //           Icons.train,
-        //         ),
-        //         title: const Text('Page 2'),
-        //         onTap: () {
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: const Icon(
-        //           Icons.home,
-        //         ),
-        //         title: const Text('Page 3'),
-        //         onTap: () {
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //       ListTile(
-        //         leading: const Icon(
-        //           Icons.train,
-        //         ),
-        //         title: const Text('Page 4'),
-        //         onTap: () {
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //     ],
-        //   ),
-        // ),
 
         //Body code
         body: NestedScrollView(
@@ -335,262 +313,359 @@ class _GroceryProductState extends State<GroceryProduct> {
               ),
             ];
           },
-          body: Container(
-            height: size.height,
-            // color: Colors.blue,
-            child: GridView.builder(
-              padding: const EdgeInsets.only(
-                  left: 15, right: 15, top: 20, bottom: 10),
-              itemCount: AppImage.carouselImages.length,
-              scrollDirection: Axis.vertical,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: .52,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-              ),
-              itemBuilder: (BuildContext context, int index) => Container(
-                //color: Colors.green,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Colors.black12, //color of shadow
-                      spreadRadius: 2, //spread radius
-                      blurRadius: 5, // blur radius
-                      offset: Offset(0, 2), // changes position of shadow
-                      //first paramerter of offset is left-right
-                      //second parameter is top to down
-                    )
-                  ],
-                ),
+          body: _isSearched
+              ? GridView.builder(
+                  padding: const EdgeInsets.only(
+                      left: 15, right: 15, top: 20, bottom: 10),
+                  itemCount: searchedData!.length,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: .48,
+                    mainAxisSpacing: 10,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemBuilder: (BuildContext context, int index) => Container(
+                    //color: Colors.green,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12, //color of shadow
+                          spreadRadius: 2, //spread radius
+                          blurRadius: 5, // blur radius
+                          offset: Offset(0, 2), // changes position of shadow
+                          //first paramerter of offset is left-right
+                          //second parameter is top to down
+                        )
+                      ],
+                    ),
 
-                child: Column(
-                  children: [
-                    SizedBox(height: size.height * .01),
-                    Row(
+                    child: Column(
                       children: [
-                        SizedBox(width: size.width * .01),
-                        const Icon(
-                          Icons.list_alt,
-                          color: Colors.black,
+                        SizedBox(height: size.height * .01),
+                        Row(
+                          children: [
+                            SizedBox(width: size.width * .01),
+                            const Icon(
+                              Icons.list_alt,
+                              color: Colors.black,
+                            ),
+                            Spacer(),
+                            Text(
+                              searchedData[index].marketPrice.toString(),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            SizedBox(width: size.width * .01),
+                          ],
                         ),
-                        Spacer(),
-                        const Text(
-                          "100 BDT/kg",
-                          textAlign: TextAlign.center,
+                        Stack(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10),
+                              child: Image.network(
+                                'http://mamun.click/${searchedData[index].image}',
+                                // AppImage.carouselImages[index],
+                                fit: BoxFit.cover,
+                                width: 120,
+                                height: 150,
+                              ),
+                            ),
+                            Positioned(
+                                top: 20,
+                                right: 0,
+                                child: Container(
+                                  height: 50,
+                                  width: 50,
+                                  color: Colors.yellow,
+                                  child: Text(
+                                    "${searchedData[index].offPrice.toString()}% off",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.red),
+                                  ),
+                                ))
+                          ],
                         ),
-                        const SizedBox(
-                          width: 5,
+                        SizedBox(
+                          height: size.height * .02,
                         ),
-                        SizedBox(width: size.width * .01),
-                      ],
-                    ),
-                    Stack(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Image.network(
-                            AppImage.carouselImages[index],
-                            fit: BoxFit.cover,
-                            width: 120,
-                            height: 150,
-                          ),
-                        ),
-                        Positioned(
-                            top: 20,
-                            right: 0,
-                            child: Container(
-                              height: 50,
-                              width: 50,
-                              color: Colors.yellow,
-                              child: const Text(
-                                "50% off",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  searchedData[index].name,
+                                  style: TextStyle(
+                                    fontSize: 12,
                                     fontWeight: FontWeight.w500,
-                                    color: Colors.red),
-                              ),
-                            ))
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * .02,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "Product Name",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                              textAlign: TextAlign.start,
-                            ),
-                            Text(
-                              "500 USD",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
+                                    color: Colors.black,
+                                  ),
+                                  textAlign: TextAlign.start,
+                                ),
+                                Text(
+                                  "${searchedData[index].price} kr",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: size.height * .02,
-                    ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
+                        SizedBox(
+                          height: size.height * .02,
                         ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "when an unknown printer took",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
                             ),
-                            Text(
-                              "also the leap into electronic",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 50,
+                                  width: size.width * .4,
+                                  child: Text(
+                                    searchedData[index].description ?? "",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                  ),
+                                ),
+                                // Text(
+                                //   "also the leap into electronic",
+                                //   style: TextStyle(
+                                //     fontSize: 12,
+                                //     fontWeight: FontWeight.w500,
+                                //     color: Colors.black,
+                                //   ),
+                                // ),
+                              ],
                             ),
                           ],
                         ),
+                        SizedBox(
+                          height: size.height * .01,
+                        ),
+                        GroceryCount(
+                          index: index,
+                        )
                       ],
                     ),
-                    SizedBox(
-                      height: size.height * .01,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Appcolor.primaryColor,
-                              borderRadius: BorderRadius.circular(100),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12, //color of shadow
-                                  spreadRadius: 2, //spread radius
-                                  blurRadius: 5, // blur radius
-                                  offset: Offset(
-                                      0, 2), // changes position of shadow
-                                  //first paramerter of offset is left-right
-                                  //second parameter is top to down
-                                )
-                              ],
-                            ),
-                            width: 35,
-                            height: 35,
-                            child: const Text(
-                              '-',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 25),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Appcolor.primaryColor,
-                              borderRadius: BorderRadius.circular(8),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12, //color of shadow
-                                  spreadRadius: 2, //spread radius
-                                  blurRadius: 5, // blur radius
-                                  offset: Offset(
-                                      0, 2), // changes position of shadow
-                                  //first paramerter of offset is left-right
-                                  //second parameter is top to down
-                                )
-                              ],
-                            ),
-                            width: 50,
-                            height: 35,
-                            child: const Text(
-                              '10',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        InkWell(
-                          onTap: () {},
-                          child: Container(
-                            padding: const EdgeInsets.all(5),
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Appcolor.primaryColor,
-                              borderRadius: BorderRadius.circular(100),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12, //color of shadow
-                                  spreadRadius: 2, //spread radius
-                                  blurRadius: 5, // blur radius
-                                  offset: Offset(
-                                      0, 2), // changes position of shadow
-                                  //first paramerter of offset is left-right
-                                  //second parameter is top to down
-                                )
-                              ],
-                            ),
-                            width: 35,
-                            height: 35,
-                            child: const Text(
-                              '+',
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                      ],
-                    )
-                  ],
+                    // height: 147,
+                    // width: ,
+                  ),
+                )
+              : Container(
+                  height: size.height,
+                  // color: Colors.blue,
+                  child: FutureBuilder<List<GroceryAllProductData>?>(
+                      future: _groceryAllProductController
+                          .getGroceryAllProduct(tokenp),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData || snapshot.data == null) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else {
+                          if (snapshot.data!.isEmpty) {
+                            return const Center(
+                                child: Text('No Product Found'));
+                          } else {
+                            final data = snapshot.data;
+                            return GridView.builder(
+                              padding: const EdgeInsets.only(
+                                  left: 15, right: 15, top: 20, bottom: 10),
+                              itemCount: data!.length,
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: .48,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                              ),
+                              itemBuilder: (BuildContext context, int index) =>
+                                  Container(
+                                //color: Colors.green,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12, //color of shadow
+                                      spreadRadius: 2, //spread radius
+                                      blurRadius: 5, // blur radius
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                      //first paramerter of offset is left-right
+                                      //second parameter is top to down
+                                    )
+                                  ],
+                                ),
+
+                                child: Column(
+                                  children: [
+                                    SizedBox(height: size.height * .01),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: size.width * .01),
+                                        const Icon(
+                                          Icons.list_alt,
+                                          color: Colors.black,
+                                        ),
+                                        Spacer(),
+                                        Text(
+                                          data[index].marketPrice.toString(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        SizedBox(width: size.width * .01),
+                                      ],
+                                    ),
+                                    Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Image.network(
+                                            // 'http://mamun.click/${data[index].image}' ??
+                                            'http://mamun.click/${data[index].image}',
+                                            fit: BoxFit.cover,
+                                            width: 120,
+                                            height: 150,
+                                          ),
+                                        ),
+                                        Positioned(
+                                            top: 20,
+                                            right: 0,
+                                            child: Container(
+                                              height: 50,
+                                              width: 50,
+                                              color: Colors.yellow,
+                                              child: Text(
+                                                "${data[index].offPrice.toString()}% off",
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.red),
+                                              ),
+                                            ))
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: size.height * .02,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Text(
+                                              data[index].name,
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Text(
+                                              "${data[index].price} kr",
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: size.height * .02,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: 50,
+                                              width: size.width * .4,
+                                              child: Text(
+                                                data[index].description ?? "",
+                                                style: TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                              ),
+                                            ),
+                                            // Text(
+                                            //   "also the leap into electronic",
+                                            //   style: TextStyle(
+                                            //     fontSize: 12,
+                                            //     fontWeight: FontWeight.w500,
+                                            //     color: Colors.black,
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: size.height * .01,
+                                    ),
+                                    GroceryCount(
+                                      index: index,
+                                    )
+                                  ],
+                                ),
+                                // height: 147,
+                                // width: ,
+                              ),
+                            );
+                          }
+                        }
+                      }),
                 ),
-                // height: 147,
-                // width: ,
-              ),
-            ),
-          ),
         ),
       ),
     );
@@ -696,3 +771,108 @@ class _GroceryProductState extends State<GroceryProduct> {
     );
   }
 }
+
+// class GroceryCount extends StatelessWidget {
+//   const GroceryCount({
+//     Key? key,
+//     required this.index,
+//   }) : super(key: key);
+
+//   final int index;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Row(
+//       mainAxisAlignment: MainAxisAlignment.center,
+//       children: [
+//         InkWell(
+//           onTap: () {},
+//           child: Container(
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//               color: Appcolor.primaryColor,
+//               borderRadius: BorderRadius.circular(100),
+//               boxShadow: const [
+//                 BoxShadow(
+//                   color: Colors.black12, //color of shadow
+//                   spreadRadius: 2, //spread radius
+//                   blurRadius: 5, // blur radius
+//                   offset: Offset(0, 2), // changes position of shadow
+//                   //first paramerter of offset is left-right
+//                   //second parameter is top to down
+//                 )
+//               ],
+//             ),
+//             width: 35,
+//             height: 35,
+//             child: const Text(
+//               '-',
+//               style: TextStyle(color: Colors.white, fontSize: 25),
+//               textAlign: TextAlign.center,
+//             ),
+//           ),
+//         ),
+//         const SizedBox(
+//           width: 8,
+//         ),
+//         InkWell(
+//           onTap: () {},
+//           child: Container(
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//               color: Appcolor.primaryColor,
+//               borderRadius: BorderRadius.circular(8),
+//               boxShadow: const [
+//                 BoxShadow(
+//                   color: Colors.black12, //color of shadow
+//                   spreadRadius: 2, //spread radius
+//                   blurRadius: 5, // blur radius
+//                   offset: Offset(0, 2), // changes position of shadow
+//                   //first paramerter of offset is left-right
+//                   //second parameter is top to down
+//                 )
+//               ],
+//             ),
+//             width: 50,
+//             height: 35,
+//             child: const Text(
+//               '10',
+//               style: TextStyle(color: Colors.white, fontSize: 20),
+//               textAlign: TextAlign.center,
+//             ),
+//           ),
+//         ),
+//         const SizedBox(
+//           width: 8,
+//         ),
+//         InkWell(
+//           onTap: () {},
+//           child: Container(
+//             padding: const EdgeInsets.all(5),
+//             alignment: Alignment.center,
+//             decoration: BoxDecoration(
+//               color: Appcolor.primaryColor,
+//               borderRadius: BorderRadius.circular(100),
+//               boxShadow: const [
+//                 BoxShadow(
+//                   color: Colors.black12, //color of shadow
+//                   spreadRadius: 2, //spread radius
+//                   blurRadius: 5, // blur radius
+//                   offset: Offset(0, 2), // changes position of shadow
+//                   //first paramerter of offset is left-right
+//                   //second parameter is top to down
+//                 )
+//               ],
+//             ),
+//             width: 35,
+//             height: 35,
+//             child: const Text(
+//               '+',
+//               style: TextStyle(color: Colors.white, fontSize: 20),
+//               textAlign: TextAlign.center,
+//             ),
+//           ),
+//         ),
+//       ],
+//     );
+//   }
+// }
