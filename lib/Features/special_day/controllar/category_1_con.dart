@@ -1,15 +1,12 @@
 import 'package:get/get.dart';
-import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
+import 'package:sv_craft/Features/special_day/model/category_1.dart';
 
-class SpecialAllProductController extends GetxController {
-  Future<List<SpecialAllProductData>?> getSpecialAllProduct(
-      String textToken, int id) async {
+class SpecialCategoryController extends GetxController {
+  Future<List<SpecialCategory1Datum>?> getCategory1Product(
+      String textToken) async {
     try {
-      var url = "http://mamun.click/api/special-day/$id";
+      var url = "http://mamun.click/api/special-day/category/all";
 
       http.Response response = await http.get(Uri.parse(url), headers: {
         'Content-Type': 'application/json',
@@ -19,13 +16,13 @@ class SpecialAllProductController extends GetxController {
 
       // print(response.body);
       if (response.statusCode == 200) {
-        final allProduct = specialAllProductFromJson(response.body);
+        final allProduct = specialCategory1FromJson(response.body);
 
         //print('proooooooooooooooooooo ${allProduct.data.toString()}');
 
         return allProduct.data;
       } else {
-        print('User not found');
+        print('Category not found');
       }
     } catch (e) {
       print(e.toString());

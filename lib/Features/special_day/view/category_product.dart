@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
-
-import '../../../constant/constant.dart';
 import '../model/special_all_product_model.dart';
 
 class CategoryProuctScreen extends StatefulWidget {
@@ -26,7 +24,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final productCount = AppImage.carouselImages.length;
+    // final productCount = AppImage.carouselImages.length;
     return SafeArea(
         child: Scaffold(
             // appBar: AppBar(
@@ -43,8 +41,8 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                   future: _specialAllProductController.getSpecialAllProduct(
                       widget.token, widget.id),
                   builder: (context, snapshot) {
-                    print('Print from ui ${snapshot.data}');
-                    if (!snapshot.hasData || snapshot.data == null) {
+                    // print('Print from ui ${snapshot.data}');
+                    if (!snapshot.hasData || snapshot.data == []) {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       if (!snapshot.hasData) {
@@ -56,7 +54,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                         return GridView.builder(
                           padding: const EdgeInsets.only(
                               left: 15, right: 15, top: 20, bottom: 10),
-                          itemCount: data!.length,
+                          itemCount: data.length,
                           scrollDirection: Axis.vertical,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
@@ -92,7 +90,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 10),
                                   child: Image.network(
-                                    'http://mamun.click/${data![index].image}',
+                                    'http://mamun.click/${data[index].image}',
                                     fit: BoxFit.cover,
                                     width: 130,
                                     height: 140,

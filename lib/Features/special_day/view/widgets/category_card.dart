@@ -6,14 +6,15 @@ class CategoryCard extends StatelessWidget {
   const CategoryCard({
     Key? key,
     required this.text,
-    required this.boxColor,
     required this.textColor,
+    required this.imageLink,
     required VoidCallback this.onTap,
   }) : super(key: key);
 
   final String text;
-  final Color boxColor;
+
   final Color textColor;
+  final String imageLink;
   final void Function()? onTap;
 
   @override
@@ -26,7 +27,6 @@ class CategoryCard extends StatelessWidget {
         padding: const EdgeInsets.all(5),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: boxColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: const [
             BoxShadow(
@@ -38,6 +38,11 @@ class CategoryCard extends StatelessWidget {
               //second parameter is top to down
             )
           ],
+          image: DecorationImage(
+              image: NetworkImage(imageLink),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(0.6), BlendMode.darken)),
         ),
         width: size.width * .3,
         height: size.width * .38,

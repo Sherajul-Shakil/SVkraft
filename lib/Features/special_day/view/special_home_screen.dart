@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/Features/special_day/controllar/category_1_con.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
+import 'package:sv_craft/Features/special_day/model/category_1.dart';
 import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
 import 'package:sv_craft/Features/special_day/view/category_product.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
@@ -23,6 +25,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
       Get.put(AllProductController());
   final SpecialAllProductController _specialAllProductController =
       Get.put(SpecialAllProductController());
+  final SpecialCategoryController _specialCategory1Controller =
+      Get.put(SpecialCategoryController());
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
   var id;
@@ -215,98 +219,156 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
             const SizedBox(
               height: 2,
             ),
-            Container(
-              //padding: const EdgeInsets.all(5),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(0),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black12, //color of shadow
-                    spreadRadius: 1, //spread radius
-                    blurRadius: 0, // blur radius
-                    offset: Offset(0, 1), // changes position of shadow
-                    //first paramerter of offset is left-right
-                    //second parameter is top to down
-                  )
-                ],
-              ),
-              width: size.width,
-              // height: size.width * .81,
+            // Container(
+            //   //padding: const EdgeInsets.all(5),
+            //   alignment: Alignment.center,
+            //   decoration: BoxDecoration(
+            //     color: Colors.white,
+            //     borderRadius: BorderRadius.circular(0),
+            //     boxShadow: const [
+            //       BoxShadow(
+            //         color: Colors.black12, //color of shadow
+            //         spreadRadius: 1, //spread radius
+            //         blurRadius: 0, // blur radius
+            //         offset: Offset(0, 1), // changes position of shadow
+            //         //first paramerter of offset is left-right
+            //         //second parameter is top to down
+            //       )
+            //     ],
+            //   ),
+            //   width: size.width,
+            //   // height: size.width * .81,
+            //   child: Column(
+            //     children: [
+            //       Row(
+            //         crossAxisAlignment: CrossAxisAlignment.center,
+            //         mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //         children: [
+            //           CategoryCard(
+            //             text: 'FLOWERS & CHOC0LATE',
+            //             boxColor: Color.fromARGB(255, 194, 106, 194),
+            //             textColor: Color.fromARGB(255, 255, 255, 255),
+            //             onTap: () {
+            //               //Get.toNamed("/specialcategoryproduct");
+            //               //Navigate to category product page
+            //               Navigator.push(
+            //                 context,
+            //                 MaterialPageRoute(
+            //                     builder: (context) => CategoryProuctScreen(
+            //                           token: tokenp,
+            //                           id: 2,
+            //                         )),
+            //               );
+            //             },
+            //           ),
+            //           CategoryCard(
+            //             text: 'FLOWERS IN VASES',
+            //             boxColor: Color.fromARGB(255, 70, 104, 150),
+            //             textColor: Color.fromARGB(255, 5, 3, 3),
+            //             onTap: () {
+            //               Get.toNamed("/specialcategoryproduct");
+            //             },
+            //           ),
+            //           CategoryCard(
+            //             text: 'FLOWERS & GIFTS',
+            //             boxColor: Color.fromARGB(255, 76, 115, 197),
+            //             textColor: Color.fromARGB(255, 255, 255, 255),
+            //             onTap: () {
+            //               Get.toNamed("/specialcategoryproduct");
+            //             },
+            //           ),
+            //         ],
+            //       ),
+            //       Row(
+            //           crossAxisAlignment: CrossAxisAlignment.center,
+            //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //           children: [
+            //             CategoryCard(
+            //               text: 'NEW COLLECTION',
+            //               boxColor: Color.fromARGB(255, 125, 179, 143),
+            //               textColor: Color.fromARGB(255, 5, 3, 3),
+            //               onTap: () {
+            //                 Get.toNamed("/specialcategoryproduct");
+            //               },
+            //             ),
+            //             CategoryCard(
+            //               text: 'HAND BAUQUEST',
+            //               boxColor: Color.fromARGB(255, 226, 119, 76),
+            //               textColor: Color.fromARGB(255, 255, 255, 255),
+            //               onTap: () {
+            //                 Get.toNamed("/specialcategoryproduct");
+            //               },
+            //             ),
+            //             CategoryCard(
+            //               text: 'GRAND COLLECTION',
+            //               boxColor: Color.fromARGB(255, 197, 194, 188),
+            //               textColor: Color.fromARGB(255, 5, 3, 3),
+            //               onTap: () {
+            //                 Get.toNamed("/specialcategoryproduct");
+            //               },
+            //             ),
+            //           ]),
+            //     ],
+            //   ),
+            // ),
+            SingleChildScrollView(
               child: Column(
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CategoryCard(
-                        text: 'FLOWERS & CHOC0LATE',
-                        boxColor: Color.fromARGB(255, 194, 106, 194),
-                        textColor: Color.fromARGB(255, 255, 255, 255),
-                        onTap: () {
-                          //Get.toNamed("/specialcategoryproduct");
-                          //Navigate to category product page
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CategoryProuctScreen(
-                                      token: tokenp,
-                                      id: 2,
-                                    )),
-                          );
-                        },
-                      ),
-                      CategoryCard(
-                        text: 'FLOWERS IN VASES',
-                        boxColor: Color.fromARGB(255, 70, 104, 150),
-                        textColor: Color.fromARGB(255, 5, 3, 3),
-                        onTap: () {
-                          Get.toNamed("/specialcategoryproduct");
-                        },
-                      ),
-                      CategoryCard(
-                        text: 'FLOWERS & GIFTS',
-                        boxColor: Color.fromARGB(255, 76, 115, 197),
-                        textColor: Color.fromARGB(255, 255, 255, 255),
-                        onTap: () {
-                          Get.toNamed("/specialcategoryproduct");
-                        },
-                      ),
-                    ],
+                children: <Widget>[
+                  Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: FutureBuilder<List<SpecialCategory1Datum>?>(
+                        future: _specialCategory1Controller
+                            .getCategory1Product(tokenp),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else {
+                            if (snapshot.data == null) {
+                              return const Center(
+                                  child: CircularProgressIndicator());
+                            } else {
+                              final data = snapshot.data;
+                              //print('Print from builder $data ');
+                              return GridView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  childAspectRatio: .8,
+                                  mainAxisSpacing: 0.0,
+                                  crossAxisSpacing: 0.0,
+                                ),
+                                itemCount: data!.length,
+                                itemBuilder: (context, index) {
+                                  return CategoryCard(
+                                    text: data[index].name,
+                                    imageLink:
+                                        'http://mamun.click/${data[index].image}',
+                                    textColor: Colors.white,
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                CategoryProuctScreen(
+                                                  token: tokenp,
+                                                  id: data[index].id,
+                                                )),
+                                      );
+                                    },
+                                  );
+                                },
+                              );
+                            }
+                          }
+                        }),
                   ),
-                  Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        CategoryCard(
-                          text: 'NEW COLLECTION',
-                          boxColor: Color.fromARGB(255, 125, 179, 143),
-                          textColor: Color.fromARGB(255, 5, 3, 3),
-                          onTap: () {
-                            Get.toNamed("/specialcategoryproduct");
-                          },
-                        ),
-                        CategoryCard(
-                          text: 'HAND BAUQUEST',
-                          boxColor: Color.fromARGB(255, 226, 119, 76),
-                          textColor: Color.fromARGB(255, 255, 255, 255),
-                          onTap: () {
-                            Get.toNamed("/specialcategoryproduct");
-                          },
-                        ),
-                        CategoryCard(
-                          text: 'GRAND COLLECTION',
-                          boxColor: Color.fromARGB(255, 197, 194, 188),
-                          textColor: Color.fromARGB(255, 5, 3, 3),
-                          onTap: () {
-                            Get.toNamed("/specialcategoryproduct");
-                          },
-                        ),
-                      ]),
                 ],
               ),
             ),
+
             Container(
               width: size.width,
               height: size.height * .37 * 3,

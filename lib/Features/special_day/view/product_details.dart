@@ -53,7 +53,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                       return const Center(child: CircularProgressIndicator());
                     } else {
                       final data = snapshot.data;
-                      print('Print from builder $data ');
+                      // print('Print from builder $data ');
                       return Stack(
                         children: [
                           Positioned(
