@@ -1,20 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sv_craft/Features/cart/controllar/addtocart_con.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/constant/color.dart';
 
 class GroceryCount extends StatefulWidget {
   const GroceryCount({
     Key? key,
     required this.index,
+    required this.productId,
+    required this.price,
   }) : super(key: key);
 
   final int index;
+  final int productId;
+  final double price;
 
   @override
   State<GroceryCount> createState() => _GroceryCountState();
 }
 
 class _GroceryCountState extends State<GroceryCount> {
+  final AddtocartController _addToCartController =
+      Get.put(AddtocartController());
+  final HomeController _homeController = Get.put(HomeController());
   var count = 0;
+  var price = 0.0;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -23,7 +34,11 @@ class _GroceryCountState extends State<GroceryCount> {
         InkWell(
           onTap: () {
             setState(() {
-              count > 0 ? count-- : count = 0;
+              setState(() {
+                count > 0 ? count-- : count = 0;
+                price = widget.price * count;
+                print(price);
+              });
             });
           },
           child: Container(
@@ -85,10 +100,36 @@ class _GroceryCountState extends State<GroceryCount> {
           width: 8,
         ),
         InkWell(
-          onTap: () {
+          onTap: () async {
             setState(() {
               count++;
+              price = widget.price * count;
+              print(price);
             });
+            if (count > 0) {
+              var addResponce = await _addToCartController.addTocart(
+                _homeController.userId,
+                widget.productId,
+                "grocery",
+                count,
+                price.toInt(),
+                _homeController.tokenGlobal,
+              );
+              addResponce != null
+                  ? Get.snackbar(
+                      "$addResponce",
+                      "",
+                      snackPosition: SnackPosition.BOTTOM,
+                    )
+                  : "";
+
+              print('Message from ui ${addResponce}');
+
+              //delayed
+              // Future.delayed(Duration(microseconds: 500), () {
+              //   Navigator.pop(context);
+              // });
+            }
           },
           child: Container(
             padding: const EdgeInsets.all(5),

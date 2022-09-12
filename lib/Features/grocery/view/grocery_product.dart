@@ -502,12 +502,13 @@ class _GroceryProductState extends State<GroceryProduct> {
                         SizedBox(
                           height: size.height * .01,
                         ),
-                        GroceryCount(
-                          index: index,
-                          // userId: userId,
-                          // productId: searchedData[index].id,
-                          // price: searchedData[index].price,
-                        )
+                        searchedData != null
+                            ? GroceryCount(
+                                index: index,
+                                productId: searchedData[index].id,
+                                price: searchedData[index].price,
+                              )
+                            : CircularProgressIndicator(),
                       ],
                     ),
                     // height: 147,
@@ -602,8 +603,8 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                 // 'http://mamun.click/${data[index].image}' ??
                                                 'http://mamun.click/${data[index].image}',
                                                 fit: BoxFit.cover,
-                                                width: 120,
-                                                height: 150,
+                                                width: 140,
+                                                height: 160,
                                               ),
                                             ),
                                             Positioned(
@@ -661,7 +662,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                           ],
                                         ),
                                         SizedBox(
-                                          height: size.height * .02,
+                                          height: size.height * .01,
                                         ),
                                         Row(
                                           children: [
@@ -703,12 +704,14 @@ class _GroceryProductState extends State<GroceryProduct> {
                                         SizedBox(
                                           height: size.height * .01,
                                         ),
-                                        GroceryCount(
-                                          index: index,
-                                          // userId: userId,
-                                          // productId: searchedData[index].id,
-                                          // price: searchedData[index].price,
-                                        )
+                                        data != null
+                                            ? GroceryCount(
+                                                index: index,
+                                                // userId: userId,
+                                                productId: data[index].id,
+                                                price: data[index].price,
+                                              )
+                                            : CircularProgressIndicator(),
                                       ],
                                     ),
                                     // height: 147,

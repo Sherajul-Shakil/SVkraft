@@ -193,12 +193,13 @@ class _FilterProductShowState extends State<FilterProductShow> {
                           SizedBox(
                             height: size.height * .01,
                           ),
-                          //   GroceryCount(
-                          //   index: index,
-                          //   userId: userId,
-                          //   productId: searchedData[index].id,
-                          //   price: searchedData[index].price,
-                          // )
+                          data != null
+                              ? GroceryCount(
+                                  index: index,
+                                  productId: data[index].id,
+                                  price: data[index].price,
+                                )
+                              : CircularProgressIndicator(),
                         ],
                       ),
                       // height: 147,
