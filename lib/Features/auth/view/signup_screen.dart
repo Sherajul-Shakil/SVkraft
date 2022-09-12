@@ -67,8 +67,8 @@ class _SignupScreenState extends State<SignupScreen> {
             //   context,
             //   MaterialPageRoute(builder: (context) => LoginPage()),
             // );
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => SigninScreen()));
+            Navigator.push(
+                context, MaterialPageRoute(builder: (context) => BottomBar()));
           }
         } else {
           print("Error from ui");
@@ -132,7 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SigninScreen()));
+                                  builder: (context) => BottomBar()));
                         }
                       } else {
                         print("Error from ui 2");

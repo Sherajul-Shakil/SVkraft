@@ -23,6 +23,7 @@ class SigninController extends GetxController {
 
   Future<String?> login(String phone, password) async {
     var tokenid;
+    var userid;
     Map data = {
       'phone': phone,
       'password': password,
@@ -47,10 +48,12 @@ class SigninController extends GetxController {
       final token = authUserFromJson(response.body);
 
       tokenid = token.data.token;
+      userid = token.data.user.id;
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('auth-token', tokenid);
+      await prefs.setInt('user-id', userid);
 
-      print('token idddddddddddddddddddddddddddddddddd $tokenid');
+      print('token idddddddddddddddddddddddddddddddddd $tokenid $userid');
       return tokenid;
     } else {
       print('failed');

@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/market_place/controller/dproduct_details_controller.dart';
 import 'package:sv_craft/Features/market_place/model/product_details.dart';
+import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/color.dart';
 
 class MarketProductDetails extends StatefulWidget {
@@ -46,8 +47,8 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                     child: Column(
                       children: [
                         Image.network(
-                          'http://mamun.click/${data!.image[0].filePath}',
-                          fit: BoxFit.contain,
+                          '${Appurl.baseURL}${data!.image[0].filePath}',
+                          fit: BoxFit.cover,
                           height: size.height * 0.5,
                           width: size.width,
                         ),
@@ -99,7 +100,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                     child: Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
-                                        color: Colors.white,
+                                        color: Appcolor.buttonColor,
                                         borderRadius: BorderRadius.circular(8),
                                         boxShadow: const [
                                           BoxShadow(
@@ -123,7 +124,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                           Text(
                                             'Add to cart',
                                             style: TextStyle(
-                                                color: Appcolor.primaryColor,
+                                                color: Appcolor.textColor,
                                                 fontSize: 25),
                                             textAlign: TextAlign.center,
                                           ),
@@ -132,7 +133,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                           ),
                                           Icon(
                                             FontAwesome.cart_plus,
-                                            color: Appcolor.primaryColor,
+                                            color: Appcolor.textColor,
                                             size: 25,
                                           )
                                         ],

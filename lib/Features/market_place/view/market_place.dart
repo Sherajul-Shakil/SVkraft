@@ -10,6 +10,7 @@ import 'package:sv_craft/Features/market_place/controller/market_search_controll
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 import 'package:sv_craft/Features/market_place/view/market_filter.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
+import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/color.dart';
 
 class MarketPlace extends StatefulWidget {
@@ -50,14 +51,6 @@ class _MarketPlaceState extends State<MarketPlace> {
     }); //.then((value) => _allProductController.GetAllProduct(tokenp))
   }
 
-  @override
-  ondispose() {
-    _cityNameController.dispose();
-    _categoryController.dispose();
-    _searchController.dispose();
-    super.dispose();
-  }
-
   Future<void> setTokenToVariable() async {
     final token = await _allProductController.getToken();
     // print('token = ' + token);
@@ -67,31 +60,42 @@ class _MarketPlaceState extends State<MarketPlace> {
     });
   }
 
-  bool _searchBoolean = false;
-  List<int> _searchIndexList = [];
+  @override
+  ondispose() {
+    _cityNameController.dispose();
+    _categoryController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
-  // ignore: prefer_final_fields
-  final List<String> _list = [
-    'English Textbook',
-    'Japanese Textbook',
-    'English Vocabulary',
-    'Japanese Vocabulary'
-  ];
+  bool _searchBoolean = false;
 
   Widget _searchTextField() {
     return TextField(
       controller: _searchController,
       onChanged: (String s) async {
-        final searchProduct =
-            await _maeketSearchController.getmarketSearchProduct(tokenp, s);
+        Future.delayed(Duration(seconds: 1), () async {
+          final searchProduct =
+              await _maeketSearchController.getmarketSearchProduct(tokenp, s);
 
-        if (searchProduct != null) {
-          setState(() {
-            _isSearched = true;
-            searchedData = searchProduct;
-            // print('searchProduct = ${searchProduct[0].productName}');
-          });
-        }
+          if (searchProduct != null) {
+            setState(() {
+              _isSearched = true;
+              searchedData = searchProduct;
+              // print('searchProduct = ${searchProduct[0].productName}');
+            });
+          }
+        });
+        // final searchProduct =
+        //     await _maeketSearchController.getmarketSearchProduct(tokenp, s);
+
+        // if (searchProduct != null) {
+        //   setState(() {
+        //     _isSearched = true;
+        //     searchedData = searchProduct;
+        //     // print('searchProduct = ${searchProduct[0].productName}');
+        //   });
+        // }
       },
       autofocus: true,
       cursorColor: Colors.black,
@@ -135,23 +139,25 @@ class _MarketPlaceState extends State<MarketPlace> {
             ? const Text('Market Place',
                 style: TextStyle(
                     color: Appcolor.uperTextColor,
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold))
             : _searchTextField(),
         actions: !_searchBoolean
             ? [
                 CircleAvatar(
-                  radius: 20,
+                  radius: 18,
                   backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
                       Icons.search,
                       color: Appcolor.iconColor,
+                      size: 20,
                     ),
                     onPressed: () {
                       setState(() {
-                        _searchBoolean = true;
-                        _searchIndexList = [];
+                        Future.delayed(Duration(microseconds: 500), () async {
+                          _searchBoolean = true;
+                        });
                       });
                     },
                   ),
@@ -160,12 +166,13 @@ class _MarketPlaceState extends State<MarketPlace> {
                   width: size.width * .02,
                 ),
                 CircleAvatar(
-                  radius: 20,
+                  radius: 18,
                   backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
                       FontAwesome.sliders,
                       color: Appcolor.iconColor,
+                      size: 20,
                     ),
                     onPressed: () async {
                       // Get.toNamed('/marketfilter');
@@ -178,14 +185,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                           _category.add(task.categoryName);
                         }
                       }
-
-                      // _category.add(category![0].categoryName.toString());
-                      // category.then(
-                      //     (value) => _category.add(value![0].categoryName));
-                      // category.then(
-                      //     (value) => _category.add(value![0].categoryName));
-                      // category.then(
-                      //     (value) => _category.add(value![0].categoryName));
 
                       Get.defaultDialog(
                         title: '',
@@ -232,7 +231,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                       vertical: 5, horizontal: 20),
                                   width: double.infinity,
                                   decoration: BoxDecoration(
-                                      color: Colors.indigo,
+                                      color: Appcolor.primaryColor,
                                       borderRadius: BorderRadius.circular(10)),
                                   child: DropdownButton<String>(
                                     onChanged: (value2) {
@@ -260,22 +259,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                                     ),
                                     isExpanded: true,
 
-                                    // The list of options
-                                    // items: _category
-                                    //     .map((e) =>
-                                    //     selectedCategory==e? DropdownMenuItem(
-                                    //           value: e,
-                                    //           child: Container(
-                                    //             alignment:
-                                    //                 Alignment.centerLeft,
-                                    //             child: Text(
-                                    //               e,
-                                    //               style: const TextStyle(
-                                    //                   fontSize: 18),
-                                    //             ),
-                                    //           ),
-                                    //         ))
-                                    //     .toList(),
                                     items: _category.map((item) {
                                       if (item == selectedCategory) {
                                         return DropdownMenuItem(
@@ -377,16 +360,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                     width: size.width * 1,
                                     height: size.height / 20,
                                     decoration: BoxDecoration(
-                                      gradient: const LinearGradient(
-                                        begin: Alignment.topCenter,
-                                        end: Alignment.bottomCenter,
-                                        colors: [
-                                          Appcolor.circleColor,
-                                          Color.fromARGB(255, 253, 251, 250),
-                                        ],
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Appcolor.buttonColor),
                                     child: TextButton(
                                       onPressed: () async {
                                         if (_formKey.currentState!.validate()) {
@@ -417,7 +392,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 18,
-                                                color: Colors.white),
+                                                color: Appcolor.textColor),
                                           ),
                                           // SizedBox(width: 30),
                                           // const Icon(
@@ -451,17 +426,20 @@ class _MarketPlaceState extends State<MarketPlace> {
               ]
             : [
                 CircleAvatar(
-                  radius: 20,
+                  radius: 18,
                   backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
                   child: IconButton(
                     icon: const Icon(
                       Icons.clear,
                       color: Appcolor.iconColor,
+                      size: 20,
                     ),
                     onPressed: () {
                       setState(() {
-                        _searchBoolean = false;
-                        _isSearched = false;
+                        Future.delayed(Duration(microseconds: 500), () async {
+                          _searchBoolean = false;
+                          _isSearched = false;
+                        });
                       });
                     },
                   ),
@@ -497,7 +475,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                 ),
               ),
             ),
-            _isSearched
+            searchedData != null
                 ? Container(
                     height: size.height - 120,
                     color: Colors.white,
@@ -550,7 +528,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 5, vertical: 5),
                                 child: Image.network(
-                                  'http://mamun.click/${searchedData[index].image[0].filePath}',
+                                  '${Appurl.baseURL}${searchedData[index].image[0].filePath}',
                                   fit: BoxFit.contain,
                                   height: 180,
                                   width: 170,

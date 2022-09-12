@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
+import 'package:sv_craft/constant/api_link.dart';
 import '../model/special_all_product_model.dart';
 
 class CategoryProuctScreen extends StatefulWidget {
@@ -59,7 +60,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            childAspectRatio: .75,
+                            childAspectRatio: .65,
                             mainAxisSpacing: 10,
                             crossAxisSpacing: 10,
                           ),
@@ -88,16 +89,16 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                                 SizedBox(height: size.height * .01),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 10),
+                                      horizontal: 5, vertical: 5),
                                   child: Image.network(
-                                    'http://mamun.click/${data[index].image}',
+                                    '${Appurl.baseURL}${data[index].image}',
                                     fit: BoxFit.cover,
-                                    width: 130,
-                                    height: 140,
+                                    width: size.width * .4,
+                                    height: size.height * .22,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: size.height * .02,
+                                  height: size.height * .01,
                                 ),
                                 Row(
                                   children: [

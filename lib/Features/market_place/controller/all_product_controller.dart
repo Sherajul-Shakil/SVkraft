@@ -13,6 +13,13 @@ class AllProductController extends GetxController {
     return token;
   }
 
+  getUserId() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? userId = prefs.getInt('user-id');
+    print('User id from controller $userId');
+    return userId;
+  }
+
   String? tokenGlobal;
   Future<List<Datum>?> GetAllProduct(String textToken) async {
     try {

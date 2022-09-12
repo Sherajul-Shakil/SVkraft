@@ -70,9 +70,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               right: 10,
               child: IconButton(
                   onPressed: () async {
+                    Get.toNamed("/");
                     var message = await _logoutController.logout(tokenp);
                     print(message);
-                    Get.toNamed("/");
                   },
                   icon: const Icon(
                     FontAwesome.power_off,

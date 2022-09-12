@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 
 import '../../constant/color.dart';
 
@@ -11,6 +12,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final HomeController _homeController = Get.put(HomeController());
+
+  late int userId;
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    }); //.then((value) => _allProductController.GetAllProduct(tokenp))
+  }
+
+  Future<void> setTokenToVariable() async {
+    final token = await _homeController.getToken();
+    print('token = ' + token);
+    setState(() {
+      _homeController.tokenGlobal = token;
+    });
+
+    final userid = await _homeController.getUserId();
+    // print('token = ' + token);
+    setState(() {
+      _homeController.userId = userid;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -25,38 +52,38 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.white, //<-- SEE HERE
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.menu,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                  const Text(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  // CircleAvatar(
+                  //   radius: 20,
+                  //   backgroundColor: Colors.white, //<-- SEE HERE
+                  //   child: IconButton(
+                  //     icon: const Icon(
+                  //       Icons.menu,
+                  //       color: Colors.black,
+                  //     ),
+                  //     onPressed: () {},
+                  //   ),
+                  // ),
+                  Text(
                     'SV Kraft',
                     style: TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w500,
                         color: Appcolor.uperTextColor),
                   ),
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.white, //<-- SEE HERE
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.favorite_border,
-                        color: Colors.black,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
+                  // CircleAvatar(
+                  //   radius: 20,
+                  //   backgroundColor: Colors.white, //<-- SEE HERE
+                  //   child: IconButton(
+                  //     icon: const Icon(
+                  //       Icons.favorite_border,
+                  //       color: Colors.black,
+                  //     ),
+                  //     onPressed: () {},
+                  //   ),
+                  // ),
                 ],
               ),
             ),

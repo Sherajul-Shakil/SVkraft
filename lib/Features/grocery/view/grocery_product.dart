@@ -11,7 +11,9 @@ import 'package:sv_craft/Features/grocery/model/all_product_model.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/filter_category.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_drawer.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
+import 'package:sv_craft/Features/home/bottom_bar.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/constant.dart';
 
 import '../../../constant/color.dart';
@@ -33,6 +35,7 @@ class _GroceryProductState extends State<GroceryProduct> {
 
   // Variable
   var tokenp;
+  late int userId;
   bool _isSearched = false;
   var searchedData;
 
@@ -46,9 +49,15 @@ class _GroceryProductState extends State<GroceryProduct> {
 
   Future<void> setTokenToVariable() async {
     final token = await _allProductController.getToken();
-    // print('token = ' + token);
+
     setState(() {
       tokenp = token;
+    });
+
+    final userid = await _allProductController.getUserId();
+
+    setState(() {
+      userId = userid;
     });
   }
 
@@ -60,17 +69,30 @@ class _GroceryProductState extends State<GroceryProduct> {
     return TextField(
       controller: _searchController,
       onChanged: (String name) async {
-        final searchProduct = await _grocerySearchController
-            .getGrocerySearchProduct(tokenp, name);
-        print(name);
+        Future.delayed(Duration(seconds: 1), () async {
+          final searchProduct = await _grocerySearchController
+              .getGrocerySearchProduct(tokenp, name);
+          print(name);
 
-        if (searchProduct != null) {
-          setState(() {
-            _isSearched = true;
-            searchedData = searchProduct;
-            // print('searchProduct = ${searchedData[0].name}');
-          });
-        }
+          if (searchProduct != null) {
+            setState(() {
+              _isSearched = true;
+              searchedData = searchProduct;
+              // print('searchProduct = ${searchedData[0].name}');
+            });
+          }
+        });
+        // final searchProduct = await _grocerySearchController
+        //     .getGrocerySearchProduct(tokenp, name);
+        // print(name);
+
+        // if (searchProduct != null) {
+        //   setState(() {
+        //     _isSearched = true;
+        //     searchedData = searchProduct;
+        //     // print('searchProduct = ${searchedData[0].name}');
+        //   });
+        // }
       },
       autofocus: true,
       cursorColor: Colors.black,
@@ -87,7 +109,7 @@ class _GroceryProductState extends State<GroceryProduct> {
             UnderlineInputBorder(borderSide: BorderSide(color: Colors.white)),
         hintText: 'Search',
         hintStyle: TextStyle(
-          color: Appcolor.uperTextColor,
+          color: Appcolor.textColor,
           fontSize: 20,
         ),
       ),
@@ -166,12 +188,13 @@ class _GroceryProductState extends State<GroceryProduct> {
                 width: size.width * .02,
               ),
               CircleAvatar(
-                radius: 20,
+                radius: 18,
                 backgroundColor: Colors.black, //<-- SEE HERE
                 child: IconButton(
                   icon: const Icon(
                     Icons.menu,
                     color: Colors.white,
+                    size: 20,
                   ),
                   onPressed: () {
                     _scaffoldKey.currentState!.openDrawer();
@@ -182,12 +205,13 @@ class _GroceryProductState extends State<GroceryProduct> {
                 width: size.width * .02,
               ),
               CircleAvatar(
-                radius: 20,
+                radius: 18,
                 backgroundColor: Colors.black, //<-- SEE HERE
                 child: IconButton(
                   icon: const Icon(
                     FontAwesome.sliders,
                     color: Colors.white,
+                    size: 20,
                   ),
                   onPressed: () {
                     Navigator.push(
@@ -206,7 +230,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                   "Grocery Products",
                   style: TextStyle(
                     color: Appcolor.primaryColor,
-                    fontSize: 26,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 )
@@ -214,17 +238,21 @@ class _GroceryProductState extends State<GroceryProduct> {
           actions: !_searchBoolean
               ? [
                   CircleAvatar(
-                    radius: 20,
+                    radius: 18,
                     backgroundColor: Colors.black, //<-- SEE HERE
                     child: IconButton(
                       icon: const Icon(
                         Icons.search,
                         color: Colors.white,
+                        size: 20,
                       ),
                       onPressed: () {
                         setState(() {
-                          _searchBoolean = true;
-                          _searchIndexList = [];
+                          Future.delayed(Duration(microseconds: 500), () async {
+                            _searchBoolean = true;
+                          });
+
+                          // _searchIndexList = [];
                         });
                       },
                     ),
@@ -235,17 +263,20 @@ class _GroceryProductState extends State<GroceryProduct> {
                 ]
               : [
                   CircleAvatar(
-                    radius: 20,
+                    radius: 18,
                     backgroundColor: Colors.black, //<-- SEE HERE
                     child: IconButton(
                       icon: const Icon(
                         Icons.clear,
                         color: Colors.white,
+                        size: 20,
                       ),
                       onPressed: () {
                         setState(() {
-                          _searchBoolean = false;
-                          _isSearched = false;
+                          Future.delayed(Duration(microseconds: 500), () async {
+                            _searchBoolean = false;
+                            _isSearched = false;
+                          });
                         });
                       },
                     ),
@@ -370,10 +401,10 @@ class _GroceryProductState extends State<GroceryProduct> {
                         Stack(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(
+                              padding: EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Image.network(
-                                'http://mamun.click/${searchedData[index].image}',
+                                '${Appurl.baseURL}${searchedData[index].image}',
                                 // AppImage.carouselImages[index],
                                 fit: BoxFit.cover,
                                 width: 120,
@@ -473,6 +504,9 @@ class _GroceryProductState extends State<GroceryProduct> {
                         ),
                         GroceryCount(
                           index: index,
+                          // userId: userId,
+                          // productId: searchedData[index].id,
+                          // price: searchedData[index].price,
                         )
                       ],
                     ),
@@ -642,8 +676,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                   height: 50,
                                                   width: size.width * .4,
                                                   child: Text(
-                                                    data[index].description ??
-                                                        "",
+                                                    data[index].description,
                                                     style: TextStyle(
                                                       fontSize: 12,
                                                       fontWeight:
@@ -672,6 +705,9 @@ class _GroceryProductState extends State<GroceryProduct> {
                                         ),
                                         GroceryCount(
                                           index: index,
+                                          // userId: userId,
+                                          // productId: searchedData[index].id,
+                                          // price: searchedData[index].price,
                                         )
                                       ],
                                     ),
@@ -684,6 +720,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                           }),
                     ),
         ),
+        // bottomNavigationBar: const BottomBar(),
       ),
     );
   }

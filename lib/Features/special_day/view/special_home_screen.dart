@@ -7,6 +7,7 @@ import 'package:sv_craft/Features/special_day/model/category_1.dart';
 import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
 import 'package:sv_craft/Features/special_day/view/category_product.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
+import 'package:sv_craft/constant/api_link.dart';
 
 import '../../../constant/color.dart';
 import '../../../constant/constant.dart';
@@ -61,14 +62,14 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
   Widget _searchTextField() {
     return TextField(
       onChanged: (String s) {
-        setState(() {
-          _searchIndexList = [];
-          for (int i = 0; i < _list.length; i++) {
-            if (_list[i].contains(s)) {
-              _searchIndexList.add(i);
-            }
-          }
-        });
+        // setState(() {
+        //   _searchIndexList = [];
+        //   for (int i = 0; i < _list.length; i++) {
+        //     if (_list[i].contains(s)) {
+        //       _searchIndexList.add(i);
+        //     }
+        //   }
+        // });
       },
       autofocus: true,
       cursorColor: Colors.black,
@@ -118,7 +119,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
             return IconButton(
               icon: const Icon(
                 Icons.menu,
-                color: Appcolor.uperTextColor,
+                color: Appcolor.iconColor,
+                size: 20,
                 // size: 44, // Changing Drawer Icon Size
               ),
               onPressed: () {
@@ -129,25 +131,26 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
           },
         ),
 
-        title: !_searchBoolean
-            ? const Text('Special Day Gift',
-                style: TextStyle(
-                    color: Appcolor.uperTextColor,
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold))
-            : _searchTextField(),
+        title: const Text('Special Day',
+            style: TextStyle(
+              color: Appcolor.uperTextColor,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            )),
+        //!_searchBoolean ? : _searchTextField(),
         actions: !_searchBoolean
             ? [
                 IconButton(
                   icon: const Icon(
                     Icons.search,
-                    color: Appcolor.uperTextColor,
+                    color: Appcolor.iconColor,
+                    size: 20,
                   ),
                   onPressed: () {
-                    setState(() {
-                      _searchBoolean = true;
-                      _searchIndexList = [];
-                    });
+                    // setState(() {
+                    //   _searchBoolean = true;
+                    //   _searchIndexList = [];
+                    // });
                   },
                 ),
                 SizedBox(
@@ -156,7 +159,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                 IconButton(
                   icon: const Icon(
                     Icons.shopping_cart,
-                    color: Appcolor.uperTextColor,
+                    color: Appcolor.iconColor,
+                    size: 20,
                   ),
                   onPressed: () {
                     // Get.toNamed('/marketfilter');
@@ -173,7 +177,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                   child: IconButton(
                     icon: const Icon(
                       Icons.clear,
-                      color: Colors.white,
+                      color: Appcolor.iconColor,
+                      size: 20,
                     ),
                     onPressed: () {
                       setState(() {
@@ -244,8 +249,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                 shrinkWrap: true,
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  childAspectRatio: .8,
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 1.4,
                                   mainAxisSpacing: 0.0,
                                   crossAxisSpacing: 0.0,
                                 ),
@@ -254,7 +259,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   return CategoryCard(
                                     text: data[index].name,
                                     imageLink:
-                                        'http://mamun.click/${data[index].image}',
+                                        '${Appurl.baseURL}${data[index].image}',
                                     textColor: Colors.white,
                                     onTap: () {
                                       Navigator.push(

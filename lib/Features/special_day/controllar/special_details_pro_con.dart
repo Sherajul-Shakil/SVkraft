@@ -6,7 +6,7 @@ class SpecialDetailsProductController extends GetxController {
   Future<SpecialProductDetailsData?> getSpecialProductDetails(
       String textToken, int id) async {
     try {
-      print('tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn $id   $textToken');
+      // print('tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn $id   $textToken');
       const url = "http://mamun.click/api/special-day/find/";
 
       http.Response response = await http.get(Uri.parse('$url$id'), headers: {
@@ -15,13 +15,13 @@ class SpecialDetailsProductController extends GetxController {
         'Authorization': 'Bearer $textToken',
       });
       // print(response.body);
-      print(response.statusCode);
+      // print(response.statusCode);
 
       if (response.statusCode == 200) {
-        print("object");
+        // print("object");
         final productDetails = specialProductDetailsFromJson(response.body);
-        print("******");
-        print(productDetails.data);
+        // print("******");
+        // print(productDetails.data);
         return productDetails.data;
       } else {
         print('Product Not Found');

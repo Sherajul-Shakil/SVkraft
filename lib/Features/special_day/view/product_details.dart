@@ -2,8 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/cart/controllar/addtocart_con.dart';
+import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_details_pro_con.dart';
 import 'package:sv_craft/Features/special_day/model/special_pro_detals_m.dart';
+import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/color.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -21,25 +24,36 @@ class ProductDetails extends StatefulWidget {
 class _ProductDetailsState extends State<ProductDetails> {
   final SpecialDetailsProductController _specialDetailsProductController =
       Get.put(SpecialDetailsProductController());
+  final AllProductController _allProductController =
+      Get.put(AllProductController());
+  final AddtocartController _addToCartController =
+      Get.put(AddtocartController());
   var details;
+  var count = 0;
+  var totalPrice = 0;
+  late int userId;
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   Timer(Duration(seconds: 1), () {
-  //     var data = _specialDetailsProductController.getSpecialDetailsProduct(
-  //         widget.token, widget.id);
-  //     setState(() {
-  //       details = data;
-  //     });
-  //     print('Print from details page ${details.data!.name},');
-  //   });
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    }); //.then((value) => _allProductController.GetAllProduct(tokenp))
+  }
+
+  Future<void> setTokenToVariable() async {
+    final userid = await _allProductController.getUserId();
+    // print('token = ' + token);
+    setState(() {
+      userId = userid;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    // print('User id from details $userId');
     return SafeArea(
         child: Scaffold(
             body: FutureBuilder<SpecialProductDetailsData?>(
@@ -54,85 +68,85 @@ class _ProductDetailsState extends State<ProductDetails> {
                     } else {
                       final data = snapshot.data;
                       // print('Print from builder $data ');
-                      return Stack(
-                        children: [
-                          Positioned(
-                            // top: 0,
-                            // left: 0,
-                            // right: 0,
-                            // bottom: size.height * .5,
-                            child: Container(
-                              height: size.height * 54,
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Container(
+                              height: size.height * 0.5,
                               width: size.width,
-                              color: Appcolor.primaryColor,
-                            ),
-                          ),
-                          Positioned(
-                            top: size.height * .08,
-                            left: 30,
-                            // right: 0,
-                            // bottom: size.height * .5,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: size.width * .8,
-                                  child: Text(data!.name,
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.normal)),
-                                ),
-                                // Text("Category",
-                                //     style: TextStyle(
-                                //         color: Colors.white,
-                                //         fontSize: 25,
-                                //         fontWeight: FontWeight.normal)),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            top: size.height * .48,
-                            child: Container(
-                              height: size.height * 52,
-                              width: size.width,
-                              // color: Colors.white,
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(30),
-                                  topRight: Radius.circular(30),
-                                ),
-                                color: Colors.white,
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    top: 0,
+                                    left: 0,
+                                    right: 0,
+                                    bottom: 0,
+                                    child: Container(
+                                      height: size.height * 55,
+                                      width: size.width,
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(30),
+                                          bottomRight: Radius.circular(30),
+                                        ),
+                                        image: DecorationImage(
+                                          image: NetworkImage(
+                                              '${Appurl.baseURL}${data!.image}'),
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: size.height * .02,
+                                    left: 20,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(10),
+                                          // width: size.width * .6,
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: Colors.black38,
+                                          ),
+                                          child: Text(
+                                            data!.name,
+                                            style: const TextStyle(
+                                                color: Appcolor.uperTextColor,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.normal),
+                                            // textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
-                          Positioned(
-                            top: size.height * .20,
-                            right: 0,
-                            left: 0,
-                            // bottom: size.height * .5,
-                            child: Image.network(
-                              'http://mamun.click/${data.image}',
-                              height: size.height * .3,
-                              width: size.width * .8,
-                            ),
-                          ),
-                          Positioned(
-                            top: size.height * .50,
-                            right: 0,
-                            left: 0,
-                            // bottom: size.height * .5,
-                            child: Padding(
+                            Padding(
                               padding: const EdgeInsets.all(20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
+                                  Text('Price : ${data.price}',
+                                      style: TextStyle(
+                                          color: Colors.black87,
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.normal)),
+                                  SizedBox(
+                                    height: size.height * .01,
+                                  ),
                                   const Text("Description",
                                       style: TextStyle(
                                           color: Colors.black87,
                                           fontSize: 30,
                                           fontWeight: FontWeight.normal)),
-                                  Text(data.description,
+                                  Text(
+                                      "${data.description} uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
                                       style: TextStyle(
                                           color: Colors.black54,
                                           fontSize: 18,
@@ -152,7 +166,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          setState(() {
+                                            count > 0 ? count-- : count = 0;
+                                            totalPrice = count * data.price;
+                                          });
+                                        },
                                         child: Container(
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
@@ -209,8 +228,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           ),
                                           width: 50,
                                           height: 35,
-                                          child: const Text(
-                                            '10',
+                                          child: Text(
+                                            count.toString(),
                                             style: TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 20),
@@ -222,7 +241,12 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         width: 8,
                                       ),
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          setState(() {
+                                            count++;
+                                            totalPrice = count * data.price;
+                                          });
+                                        },
                                         child: Container(
                                           padding: const EdgeInsets.all(5),
                                           alignment: Alignment.center,
@@ -262,29 +286,62 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      const Text('\$200',
+                                      Text('Total : \$${totalPrice.toString()}',
                                           style: TextStyle(
                                               color: Colors.black87,
-                                              fontSize: 25,
+                                              fontSize: 20,
                                               fontWeight: FontWeight.normal)),
                                       // SizedBox(
                                       //   width: size.width * .2,
                                       // ),
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () async {
+                                          if (count > 0) {
+                                            var addResponce =
+                                                await _addToCartController
+                                                    .addTocart(
+                                              userId,
+                                              data.id,
+                                              "special_day",
+                                              count,
+                                              totalPrice,
+                                              widget.token,
+                                            );
+                                            addResponce != null
+                                                ? Get.snackbar(
+                                                    "$addResponce",
+                                                    "",
+                                                    snackPosition:
+                                                        SnackPosition.BOTTOM,
+                                                  )
+                                                : "";
+
+                                            print(
+                                                'Message from ui ${addResponce}');
+
+                                            //delayed
+                                            Future.delayed(
+                                                Duration(microseconds: 500),
+                                                () {
+                                              Navigator.pop(context);
+                                            });
+                                          }
+                                        },
                                         child: Container(
                                           alignment: Alignment.center,
                                           decoration: BoxDecoration(
-                                            color: Colors.white,
+                                            color: Appcolor.buttonColor,
                                             borderRadius:
-                                                BorderRadius.circular(8),
+                                                BorderRadius.circular(10),
                                             boxShadow: const [
                                               BoxShadow(
                                                 color: Colors
                                                     .black12, //color of shadow
                                                 spreadRadius: 2, //spread radius
-                                                blurRadius: 5, // blur radius
+                                                blurRadius: 2, // blur radius
                                                 offset: Offset(0,
                                                     2), // changes position of shadow
                                                 //first paramerter of offset is left-right
@@ -292,8 +349,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               )
                                             ],
                                           ),
-                                          width: 220,
-                                          height: 60,
+                                          width: 170,
+                                          height: 50,
                                           child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
@@ -301,8 +358,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               Text(
                                                 'Add to cart',
                                                 style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 25),
+                                                    color: Appcolor.textColor,
+                                                    fontSize: 20),
                                                 textAlign: TextAlign.center,
                                               ),
                                               SizedBox(
@@ -311,7 +368,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                               Icon(
                                                 Icons.shopping_cart,
                                                 color: Colors.black,
-                                                size: 25,
+                                                size: 20,
                                               )
                                             ],
                                           ),
@@ -322,8 +379,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                 ],
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     }
                   }
