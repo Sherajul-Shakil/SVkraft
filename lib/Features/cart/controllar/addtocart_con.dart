@@ -22,8 +22,7 @@ class AddtocartController extends GetxController {
 
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body.toString());
-        print(data['message']);
-        print('Login successfully');
+
         return data['message'];
       } else {
         print('failed');

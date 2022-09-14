@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/cart_controller.dart';
+import 'package:sv_craft/Features/cart/view/widgets/grocery_cart_count.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/constant/api_link.dart';
 
@@ -36,7 +37,7 @@ class _CartScreenState extends State<CartScreen> {
     });
   }
 
-  Future<void> setTokenToVariable() async {
+  Future<Stream<void>?> setTokenToVariable() async {
     final data = await _cartController.getCartProduct(
         _homeController.tokenGlobal, _homeController.userId);
     if (data != null) {
@@ -51,6 +52,7 @@ class _CartScreenState extends State<CartScreen> {
         totalPrice += cartData.special_day[i].price;
       }
       print(totalPrice);
+      print('tttttttttttttttttttttttt');
     }
   }
 
@@ -244,101 +246,116 @@ class _CartScreenState extends State<CartScreen> {
                                                   ),
                                                   textAlign: TextAlign.center),
                                               Spacer(),
-                                              Column(
-                                                children: [
-                                                  InkWell(
-                                                    onTap: () {
-                                                      print("plus");
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromARGB(
-                                                            220, 245, 243, 243),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(0),
-                                                        boxShadow: const [
-                                                          BoxShadow(
-                                                            color: Colors
-                                                                .black12, //color of shadow
-                                                            spreadRadius:
-                                                                1, //spread radius
-                                                            blurRadius:
-                                                                0, // blur radius
-                                                            offset: Offset(0,
-                                                                0), // changes position of shadow
-                                                            //first paramerter of offset is left-right
-                                                            //second parameter is top to down
-                                                          )
-                                                        ],
-                                                      ),
-                                                      width: 35,
-                                                      height: 35,
-                                                      child: const Text(
-                                                        '+',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontSize: 20),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    height: 2,
-                                                  ),
-                                                  InkWell(
-                                                    onTap: () {
-                                                      print("minus");
-                                                    },
-                                                    child: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5),
-                                                      alignment:
-                                                          Alignment.center,
-                                                      decoration: BoxDecoration(
-                                                        color: Color.fromARGB(
-                                                            220, 245, 243, 243),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(0),
-                                                        boxShadow: const [
-                                                          BoxShadow(
-                                                            color: Colors
-                                                                .black12, //color of shadow
-                                                            spreadRadius:
-                                                                1, //spread radius
-                                                            blurRadius:
-                                                                0, // blur radius
-                                                            offset: Offset(0,
-                                                                0), // changes position of shadow
-                                                            //first paramerter of offset is left-right
-                                                            //second parameter is top to down
-                                                          )
-                                                        ],
-                                                      ),
-                                                      width: 35,
-                                                      height: 35,
-                                                      child: const Text(
-                                                        '-',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontSize: 20),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
+                                              cartData != null
+                                                  ? GroceryCartCount(
+                                                      index: index,
+                                                      productId: cartData
+                                                          .grocery[index].id,
+                                                      price: cartData
+                                                              .grocery[index]
+                                                              .price /
+                                                          int.parse(cartData
+                                                              .grocery[index]
+                                                              .quantity),
+                                                      count: int.parse(cartData
+                                                          .grocery[index]
+                                                          .quantity))
+                                                  : CircularProgressIndicator(),
+                                              // Column(
+                                              //   children: [
+                                              //     InkWell(
+                                              //       onTap: () {
+                                              //         print("plus");
+                                              //       },
+                                              //       child: Container(
+                                              //         padding:
+                                              //             const EdgeInsets.all(
+                                              //                 5),
+                                              //         alignment:
+                                              //             Alignment.center,
+                                              //         decoration: BoxDecoration(
+                                              //           color: Color.fromARGB(
+                                              //               220, 245, 243, 243),
+                                              //           borderRadius:
+                                              //               BorderRadius
+                                              //                   .circular(0),
+                                              //           boxShadow: const [
+                                              //             BoxShadow(
+                                              //               color: Colors
+                                              //                   .black12, //color of shadow
+                                              //               spreadRadius:
+                                              //                   1, //spread radius
+                                              //               blurRadius:
+                                              //                   0, // blur radius
+                                              //               offset: Offset(0,
+                                              //                   0), // changes position of shadow
+                                              //               //first paramerter of offset is left-right
+                                              //               //second parameter is top to down
+                                              //             )
+                                              //           ],
+                                              //         ),
+                                              //         width: 35,
+                                              //         height: 35,
+                                              //         child: const Text(
+                                              //           '+',
+                                              //           style: TextStyle(
+                                              //               color:
+                                              //                   Colors.black54,
+                                              //               fontSize: 20),
+                                              //           textAlign:
+                                              //               TextAlign.center,
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //     SizedBox(
+                                              //       height: 2,
+                                              //     ),
+                                              //     InkWell(
+                                              //       onTap: () {
+                                              //         print("minus");
+                                              //       },
+                                              //       child: Container(
+                                              //         padding:
+                                              //             const EdgeInsets.all(
+                                              //                 5),
+                                              //         alignment:
+                                              //             Alignment.center,
+                                              //         decoration: BoxDecoration(
+                                              //           color: Color.fromARGB(
+                                              //               220, 245, 243, 243),
+                                              //           borderRadius:
+                                              //               BorderRadius
+                                              //                   .circular(0),
+                                              //           boxShadow: const [
+                                              //             BoxShadow(
+                                              //               color: Colors
+                                              //                   .black12, //color of shadow
+                                              //               spreadRadius:
+                                              //                   1, //spread radius
+                                              //               blurRadius:
+                                              //                   0, // blur radius
+                                              //               offset: Offset(0,
+                                              //                   0), // changes position of shadow
+                                              //               //first paramerter of offset is left-right
+                                              //               //second parameter is top to down
+                                              //             )
+                                              //           ],
+                                              //         ),
+                                              //         width: 35,
+                                              //         height: 35,
+                                              //         child: const Text(
+                                              //           '-',
+                                              //           style: TextStyle(
+                                              //               color:
+                                              //                   Colors.black54,
+                                              //               fontSize: 20),
+                                              //           textAlign:
+                                              //               TextAlign.center,
+                                              //         ),
+                                              //       ),
+                                              //     ),
+                                              //   ],
+                                              // )
                                             ],
                                           ),
                                         ),
