@@ -67,7 +67,7 @@ class _SignupScreenState extends State<SignupScreen> {
             //   context,
             //   MaterialPageRoute(builder: (context) => LoginPage()),
             // );
-            Navigator.push(
+            Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => BottomBar()));
           }
         } else {
@@ -129,7 +129,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           print('2222222222222222222222222222222222222');
 
                           Navigator.of(context).pop();
-                          Navigator.push(
+                          Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => BottomBar()));

@@ -51,7 +51,7 @@ class _SplashScreenState extends State<SplashScreen> {
             Positioned(
               // top: size.height * 0.35,
               left: size.width * 0.22,
-              bottom: 150,
+              bottom: size.height * 0.16,
               child: Column(
                 children: [
                   const Text(
@@ -81,10 +81,10 @@ class _SplashScreenState extends State<SplashScreen> {
               },
               buttonText: "GET STARTED",
               buttonIcon: Icons.arrow_right_alt_rounded,
-              top: 750,
+              top: size.height * 0.83,
               left: 35,
               right: 35,
-              bottom: 70,
+              bottom: size.height * 0.08,
             )
           ],
         ),
