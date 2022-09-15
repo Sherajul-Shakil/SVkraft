@@ -6,16 +6,18 @@ import 'package:sv_craft/Features/market_place/view/market_product_details.dart'
 import 'package:sv_craft/constant/api_link.dart';
 
 class MarketFilter extends StatefulWidget {
-  MarketFilter(
-      {Key? key,
-      required this.token,
-      required this.cityName,
-      required this.selectedCategory})
-      : super(key: key);
+  MarketFilter({
+    Key? key,
+    required this.token,
+    required this.cityName,
+    required this.selectedCategory,
+    required this.priceRange,
+  }) : super(key: key);
 
   String token;
   String cityName;
   String selectedCategory;
+  String? priceRange;
 
   @override
   State<MarketFilter> createState() => _MarketFilterState();
@@ -72,7 +74,10 @@ class _MarketFilterState extends State<MarketFilter> {
               color: Colors.white,
               child: FutureBuilder<List<MarketFilterdata>?>(
                   future: _marketFilterController.getFilterProduct(
-                      widget.token, widget.selectedCategory, widget.cityName),
+                      widget.token,
+                      widget.selectedCategory,
+                      widget.cityName,
+                      widget.priceRange),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData || snapshot.data == null) {
                       return const Center(child: CircularProgressIndicator());

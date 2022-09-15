@@ -6,6 +6,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
+import 'package:sv_craft/Features/market_place/controller/city_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/market_search_controller.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 import 'package:sv_craft/Features/market_place/view/market_filter.dart';
@@ -26,6 +27,7 @@ class _MarketPlaceState extends State<MarketPlace> {
       Get.put(MarketSearchController());
   final MarketCategoryController _marketCategoryController =
       Get.put(MarketCategoryController());
+  final MarketCityController _cityController = Get.put(MarketCityController());
   final AllProductController _allProductController =
       Get.put(AllProductController());
 
@@ -33,15 +35,18 @@ class _MarketPlaceState extends State<MarketPlace> {
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
   String? selectedCategory;
+  String? selectedCity;
 
   var tokenp;
   bool _isSearched = false;
   var searchedData;
   bool _showfilter = false;
+  String? priceRange;
 
   final _formKey = GlobalKey<FormState>();
 
   final List<String> _category = [];
+  final List<String> _city = [];
 //"All", "Mobile", "iPhone", "Laptop", "Watch"
   @override
   void initState() {
@@ -177,16 +182,27 @@ class _MarketPlaceState extends State<MarketPlace> {
                       size: 20,
                     ),
                     onPressed: () async {
-                      // Get.toNamed('/marketfilter');
+                      // Get product category
                       final category = await _marketCategoryController
                           .getmarketCategoryProduct(tokenp);
-                      print(category.toString());
+
                       _category.clear();
                       if (category != null) {
                         for (var task in category) {
                           _category.add(task.categoryName);
                         }
                       }
+
+                      // Get city name
+                      final city = await _cityController.getmarketCity(tokenp);
+
+                      _city.clear();
+                      if (city != null) {
+                        for (var task in city) {
+                          _city.add(task.name);
+                        }
+                      }
+
                       setState(() {
                         _showfilter = true;
                       });
@@ -772,7 +788,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                             onChanged: (value2) {
                               setState(() {
                                 selectedCategory = value2!;
-                                print(selectedCategory);
+
                                 //showToast();
                               });
                             },
@@ -820,7 +836,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                             // Customize the selected item
                             selectedItemBuilder: (BuildContext context) =>
                                 _category.map((e) {
-                              print('inside selected builder : $e');
                               return Center(
                                 child: Text(
                                   e,
@@ -849,42 +864,110 @@ class _MarketPlaceState extends State<MarketPlace> {
                           height: 5,
                         ),
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20),
+                          width: double.infinity,
                           decoration: BoxDecoration(
-                            boxShadow: [
-                              new BoxShadow(
-                                color: Colors.white,
-                                blurRadius: 20.0,
-                              ),
-                            ],
-                          ),
-                          child: Card(
-                            child: TextFormField(
-                              controller: _cityNameController,
-                              decoration: const InputDecoration(
-                                //labelText: 'Username',
-                                hintText: "Area Name",
-                                prefixIcon: Icon(Icons.location_city),
-                                border: InputBorder.none,
-                              ),
+                              color: Appcolor.primaryColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: DropdownButton<String>(
+                            onChanged: (value2) {
+                              setState(() {
+                                selectedCity = value2!;
 
-                              validator: (value) {
-                                if (value == null || value.trim().isEmpty) {
-                                  return 'This field is required';
-                                }
-                                // if (value.trim().length < 4) {
-                                //   return 'Username must be at least 4 characters in length';
-                                // }
-                                // Return null if the entered username is valid
-                                return null;
-                              },
-                              //onChanged: (value) => _userName = value,
+                                //showToast();
+                              });
+                            },
+                            value: selectedCity,
+
+                            hint: Center(
+                                child: Text(
+                              selectedCity ?? 'Select City',
+                              style: TextStyle(color: Colors.white),
+                            )),
+
+                            // Hide the default underline
+                            underline: Container(),
+                            // set the color of the dropdown menu
+                            dropdownColor: Colors.white,
+                            icon: const Icon(
+                              Icons.arrow_downward,
+                              color: Colors.white,
                             ),
+                            isExpanded: true,
+
+                            items: _city.map((item) {
+                              if (item == selectedCity) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Container(
+                                      height: 48.0,
+                                      width: double.infinity,
+                                      color: Colors.grey,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          item,
+                                        ),
+                                      )),
+                                );
+                              } else {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Text(item),
+                                );
+                              }
+                            }).toList(),
+
+                            // Customize the selected item
+                            selectedItemBuilder: (BuildContext context) =>
+                                _city.map((e) {
+                              return Center(
+                                child: Text(
+                                  e,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }).toList(),
                           ),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
+
+                        RadioListTile(
+                          title: Text("Highest Price"),
+                          value: "highest",
+                          groupValue: priceRange,
+                          onChanged: (value) {
+                            setState(() {
+                              priceRange = value.toString();
+                              print(priceRange);
+                            });
+                          },
+                        ),
+
+                        RadioListTile(
+                          title: Text("Lowest Price"),
+                          value: "lowest",
+                          groupValue: priceRange,
+                          onChanged: (value) {
+                            setState(() {
+                              priceRange = value.toString();
+                              print(priceRange);
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+
+                        //Filter button
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 80),
                           child: Container(
@@ -905,8 +988,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                               token: tokenp,
                                               selectedCategory:
                                                   selectedCategory!,
-                                              cityName:
-                                                  _cityNameController.text)),
+                                              cityName: selectedCity!,
+                                              priceRange: priceRange)),
                                     );
                                     // _category.clear();
                                   }
