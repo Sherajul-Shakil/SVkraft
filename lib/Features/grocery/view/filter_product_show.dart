@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/grocery/controllar/filter_product_con.dart';
 import 'package:sv_craft/Features/grocery/model/filter_product_model.dart';
@@ -32,7 +33,12 @@ class _FilterProductShowState extends State<FilterProductShow> {
                 widget.token, widget.subcategory),
             builder: (context, snapshot) {
               if (!snapshot.hasData || snapshot.data == null) {
-                return const Center(child: CircularProgressIndicator());
+                return const Center(
+                    child: Center(
+                        child: Center(
+                            child: const SpinKitFadingCircle(
+                  color: Colors.black,
+                ))));
               } else {
                 if (snapshot.data!.isEmpty) {
                   return const Center(child: Text('No Product Found'));
@@ -199,7 +205,11 @@ class _FilterProductShowState extends State<FilterProductShow> {
                                   productId: data[index].id,
                                   price: data[index].price,
                                 )
-                              : CircularProgressIndicator(),
+                              : Center(
+                                  child: Center(
+                                      child: const SpinKitFadingCircle(
+                                  color: Colors.black,
+                                ))),
                         ],
                       ),
                       // height: 147,

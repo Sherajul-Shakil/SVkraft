@@ -42,8 +42,7 @@ class SigninController extends GetxController {
         "Access-Control-Allow-Origin": "*"
       },
     );
-    print(response.body);
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       final token = authUserFromJson(response.body);
 
@@ -53,29 +52,10 @@ class SigninController extends GetxController {
       await prefs.setString('auth-token', tokenid);
       await prefs.setInt('user-id', userid);
 
-      print('token idddddddddddddddddddddddddddddddddd $tokenid $userid');
       return tokenid;
     } else {
       print('failed');
     }
-
-    // try {
-    //   http.Response response = await http.post(
-    //     Uri.parse(url),
-    //     body: body,
-    //   );
-    //   print(response.statusCode);
-    //   if (response.statusCode == 200) {
-    //     final token = authUserFromJson(response.body);
-    //     print(token);
-    //     id = token.data.user.id;
-    //     return id;
-    //   } else {
-    //     print('failed');
-    //   }
-    // } catch (e) {
-    //   print(e.toString());
-    // }
 
     return tokenid;
   }

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:ui';
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/grocery/controllar/all_product_controller.dart';
@@ -13,7 +14,9 @@ import 'package:sv_craft/Features/grocery/view/widgets/grocery_drawer.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
 import 'package:sv_craft/Features/home/bottom_bar.dart';
 import 'package:sv_craft/Features/home/grocery_nav.dart';
+import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/Features/profile/view/profile_screen.dart';
 import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/constant.dart';
 
@@ -39,6 +42,7 @@ class _GroceryProductState extends State<GroceryProduct> {
   late int userId;
   bool _isSearched = false;
   var searchedData;
+  var _selectedIndex = 1;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -141,7 +145,11 @@ class _GroceryProductState extends State<GroceryProduct> {
       setTokenToVariable();
     });
     Future.delayed(Duration(seconds: 2), () async {
-      Center(child: CircularProgressIndicator());
+      Center(
+          child: Center(
+              child: const SpinKitFadingCircle(
+        color: Colors.black,
+      )));
     });
   }
 
@@ -162,9 +170,9 @@ class _GroceryProductState extends State<GroceryProduct> {
           child: Badge(
             elevation: 0,
             badgeContent: Text(
-              3.toString(),
+              '',
               style: TextStyle(
-                color: Colors.red,
+                color: Colors.white,
                 fontSize: 15,
               ),
             ),
@@ -509,7 +517,11 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 productId: searchedData[index].id,
                                 price: searchedData[index].price,
                               )
-                            : CircularProgressIndicator(),
+                            : Center(
+                                child: Center(
+                                    child: const SpinKitFadingCircle(
+                                color: Colors.black,
+                              ))),
                       ],
                     ),
                     // height: 147,
@@ -518,7 +530,11 @@ class _GroceryProductState extends State<GroceryProduct> {
                 )
               : tokenp == null
                   ? const Center(
-                      child: CircularProgressIndicator(),
+                      child: Center(
+                          child: Center(
+                              child: const SpinKitFadingCircle(
+                        color: Colors.black,
+                      ))),
                     )
                   : Container(
                       height: size.height,
@@ -529,7 +545,11 @@ class _GroceryProductState extends State<GroceryProduct> {
                           builder: (context, snapshot) {
                             if (!snapshot.hasData || snapshot.data == null) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                  child: Center(
+                                      child: Center(
+                                          child: const SpinKitFadingCircle(
+                                color: Colors.black,
+                              ))));
                             } else {
                               if (snapshot.data!.isEmpty) {
                                 return const Center(
@@ -712,7 +732,12 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                 productId: data[index].id,
                                                 price: data[index].price,
                                               )
-                                            : CircularProgressIndicator(),
+                                            : Center(
+                                                child: Center(
+                                                    child:
+                                                        const SpinKitFadingCircle(
+                                                color: Colors.black,
+                                              ))),
                                       ],
                                     ),
                                     // height: 147,
@@ -724,7 +749,48 @@ class _GroceryProductState extends State<GroceryProduct> {
                           }),
                     ),
         ),
-        // bottomNavigationBar: const BottomBar(),
+        // bottomNavigationBar: const GroceryNav(),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Appcolor.primaryColor,
+          selectedItemColor: Appcolor.iconColor,
+          unselectedItemColor: Colors.grey,
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+              print(_selectedIndex);
+              if (_selectedIndex == 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              } else if (_selectedIndex == 1) {
+                print('This is Grocery page');
+              } else if (_selectedIndex == 2) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              }
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                FontAwesome.bag_shopping,
+              ),
+              label: 'Grocery',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }

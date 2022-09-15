@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/Features/home/bottom_bar.dart';
+import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 
 import '../controllar/signin_controllar.dart';
@@ -283,23 +285,23 @@ class _SigninScreenState extends State<SigninScreen> {
                           _signinController.phone.trim(),
                           _signinController.passwordController.text.trim(),
                         );
-                        const CircularProgressIndicator();
-                        if (tokenId != null) {
-                          final snackBar = SnackBar(
-                            content: Text('Login Successful $tokenId'),
-                            action: SnackBarAction(
-                              label: '',
-                              onPressed: () {},
-                            ),
+                        Future.delayed(Duration(seconds: 2), () {
+                          const SpinKitDancingSquare(
+                            color: Colors.black,
                           );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => BottomBar()),
-                          );
-                          // Get.toNamed('/bottombar');
-                        }
+                          if (tokenId != null) {
+                            Get.offAll(() => HomeScreen());
+                            // Navigator.of(context).pushNamedAndRemoveUntil(
+                            //     '/bottombar', (Route<dynamic> route) => false);
+
+                          }
+                        });
+                        // if (tokenId != null) {
+                        //   Get.offAll(() => BottomBar());
+                        //   // Navigator.of(context).pushNamedAndRemoveUntil(
+                        //   //     '/bottombar', (Route<dynamic> route) => false);
+
+                        // }
                       }
                     },
                     buttonText: "SIGN IN",

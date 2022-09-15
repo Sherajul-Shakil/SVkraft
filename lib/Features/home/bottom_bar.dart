@@ -20,9 +20,9 @@ class _BottomBarState extends State<BottomBar> {
 
   List<Widget> pages = [
     const HomeScreen(),
-    const HomeScreen(),
+    // const HomeScreen(),
     const CartScreen(),
-    const HomeScreen(),
+    // const HomeScreen(),
     ProfileScreen(),
   ];
 
@@ -44,9 +44,9 @@ class _BottomBarState extends State<BottomBar> {
       body: pages[_page],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _page,
-        selectedItemColor: Colors.red,
+        selectedItemColor: Appcolor.iconColor,
         unselectedItemColor: Colors.grey,
-        backgroundColor: Colors.red,
+        backgroundColor: Appcolor.primaryColor,
         // fixedColor: Colors.red,
         iconSize: 28,
         onTap: updatePage,
@@ -71,19 +71,7 @@ class _BottomBarState extends State<BottomBar> {
             ),
             label: 'Home',
           ),
-          // ACCOUNT
-          BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(),
-              ),
-              child: const Icon(
-                Icons.category_outlined,
-              ),
-            ),
-            label: 'Category',
-          ),
+
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,
@@ -95,11 +83,11 @@ class _BottomBarState extends State<BottomBar> {
                 badgeContent: Text(
                   3.toString(),
                   style: TextStyle(
-                    color: Appcolor.primaryColor,
+                    color: _page == 1 ? Appcolor.iconColor : Colors.grey,
                     fontSize: 15,
                   ),
                 ),
-                badgeColor: Colors.white,
+                badgeColor: Appcolor.primaryColor,
                 child: const Icon(
                   Icons.shopping_cart_outlined,
                 ),
@@ -108,18 +96,18 @@ class _BottomBarState extends State<BottomBar> {
             label: 'Cart',
           ),
 
-          BottomNavigationBarItem(
-            icon: Container(
-              width: bottomBarWidth,
-              decoration: BoxDecoration(
-                border: Border(),
-              ),
-              child: const Icon(
-                Icons.view_list_outlined,
-              ),
-            ),
-            label: 'Order list',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Container(
+          //     width: bottomBarWidth,
+          //     decoration: BoxDecoration(
+          //       border: Border(),
+          //     ),
+          //     child: const Icon(
+          //       Icons.view_list_outlined,
+          //     ),
+          //   ),
+          //   label: 'Order list',
+          // ),
           BottomNavigationBarItem(
             icon: Container(
               width: bottomBarWidth,

@@ -16,6 +16,7 @@ import 'Features/auth/view/signup_otp.dart';
 import 'Features/grocery/view/grocery_product.dart';
 import 'Features/home/bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'Features/home/my_home_test.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -42,7 +43,7 @@ class MyApp extends StatelessWidget {
             secondary: Appcolor.primaryColor,
           ),
         ),
-        initialRoute: "/bottombar",
+        initialRoute: "/home",
         getPages: [
           GetPage(name: "/", page: () => const SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),
@@ -51,7 +52,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/forgateotp", page: () => OtpSendScreen()),
           GetPage(name: "/signupotp", page: () => OtpToHomeScreen()),
           GetPage(name: "/home", page: () => const HomeScreen()),
-          GetPage(name: "/bottombar", page: () => const BottomBar()),
+          // GetPage(name: "/bottombar", page: () => const BottomBar()),
           GetPage(name: "/groceryproduct", page: () => GroceryProduct()),
           // GetPage(name: "/filtercateogory", page: () => FilterCatogory()),
           GetPage(name: "/cart", page: () => const CartScreen()),
@@ -67,6 +68,7 @@ class MyApp extends StatelessWidget {
           GetPage(name: "/profile", page: () => ProfileScreen()),
           // GetPage(name: "/editprofile", page: () => EditProfile()),
           GetPage(name: "/test", page: () => TestPage()),
+          GetPage(name: "/hometest", page: () => MyHomePage()),
         ]
         //home: SplashScreen(),
         );

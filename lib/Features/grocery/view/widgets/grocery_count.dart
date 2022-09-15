@@ -32,14 +32,29 @@ class _GroceryCountState extends State<GroceryCount> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         InkWell(
-          onTap: () {
+          onTap: () async {
             setState(() {
-              setState(() {
-                count > 0 ? count-- : count = 0;
-                price = widget.price * count;
-                print(price);
-              });
+              count > 0 ? count-- : count = 0;
+              price = widget.price * count;
+              print(price);
             });
+            if (count > 0) {
+              var addResponce = await _addToCartController.addTocart(
+                _homeController.userId,
+                widget.productId,
+                "grocery",
+                count,
+                price.toInt(),
+                _homeController.tokenGlobal,
+              );
+
+              print('Message from ui ${addResponce}');
+
+              //delayed
+              // Future.delayed(Duration(microseconds: 500), () {
+              //   Navigator.pop(context);
+              // });
+            }
           },
           child: Container(
             alignment: Alignment.center,
@@ -115,13 +130,6 @@ class _GroceryCountState extends State<GroceryCount> {
                 price.toInt(),
                 _homeController.tokenGlobal,
               );
-              addResponce != null
-                  ? Get.snackbar(
-                      "$addResponce",
-                      "",
-                      snackPosition: SnackPosition.BOTTOM,
-                    )
-                  : "";
 
               print('Message from ui ${addResponce}');
 

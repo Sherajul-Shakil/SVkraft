@@ -67,8 +67,8 @@ class _SignupScreenState extends State<SignupScreen> {
             //   context,
             //   MaterialPageRoute(builder: (context) => LoginPage()),
             // );
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => BottomBar()));
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => SigninScreen()));
           }
         } else {
           print("Error from ui");
@@ -124,15 +124,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           _emailController.text.trim(),
                           _passwordController.text.trim(),
                         );
-                        print(token);
-                        if (token != null) {
-                          print('2222222222222222222222222222222222222');
 
+                        if (token != null) {
                           Navigator.of(context).pop();
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BottomBar()));
+                                  builder: (context) => SigninScreen()));
                         }
                       } else {
                         print("Error from ui 2");

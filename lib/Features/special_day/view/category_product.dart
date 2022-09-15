@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
@@ -44,7 +45,12 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                   builder: (context, snapshot) {
                     // print('Print from ui ${snapshot.data}');
                     if (!snapshot.hasData || snapshot.data == []) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: Center(
+                              child: Center(
+                                  child: const SpinKitFadingCircle(
+                        color: Colors.black,
+                      ))));
                     } else {
                       if (!snapshot.hasData) {
                         //snapshot.data!.isEmpty
@@ -91,7 +97,9 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 5, vertical: 5),
                                   child: Image.network(
-                                    '${Appurl.baseURL}${data[index].image}',
+                                    data[index].image != null
+                                        ? '${Appurl.baseURL}${data[index].image}'
+                                        : 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Avatar_flower.png',
                                     fit: BoxFit.cover,
                                     width: size.width * .4,
                                     height: size.height * .22,

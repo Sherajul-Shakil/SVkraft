@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/addtocart_con.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
@@ -61,10 +62,20 @@ class _ProductDetailsState extends State<ProductDetails> {
                     .getSpecialProductDetails(widget.token, widget.id),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(
+                        child: Center(
+                            child: Center(
+                                child: const SpinKitFadingCircle(
+                      color: Colors.black,
+                    ))));
                   } else {
                     if (snapshot.data == null) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: Center(
+                              child: Center(
+                                  child: const SpinKitFadingCircle(
+                        color: Colors.black,
+                      ))));
                     } else {
                       final data = snapshot.data;
                       // print('Print from builder $data ');

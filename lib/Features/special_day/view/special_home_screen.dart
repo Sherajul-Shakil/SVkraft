@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/special_day/controllar/category_1_con.dart';
@@ -194,7 +195,11 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
       ),
       body: tokenp == null
           ? const Center(
-              child: CircularProgressIndicator(),
+              child: Center(
+                  child: Center(
+                      child: const SpinKitFadingCircle(
+                color: Colors.black,
+              ))),
             )
           : SingleChildScrollView(
               child: Column(
@@ -236,14 +241,22 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                         builder: (context, snapshot) {
                           if (!snapshot.hasData) {
                             return const Center(
-                                child: CircularProgressIndicator());
+                                child: Center(
+                                    child: Center(
+                                        child: const SpinKitFadingCircle(
+                              color: Colors.black,
+                            ))));
                           } else {
                             if (snapshot.data == null) {
                               return const Center(
-                                  child: CircularProgressIndicator());
+                                  child: Center(
+                                      child: Center(
+                                          child: const SpinKitFadingCircle(
+                                color: Colors.black,
+                              ))));
                             } else {
                               final data = snapshot.data;
-                              //print('Print from builder $data ');
+
                               return GridView.builder(
                                 physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
@@ -256,12 +269,16 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                 ),
                                 itemCount: data!.length,
                                 itemBuilder: (context, index) {
+                                  print(
+                                      'Print from builder ${data[index].id} ');
                                   return CategoryCard(
                                     text: data[index].name,
                                     imageLink:
                                         '${Appurl.baseURL}${data[index].image}',
                                     textColor: Colors.white,
                                     onTap: () {
+                                      print(
+                                          'objecttttttttttttttttttttt ${data[index].id}');
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
@@ -323,7 +340,12 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   if (!snapshot.hasData ||
                                       snapshot.data == null) {
                                     return const Center(
-                                        child: CircularProgressIndicator());
+                                        child: Center(
+                                            child: Center(
+                                                child:
+                                                    const SpinKitFadingCircle(
+                                      color: Colors.black,
+                                    ))));
                                   } else {
                                     if (snapshot.data!.isEmpty) {
                                       //snapshot.data!.isEmpty
@@ -495,7 +517,12 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   if (!snapshot.hasData ||
                                       snapshot.data == null) {
                                     return const Center(
-                                        child: CircularProgressIndicator());
+                                        child: Center(
+                                            child: Center(
+                                                child:
+                                                    const SpinKitFadingCircle(
+                                      color: Colors.black,
+                                    ))));
                                   } else {
                                     if (snapshot.data!.isEmpty) {
                                       //snapshot.data!.isEmpty
@@ -666,7 +693,12 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   if (!snapshot.hasData ||
                                       snapshot.data == null) {
                                     return const Center(
-                                        child: CircularProgressIndicator());
+                                        child: Center(
+                                            child: Center(
+                                                child:
+                                                    const SpinKitFadingCircle(
+                                      color: Colors.black,
+                                    ))));
                                   } else {
                                     if (snapshot.data!.isEmpty) {
                                       //snapshot.data!.isEmpty

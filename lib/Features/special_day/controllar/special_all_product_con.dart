@@ -6,6 +6,7 @@ class SpecialAllProductController extends GetxController {
   Future<List<SpecialAllProductData>?> getSpecialAllProduct(
       String textToken, int id) async {
     try {
+      print('product id $id');
       var url = "http://mamun.click/api/special-day/$id";
 
       http.Response response = await http.get(Uri.parse(url), headers: {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/market_place/controller/market_filter_controller.dart';
 import 'package:sv_craft/Features/market_place/model/market_filter_model.dart';
@@ -80,7 +81,11 @@ class _MarketFilterState extends State<MarketFilter> {
                       widget.priceRange),
                   builder: (context, snapshot) {
                     if (!snapshot.hasData || snapshot.data == null) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: Center(
+                              child: const SpinKitFadingCircle(
+                        color: Colors.black,
+                      )));
                     } else {
                       if (snapshot.data!.isEmpty) {
                         return const Center(child: Text('No Product Found'));

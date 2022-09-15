@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
@@ -39,6 +40,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   var tokenp;
   bool _isSearched = false;
+  bool _searchBoolean = false;
   var searchedData;
   bool _showfilter = false;
   String? priceRange;
@@ -73,8 +75,6 @@ class _MarketPlaceState extends State<MarketPlace> {
     _searchController.dispose();
     super.dispose();
   }
-
-  bool _searchBoolean = false;
 
   Widget _searchTextField() {
     return TextField(
@@ -172,275 +172,66 @@ class _MarketPlaceState extends State<MarketPlace> {
                 SizedBox(
                   width: size.width * .02,
                 ),
-                CircleAvatar(
-                  radius: 18,
-                  backgroundColor: Appcolor.iconShadowColor, //<-- SEE HERE
-                  child: IconButton(
-                    icon: const Icon(
-                      FontAwesome.sliders,
-                      color: Appcolor.iconColor,
-                      size: 20,
-                    ),
-                    onPressed: () async {
-                      // Get product category
-                      final category = await _marketCategoryController
-                          .getmarketCategoryProduct(tokenp);
+                !_showfilter
+                    ? CircleAvatar(
+                        radius: 18,
+                        backgroundColor:
+                            Appcolor.iconShadowColor, //<-- SEE HERE
+                        child: IconButton(
+                          icon: const Icon(
+                            FontAwesome.sliders,
+                            color: Appcolor.iconColor,
+                            size: 20,
+                          ),
+                          onPressed: () async {
+                            // Get product category
+                            final category = await _marketCategoryController
+                                .getmarketCategoryProduct(tokenp);
 
-                      _category.clear();
-                      if (category != null) {
-                        for (var task in category) {
-                          _category.add(task.categoryName);
-                        }
-                      }
+                            _category.clear();
+                            if (category != null) {
+                              for (var task in category) {
+                                _category.add(task.categoryName);
+                              }
+                            }
 
-                      // Get city name
-                      final city = await _cityController.getmarketCity(tokenp);
+                            // Get city name
+                            final city =
+                                await _cityController.getmarketCity(tokenp);
 
-                      _city.clear();
-                      if (city != null) {
-                        for (var task in city) {
-                          _city.add(task.name);
-                        }
-                      }
+                            _city.clear();
+                            if (city != null) {
+                              for (var task in city) {
+                                _city.add(task.name);
+                              }
+                            }
 
-                      setState(() {
-                        _showfilter = true;
-                      });
-
-                      // Get.defaultDialog(
-                      //   title: '',
-
-                      //   content: Form(
-                      //     key: _formKey,
-                      //     child: Container(
-                      //       // height: size.height * .8,
-                      //       width: size.width,
-                      //       color: Colors.white,
-                      //       child: Column(
-                      //         mainAxisAlignment: MainAxisAlignment.start,
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           const Padding(
-                      //             padding: EdgeInsets.symmetric(horizontal: 20),
-                      //             child: Text(
-                      //               'Filter with Category and Area name',
-                      //               style: TextStyle(
-                      //                   color: Appcolor.primaryColor,
-                      //                   fontSize: 25,
-                      //                   fontWeight: FontWeight.normal),
-                      //               textAlign: TextAlign.center,
-                      //             ),
-                      //           ),
-                      //           const SizedBox(
-                      //             height: 20,
-                      //           ),
-                      //           const Padding(
-                      //             padding: EdgeInsets.symmetric(horizontal: 20),
-                      //             child: Text('CATEGORY',
-                      //                 style: TextStyle(
-                      //                     color: Colors.black,
-                      //                     fontSize: 18,
-                      //                     fontWeight: FontWeight.normal)),
-                      //           ),
-                      //           const SizedBox(
-                      //             height: 5,
-                      //           ),
-                      //           Container(
-                      //             padding: const EdgeInsets.symmetric(
-                      //                 horizontal: 20),
-                      //             margin: const EdgeInsets.symmetric(
-                      //                 vertical: 5, horizontal: 20),
-                      //             width: double.infinity,
-                      //             decoration: BoxDecoration(
-                      //                 color: Appcolor.primaryColor,
-                      //                 borderRadius: BorderRadius.circular(10)),
-                      //             child: DropdownButton<String>(
-                      //               onChanged: (value2) {
-                      //                 setState(() {
-                      //                   selectedCategory = value2!;
-                      //                   print(selectedCategory);
-                      //                   //showToast();
-                      //                 });
-                      //               },
-                      //               value: selectedCategory,
-
-                      //               hint: Center(
-                      //                   child: Text(
-                      //                 selectedCategory ?? 'Select Category',
-                      //                 style: TextStyle(color: Colors.white),
-                      //               )),
-
-                      //               // Hide the default underline
-                      //               underline: Container(),
-                      //               // set the color of the dropdown menu
-                      //               dropdownColor: Colors.white,
-                      //               icon: const Icon(
-                      //                 Icons.arrow_downward,
-                      //                 color: Colors.white,
-                      //               ),
-                      //               isExpanded: true,
-
-                      //               items: _category.map((item) {
-                      //                 if (item == selectedCategory) {
-                      //                   return DropdownMenuItem(
-                      //                     value: item,
-                      //                     child: Container(
-                      //                         height: 48.0,
-                      //                         width: double.infinity,
-                      //                         color: Colors.grey,
-                      //                         child: Align(
-                      //                           alignment: Alignment.centerLeft,
-                      //                           child: Text(
-                      //                             item,
-                      //                           ),
-                      //                         )),
-                      //                   );
-                      //                 } else {
-                      //                   return DropdownMenuItem(
-                      //                     value: item,
-                      //                     child: Text(item),
-                      //                   );
-                      //                 }
-                      //               }).toList(),
-
-                      //               // Customize the selected item
-                      //               selectedItemBuilder:
-                      //                   (BuildContext context) =>
-                      //                       _category.map((e) {
-                      //                 print('inside selected builder : $e');
-                      //                 return Center(
-                      //                   child: Text(
-                      //                     e,
-                      //                     style: const TextStyle(
-                      //                         fontSize: 18,
-                      //                         color: Colors.white,
-                      //                         fontStyle: FontStyle.italic,
-                      //                         fontWeight: FontWeight.bold),
-                      //                   ),
-                      //                 );
-                      //               }).toList(),
-                      //             ),
-                      //           ),
-                      //           const SizedBox(
-                      //             height: 20,
-                      //           ),
-                      //           const Padding(
-                      //             padding: EdgeInsets.symmetric(horizontal: 20),
-                      //             child: Text('PLATS',
-                      //                 style: TextStyle(
-                      //                     color: Colors.black,
-                      //                     fontSize: 18,
-                      //                     fontWeight: FontWeight.normal)),
-                      //           ),
-                      //           const SizedBox(
-                      //             height: 5,
-                      //           ),
-                      //           Container(
-                      //             padding: EdgeInsets.symmetric(horizontal: 20),
-                      //             decoration: BoxDecoration(
-                      //               boxShadow: [
-                      //                 new BoxShadow(
-                      //                   color: Colors.white,
-                      //                   blurRadius: 20.0,
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //             child: Card(
-                      //               child: TextFormField(
-                      //                 controller: _cityNameController,
-                      //                 decoration: const InputDecoration(
-                      //                   //labelText: 'Username',
-                      //                   hintText: "Area Name",
-                      //                   prefixIcon: Icon(Icons.location_city),
-                      //                   border: InputBorder.none,
-                      //                 ),
-
-                      //                 validator: (value) {
-                      //                   if (value == null ||
-                      //                       value.trim().isEmpty) {
-                      //                     return 'This field is required';
-                      //                   }
-                      //                   // if (value.trim().length < 4) {
-                      //                   //   return 'Username must be at least 4 characters in length';
-                      //                   // }
-                      //                   // Return null if the entered username is valid
-                      //                   return null;
-                      //                 },
-                      //                 //onChanged: (value) => _userName = value,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //           const SizedBox(
-                      //             height: 20,
-                      //           ),
-                      //           Padding(
-                      //             padding: const EdgeInsets.symmetric(
-                      //                 horizontal: 80),
-                      //             child: Container(
-                      //               alignment: Alignment.center,
-                      //               width: size.width * 1,
-                      //               height: size.height / 20,
-                      //               decoration: BoxDecoration(
-                      //                   borderRadius: BorderRadius.circular(10),
-                      //                   color: Appcolor.buttonColor),
-                      //               child: TextButton(
-                      //                 onPressed: () async {
-                      //                   if (_formKey.currentState!.validate()) {
-                      //                     if (selectedCategory != null) {
-                      //                       Navigator.pushReplacement(
-                      //                         context,
-                      //                         MaterialPageRoute(
-                      //                             builder: (context) =>
-                      //                                 MarketFilter(
-                      //                                     token: tokenp,
-                      //                                     selectedCategory:
-                      //                                         selectedCategory!,
-                      //                                     cityName:
-                      //                                         _cityNameController
-                      //                                             .text)),
-                      //                       );
-                      //                       // _category.clear();
-                      //                     }
-                      //                   }
-                      //                 },
-                      //                 child: Row(
-                      //                   mainAxisAlignment:
-                      //                       MainAxisAlignment.center,
-                      //                   children: const [
-                      //                     // SizedBox(width: size.width * 0.15),
-                      //                     Text(
-                      //                       'Filter',
-                      //                       style: TextStyle(
-                      //                           fontWeight: FontWeight.w700,
-                      //                           fontSize: 18,
-                      //                           color: Appcolor.textColor),
-                      //                     ),
-                      //                     // SizedBox(width: 30),
-                      //                     // const Icon(
-                      //                     //   FontAwesome.sliders,
-                      //                     //   color: Colors.white,
-                      //                     //   size: 20.0,
-                      //                     //   //weight: IconWeight.bold
-                      //                     // ),
-                      //                   ],
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      //   // barrierColor: Colors.white,
-                      //   // shape: RoundedRectangleBorder(
-                      //   //   borderRadius: BorderRadius.circular(0),
-                      //   //   //side: BorderSide(width: 5, color: Colors.black),
-                      //   // ),
-                      //   // enableDrag: false,
-                      // );
-                    },
-                  ),
-                ),
+                            setState(() {
+                              _showfilter = true;
+                            });
+                          },
+                        ),
+                      )
+                    : CircleAvatar(
+                        radius: 18,
+                        backgroundColor:
+                            Appcolor.iconShadowColor, //<-- SEE HERE
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.clear,
+                            color: Appcolor.iconColor,
+                            size: 20,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              Future.delayed(Duration(microseconds: 500),
+                                  () async {
+                                _showfilter = false;
+                              });
+                            });
+                          },
+                        ),
+                      ),
                 SizedBox(
                   width: size.width * .02,
                 ),
@@ -458,6 +249,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                     onPressed: () {
                       setState(() {
                         Future.delayed(Duration(microseconds: 500), () async {
+                          searchedData = null;
                           _searchBoolean = false;
                           _isSearched = false;
                         });
@@ -612,7 +404,9 @@ class _MarketPlaceState extends State<MarketPlace> {
                                     if (!snapshot.hasData ||
                                         snapshot.data == null) {
                                       return const Center(
-                                          child: CircularProgressIndicator());
+                                          child: const SpinKitFadingCircle(
+                                        color: Colors.black,
+                                      ));
                                     } else {
                                       if (snapshot.data!.isEmpty) {
                                         return const Center(
@@ -679,7 +473,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                         vertical: 5),
                                                     child: Image.network(
                                                       'http://mamun.click/${data[index].image[0].filePath}',
-                                                      fit: BoxFit.contain,
+                                                      fit: BoxFit.cover,
                                                       height: 180,
                                                       width: 170,
                                                     ),
@@ -689,9 +483,9 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                             .symmetric(
                                                         horizontal: 6),
                                                     child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      // mainAxisAlignment:
+                                                      //     MainAxisAlignment
+                                                      //         .spaceBetween,
                                                       children: [
                                                         Text(
                                                             '${data[index].price} Kr',
@@ -707,13 +501,10 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                           width: 5,
                                                         ),
                                                         SizedBox(
-                                                          width: 110.0,
+                                                          width: 100.0,
                                                           child: Text(
                                                             data[index]
                                                                 .productName,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
                                                             softWrap: false,
                                                             style: TextStyle(
                                                                 color: Colors
@@ -722,6 +513,9 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                                     FontWeight
                                                                         .normal,
                                                                 fontSize: 16.0),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
                                                         ),
                                                       ],
@@ -980,7 +774,9 @@ class _MarketPlaceState extends State<MarketPlace> {
                             child: TextButton(
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
-                                  if (selectedCategory != null) {
+                                  if (selectedCategory != null &&
+                                      selectedCity != null &&
+                                      priceRange != null) {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
@@ -992,6 +788,12 @@ class _MarketPlaceState extends State<MarketPlace> {
                                               priceRange: priceRange)),
                                     );
                                     // _category.clear();
+                                  } else {
+                                    Get.snackbar(
+                                      "Please select all fields",
+                                      "",
+                                      snackPosition: SnackPosition.BOTTOM,
+                                    );
                                   }
                                 }
                               },

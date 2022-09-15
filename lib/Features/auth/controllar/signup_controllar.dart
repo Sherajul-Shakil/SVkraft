@@ -9,7 +9,6 @@ Future<String?> register(String phone, username, email, password) async {
     'password': password,
     'username': username,
   };
-  print(data);
 
   String body = json.encode(data);
   var url = 'http://mamun.click/api/register';
@@ -22,16 +21,13 @@ Future<String?> register(String phone, username, email, password) async {
       "Access-Control-Allow-Origin": "*"
     },
   );
-  print(response.body);
-  //print(response.statusCode);
 
   if (((jsonDecode(response.body) as JSON)['success'] as bool) == true) {
-    print('Success From controller');
     final token = (jsonDecode(response.body) as JSON)['data']['token'];
-    print('TOken from controller: $token');
+
     return token;
   } else {
-    print('Error fron controller');
+    print('Error from controller');
     return null;
   }
 }
