@@ -113,7 +113,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             color: Colors.black38,
                                           ),
                                           child: Text(
-                                            data!.name,
+                                            data.name,
                                             style: const TextStyle(
                                                 color: Appcolor.uperTextColor,
                                                 fontSize: 20,

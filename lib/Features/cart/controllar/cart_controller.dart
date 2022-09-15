@@ -9,7 +9,6 @@ import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 class CartController extends GetxController {
   Future<Data?> getCartProduct(String textToken, int userId) async {
     try {
-      print("token is $textToken" + "user id is $userId");
       var url = "http://mamun.click/api/cart/all/${userId}";
 
       http.Response response = await http.get(Uri.parse(url), headers: {

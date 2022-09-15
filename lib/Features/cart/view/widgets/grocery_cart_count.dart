@@ -12,12 +12,14 @@ class GroceryCartCount extends StatefulWidget {
     required this.productId,
     required this.price,
     required this.count,
+    required this.category,
   }) : super(key: key);
 
   final int index;
   final int productId;
   final double price;
   final int count;
+  final String category;
 
   @override
   State<GroceryCartCount> createState() => _GroceryCountState();
@@ -40,26 +42,21 @@ class _GroceryCountState extends State<GroceryCartCount> {
             setState(() {
               widget.count > 0 ? count = widget.count - 1 : count = 0;
               price = widget.price * count;
-              print(price);
+              Future.delayed(Duration(milliseconds: 500), () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartScreen()));
+                // Navigator.pop(context);
+              });
             });
             if (count > 0) {
               var addResponce = await _addToCartController.addTocart(
                 _homeController.userId,
                 widget.productId,
-                "grocery",
+                widget.category,
                 count,
                 price.toInt(),
                 _homeController.tokenGlobal,
               );
-              addResponce != null
-                  ? Get.snackbar(
-                      "$addResponce",
-                      "",
-                      snackPosition: SnackPosition.TOP,
-                    )
-                  : "";
-
-              print('Message from ui ${addResponce}');
 
               //delayed
               // Future.delayed(Duration(microseconds: 500), () {
@@ -102,26 +99,21 @@ class _GroceryCountState extends State<GroceryCartCount> {
             setState(() {
               count = widget.count + 1;
               price = widget.price * count;
-              print(price);
+
+              Future.delayed(Duration(milliseconds: 100), () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CartScreen()));
+              });
             });
             if (count > 0) {
               var addResponce = await _addToCartController.addTocart(
                 _homeController.userId,
                 widget.productId,
-                "grocery",
+                widget.category,
                 count,
                 price.toInt(),
                 _homeController.tokenGlobal,
               );
-              addResponce != null
-                  ? Get.snackbar(
-                      "$addResponce",
-                      "",
-                      snackPosition: SnackPosition.TOP,
-                    )
-                  : "";
-
-              print('Message from ui ${addResponce}');
 
               //delayed
               // Future.delayed(Duration(microseconds: 500), () {

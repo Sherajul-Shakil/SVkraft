@@ -338,7 +338,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                             right: 15,
                                             top: 20,
                                             bottom: 10),
-                                        itemCount: data!.length,
+                                        itemCount: data.length,
                                         scrollDirection: Axis.horizontal,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -379,7 +379,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                                         horizontal: 10,
                                                         vertical: 10),
                                                 child: Image.network(
-                                                  'http://mamun.click/${data![index].image}',
+                                                  'http://mamun.click/${data[index].image}',
                                                   fit: BoxFit.cover,
                                                   width: 130,
                                                   height: 140,
@@ -510,7 +510,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                             right: 15,
                                             top: 20,
                                             bottom: 10),
-                                        itemCount: data!.length,
+                                        itemCount: data.length,
                                         scrollDirection: Axis.horizontal,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -551,7 +551,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                                         horizontal: 10,
                                                         vertical: 10),
                                                 child: Image.network(
-                                                  'http://mamun.click/${data![index].image}',
+                                                  'http://mamun.click/${data[index].image}',
                                                   fit: BoxFit.cover,
                                                   width: 130,
                                                   height: 140,
@@ -681,7 +681,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                             right: 15,
                                             top: 20,
                                             bottom: 10),
-                                        itemCount: data!.length,
+                                        itemCount: data.length,
                                         scrollDirection: Axis.horizontal,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
@@ -722,7 +722,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                                         horizontal: 10,
                                                         vertical: 10),
                                                 child: Image.network(
-                                                  'http://mamun.click/${data![index].image}',
+                                                  'http://mamun.click/${data[index].image}',
                                                   fit: BoxFit.cover,
                                                   width: 130,
                                                   height: 140,

@@ -168,7 +168,7 @@ class _FilterProductShowState extends State<FilterProductShow> {
                                     height: 50,
                                     width: size.width * .4,
                                     child: Text(
-                                      data[index].description ?? "",
+                                      data[index].description,
                                       style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.w500,

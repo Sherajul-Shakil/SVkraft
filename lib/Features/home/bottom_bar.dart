@@ -35,6 +35,7 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Appcolor.primaryColor,
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {},
       //   child: Icon(Icons.add),
