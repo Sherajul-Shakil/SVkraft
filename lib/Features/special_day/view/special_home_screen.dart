@@ -269,16 +269,12 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                 ),
                                 itemCount: data!.length,
                                 itemBuilder: (context, index) {
-                                  print(
-                                      'Print from builder ${data[index].id} ');
                                   return CategoryCard(
                                     text: data[index].name,
                                     imageLink:
                                         '${Appurl.baseURL}${data[index].image}',
                                     textColor: Colors.white,
                                     onTap: () {
-                                      print(
-                                          'objecttttttttttttttttttttt ${data[index].id}');
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

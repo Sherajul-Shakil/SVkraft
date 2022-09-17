@@ -49,6 +49,13 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   final List<String> _category = [];
   final List<String> _city = [];
+  final List<String> _PriceRange = [
+    "Highest",
+    "Lowest",
+    "Newest Product",
+    "Oldest Product"
+  ];
+
 //"All", "Mobile", "iPhone", "Laptop", "Watch"
   @override
   void initState() {
@@ -730,6 +737,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                             }).toList(),
                           ),
                         ),
+
                         const SizedBox(
                           height: 20,
                         ),

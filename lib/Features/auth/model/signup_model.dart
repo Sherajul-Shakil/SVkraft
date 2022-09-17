@@ -1,17 +1,16 @@
 // To parse this JSON data, do
 //
-//     final signupUser = signupUserFromJson(jsonString);
+//     final register = registerFromJson(jsonString);
 
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
-SignupUser signupUserFromJson(String str) =>
-    SignupUser.fromJson(json.decode(str));
+Register registerFromJson(String str) => Register.fromJson(json.decode(str));
 
-String signupUserToJson(SignupUser data) => json.encode(data.toJson());
+String registerToJson(Register data) => json.encode(data.toJson());
 
-class SignupUser {
-  SignupUser({
+class Register {
+  Register({
     required this.success,
     required this.message,
     required this.data,
@@ -19,12 +18,12 @@ class SignupUser {
 
   bool success;
   String message;
-  Data data;
+  SignupUser data;
 
-  factory SignupUser.fromJson(Map<String, dynamic> json) => SignupUser(
+  factory Register.fromJson(Map<String, dynamic> json) => Register(
         success: json["success"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: SignupUser.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -32,10 +31,15 @@ class SignupUser {
         "message": message,
         "data": data.toJson(),
       };
+
+  @override
+  String toString() {
+    return 'Register{success: $success, message: $message, data: $data}';
+  }
 }
 
-class Data {
-  Data({
+class SignupUser {
+  SignupUser({
     required this.token,
     required this.user,
   });
@@ -43,7 +47,7 @@ class Data {
   String token;
   User user;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory SignupUser.fromJson(Map<String, dynamic> json) => SignupUser(
         token: json["token"],
         user: User.fromJson(json["user"]),
       );
@@ -52,6 +56,11 @@ class Data {
         "token": token,
         "user": user.toJson(),
       };
+
+  @override
+  String toString() {
+    return 'SignupUser{token: $token, user: $user}';
+  }
 }
 
 class User {
@@ -84,4 +93,9 @@ class User {
         "phone": phone,
         "id": id,
       };
+
+  @override
+  String toString() {
+    return 'User{username: $username, name: $name, email: $email, phone: $phone, id: $id}';
+  }
 }

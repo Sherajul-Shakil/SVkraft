@@ -35,44 +35,43 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
             body: SingleChildScrollView(
       child: Column(
         children: [
-          InkWell(
-            child: Container(
-              height: size.height - 80,
-              // color: Colors.blue,
-              child: FutureBuilder<List<SpecialAllProductData>?>(
-                  future: _specialAllProductController.getSpecialAllProduct(
-                      widget.token, widget.id),
-                  builder: (context, snapshot) {
-                    // print('Print from ui ${snapshot.data}');
-                    if (!snapshot.hasData || snapshot.data == []) {
-                      return const Center(
-                          child: Center(
-                              child: Center(
-                                  child: const SpinKitFadingCircle(
-                        color: Colors.black,
-                      ))));
+          Container(
+            height: size.height - 80,
+            // color: Colors.blue,
+            child: FutureBuilder<List<SpecialAllProductData>?>(
+                future: _specialAllProductController.getSpecialAllProduct(
+                    widget.token, widget.id),
+                builder: (context, snapshot) {
+                  // print('Print from ui ${snapshot.data}');
+                  if (!snapshot.hasData || snapshot.data == []) {
+                    return const Center(
+                        child: Center(
+                            child: Center(
+                                child: const SpinKitFadingCircle(
+                      color: Colors.black,
+                    ))));
+                  } else {
+                    if (!snapshot.hasData) {
+                      //snapshot.data!.isEmpty
+                      return const Center(child: Text('No Product Found'));
                     } else {
-                      if (!snapshot.hasData) {
-                        //snapshot.data!.isEmpty
-                        return const Center(child: Text('No Product Found'));
-                      } else {
-                        final data = snapshot.data;
-                        id = data![0].id;
-                        return GridView.builder(
-                          padding: const EdgeInsets.only(
-                              left: 15, right: 15, top: 20, bottom: 10),
-                          itemCount: data.length,
-                          scrollDirection: Axis.vertical,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: .65,
-                            mainAxisSpacing: 10,
-                            crossAxisSpacing: 10,
-                          ),
-                          itemBuilder: (BuildContext context, int index) =>
-                              Container(
-                            // color: Colors.red,
+                      final data = snapshot.data;
+
+                      return GridView.builder(
+                        padding: const EdgeInsets.only(
+                            left: 15, right: 15, top: 20, bottom: 10),
+                        itemCount: data!.length,
+                        scrollDirection: Axis.vertical,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: .65,
+                          mainAxisSpacing: 10,
+                          crossAxisSpacing: 10,
+                        ),
+                        itemBuilder: (BuildContext context, int index) =>
+                            InkWell(
+                          child: Container(
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
                               color: Colors.white,
@@ -155,21 +154,21 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                             // height: 147,
                             // width: ,
                           ),
-                        );
-                      }
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProductDetails(
+                                        id: data[index].id,
+                                        token: widget.token,
+                                      )),
+                            );
+                          },
+                        ),
+                      );
                     }
-                  }),
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ProductDetails(
-                          id: id,
-                          token: widget.token,
-                        )),
-              );
-            },
+                  }
+                }),
           ),
           SizedBox(
             height: 20,

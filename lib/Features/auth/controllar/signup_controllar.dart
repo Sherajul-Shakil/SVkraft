@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/common/typedefs.dart';
 
 Future<String?> register(String phone, username, email, password) async {
@@ -24,6 +25,11 @@ Future<String?> register(String phone, username, email, password) async {
 
   if (((jsonDecode(response.body) as JSON)['success'] as bool) == true) {
     final token = (jsonDecode(response.body) as JSON)['data']['token'];
+    final userId = (jsonDecode(response.body) as JSON)['data']['user']['id'];
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('auth-token', token);
+    await prefs.setInt('user-id', userId);
 
     return token;
   } else {

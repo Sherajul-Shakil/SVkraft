@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/Features/auth/view/signup_screen.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/view/market_place.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
@@ -14,7 +15,6 @@ import 'Features/auth/view/forgate_password_screen.dart';
 import 'Features/auth/view/forgate_otp.dart';
 import 'Features/auth/view/signup_otp.dart';
 import 'Features/grocery/view/grocery_product.dart';
-import 'Features/home/bottom_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'Features/home/my_home_test.dart';
 import 'firebase_options.dart';
@@ -24,11 +24,38 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final HomeController _homeController = Get.put(HomeController());
+  late int userId = 0;
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration.zero, () async {
+      setTokenToVariable();
+    });
+  }
+
+  Future<void> setTokenToVariable() async {
+    final userid = await _homeController.getUserId();
+    // print('token = ' + token);
+    if (userid != null) {
+      setState(() {
+        userId = userid;
+      });
+    }
+  }
 
   // This widget is the root of your application.
   @override
@@ -43,7 +70,7 @@ class MyApp extends StatelessWidget {
             secondary: Appcolor.primaryColor,
           ),
         ),
-        initialRoute: "/home",
+        // initialRoute: "/signup",
         getPages: [
           GetPage(name: "/", page: () => const SplashScreen()),
           GetPage(name: "/signin", page: () => SigninScreen()),
@@ -69,8 +96,7 @@ class MyApp extends StatelessWidget {
           // GetPage(name: "/editprofile", page: () => EditProfile()),
           GetPage(name: "/test", page: () => TestPage()),
           GetPage(name: "/hometest", page: () => MyHomePage()),
-        ]
-        //home: SplashScreen(),
-        );
+        ],
+        home: userId == 0 ? SigninScreen() : HomeScreen());
   }
 }

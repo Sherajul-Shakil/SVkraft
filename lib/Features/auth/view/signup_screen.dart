@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:sv_craft/Features/auth/view/signin_screen.dart';
+import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
@@ -67,8 +68,8 @@ class _SignupScreenState extends State<SignupScreen> {
             //   context,
             //   MaterialPageRoute(builder: (context) => LoginPage()),
             // );
-            Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => SigninScreen()));
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => HomeScreen()));
           }
         } else {
           print("Error from ui");
@@ -130,7 +131,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => SigninScreen()));
+                                  builder: (context) => HomeScreen()));
                         }
                       } else {
                         print("Error from ui 2");

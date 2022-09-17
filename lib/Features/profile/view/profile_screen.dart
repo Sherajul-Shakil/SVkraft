@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/grocery/view/grocery_product.dart';
@@ -44,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print('from setstate $tokenp');
+    print('tokenp = ' + tokenp);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -79,6 +80,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       onPressed: () async {
                         // var message = await _logoutController.logout(tokenp);
                         // print(message);
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
+
+                        await prefs.remove('auth-token');
+                        await prefs.remove('user-id');
+
                         Get.offAll(() => SigninScreen());
                       },
                       icon: const Icon(

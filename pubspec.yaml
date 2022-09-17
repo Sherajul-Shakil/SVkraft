@@ -52,6 +52,7 @@ dependencies:
   shared_preferences: ^2.0.15
   flutter_html: ^3.0.0-alpha.5
   flutter_spinkit: ^5.1.0
+  collection: ^1.15.0
   # image_picker: ^0.8.4+10
 
 dev_dependencies:

@@ -326,7 +326,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                     "$addResponce",
                                                     "",
                                                     snackPosition:
-                                                        SnackPosition.BOTTOM,
+                                                        SnackPosition.TOP,
                                                   )
                                                 : "";
 

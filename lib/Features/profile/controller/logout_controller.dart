@@ -18,7 +18,7 @@ class LogoutController extends GetxController {
       print(response.statusCode);
       if (response.statusCode == 200) {
         final marketCategory = logoutFromJson(response.body);
-
+        print(marketCategory.message);
         return marketCategory.message;
       } else {
         print('Logout Error');

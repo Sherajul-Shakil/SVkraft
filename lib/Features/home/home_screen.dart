@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> setTokenToVariable() async {
     final token = await _homeController.getToken();
-    print('token = ' + token);
+    // print('token = ' + token);
     setState(() {
       _homeController.tokenGlobal = token;
     });
