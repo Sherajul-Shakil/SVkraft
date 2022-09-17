@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color.fromARGB(255, 35, 117, 53),
+                        Color.fromARGB(255, 158, 30, 105),
                         Color.fromARGB(255, 253, 251, 250),
                       ],
                     ),
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color.fromARGB(255, 158, 30, 105),
+                        Color.fromARGB(255, 35, 117, 53),
                         Color.fromARGB(255, 253, 251, 250),
                       ],
                     ),
@@ -252,14 +252,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         width: 30,
                       ),
-                      const Text("Child Care",
+                      const Text("Restaurant",
                           style: TextStyle(
                               fontSize: 30,
                               fontWeight: FontWeight.w500,
                               color: Color.fromARGB(255, 255, 255, 255))),
                       Spacer(),
                       Image.asset(
-                        'images/child.png',
+                        'images/restaurant.png',
                         fit: BoxFit.cover,
                         width: 140,
                         height: size.height * .25,

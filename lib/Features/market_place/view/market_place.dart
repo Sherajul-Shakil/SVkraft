@@ -37,6 +37,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   final TextEditingController _searchController = TextEditingController();
   String? selectedCategory;
   String? selectedCity;
+  String? selectedPrice;
 
   var tokenp;
   bool _isSearched = false;
@@ -49,12 +50,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
   final List<String> _category = [];
   final List<String> _city = [];
-  final List<String> _PriceRange = [
-    "Highest",
-    "Lowest",
-    "Newest Product",
-    "Oldest Product"
-  ];
+  final List<String> _priceRan = ["Highest", "Lowest", "Newest", "Oldest"];
 
 //"All", "Mobile", "iPhone", "Laptop", "Watch"
   @override
@@ -310,8 +306,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
                               childAspectRatio: .79,
-                              mainAxisSpacing: 1,
-                              crossAxisSpacing: 1,
+                              mainAxisSpacing: 5,
+                              crossAxisSpacing: 5,
                             ),
                             itemBuilder: (BuildContext context, int index) =>
                                 Container(
@@ -322,11 +318,11 @@ class _MarketPlaceState extends State<MarketPlace> {
                                 borderRadius: BorderRadius.circular(5),
                                 boxShadow: const [
                                   BoxShadow(
-                                    color: Colors.black12, //color of shadow
-                                    spreadRadius: 0, //spread radius
-                                    blurRadius: 0, // blur radius
+                                    color: Colors.black38, //color of shadow
+                                    spreadRadius: 1, //spread radius
+                                    blurRadius: 1, // blur radius
                                     offset: Offset(
-                                        0, 0), // changes position of shadow
+                                        1, 1), // changes position of shadow
                                     //first paramerter of offset is left-right
                                     //second parameter is top to down
                                   )
@@ -432,8 +428,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 2,
                                             childAspectRatio: .79,
-                                            mainAxisSpacing: 1,
-                                            crossAxisSpacing: 1,
+                                            mainAxisSpacing: 5,
+                                            crossAxisSpacing: 5,
                                           ),
                                           itemBuilder: (BuildContext context,
                                                   int index) =>
@@ -449,10 +445,10 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                   color: Colors
                                                       .black12, //color of shadow
                                                   spreadRadius:
-                                                      0, //spread radius
-                                                  blurRadius: 0, // blur radius
-                                                  offset: Offset(0,
-                                                      0), // changes position of shadow
+                                                      1, //spread radius
+                                                  blurRadius: 1, // blur radius
+                                                  offset: Offset(1,
+                                                      1), // changes position of shadow
                                                   //first paramerter of offset is left-right
                                                   //second parameter is top to down
                                                 )
@@ -737,41 +733,127 @@ class _MarketPlaceState extends State<MarketPlace> {
                             }).toList(),
                           ),
                         ),
-
                         const SizedBox(
                           height: 20,
                         ),
-
-                        RadioListTile(
-                          title: Text("Highest Price"),
-                          value: "highest",
-                          groupValue: priceRange,
-                          onChanged: (value) {
-                            setState(() {
-                              priceRange = value.toString();
-                              print(priceRange);
-                            });
-                          },
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Text('Price Range',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal)),
                         ),
-
-                        RadioListTile(
-                          title: Text("Lowest Price"),
-                          value: "lowest",
-                          groupValue: priceRange,
-                          onChanged: (value) {
-                            setState(() {
-                              priceRange = value.toString();
-                              print(priceRange);
-                            });
-                          },
+                        const SizedBox(
+                          height: 5,
                         ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 20),
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                              color: Appcolor.primaryColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: DropdownButton<String>(
+                            onChanged: (value2) {
+                              setState(() {
+                                selectedPrice = value2!;
+
+                                //showToast();
+                              });
+                            },
+                            value: selectedPrice,
+
+                            hint: Center(
+                                child: Text(
+                              selectedPrice ?? 'Select Price',
+                              style: TextStyle(color: Colors.white),
+                            )),
+
+                            // Hide the default underline
+                            underline: Container(),
+                            // set the color of the dropdown menu
+                            dropdownColor: Colors.white,
+                            icon: const Icon(
+                              Icons.arrow_downward,
+                              color: Colors.white,
+                            ),
+                            isExpanded: true,
+
+                            items: _priceRan.map((item) {
+                              if (item == selectedPrice) {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Container(
+                                      height: 48.0,
+                                      width: double.infinity,
+                                      color: Colors.grey,
+                                      child: Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          item,
+                                        ),
+                                      )),
+                                );
+                              } else {
+                                return DropdownMenuItem(
+                                  value: item,
+                                  child: Text(item),
+                                );
+                              }
+                            }).toList(),
+
+                            // Customize the selected item
+                            selectedItemBuilder: (BuildContext context) =>
+                                _priceRan.map((e) {
+                              return Center(
+                                child: Text(
+                                  e,
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                        //const SizedBox(
+                        //   height: 20,
+                        // ),
+
+                        // RadioListTile(
+                        //   title: Text("Highest Price"),
+                        //   value: "highest",
+                        //   groupValue: priceRange,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       priceRange = value.toString();
+                        //       print(priceRange);
+                        //     });
+                        //   },
+                        // ),
+
+                        // RadioListTile(
+                        //   title: Text("Lowest Price"),
+                        //   value: "lowest",
+                        //   groupValue: priceRange,
+                        //   onChanged: (value) {
+                        //     setState(() {
+                        //       priceRange = value.toString();
+                        //       print(priceRange);
+                        //     });
+                        //   },
+                        // ),
                         SizedBox(
-                          height: 20,
+                          height: 50,
                         ),
 
                         //Filter button
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 80),
+                          padding: const EdgeInsets.symmetric(horizontal: 100),
                           child: Container(
                             alignment: Alignment.center,
                             width: size.width * 1,
@@ -784,8 +866,11 @@ class _MarketPlaceState extends State<MarketPlace> {
                                 if (_formKey.currentState!.validate()) {
                                   if (selectedCategory != null &&
                                       selectedCity != null &&
-                                      priceRange != null) {
-                                    Navigator.pushReplacement(
+                                      selectedPrice != null) {
+                                    print(selectedCategory! +
+                                        selectedCity! +
+                                        selectedPrice!);
+                                    Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => MarketFilter(
@@ -793,7 +878,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                               selectedCategory:
                                                   selectedCategory!,
                                               cityName: selectedCity!,
-                                              priceRange: priceRange)),
+                                              priceRange: selectedPrice)),
                                     );
                                     // _category.clear();
                                   } else {

@@ -5,6 +5,7 @@ import 'package:sv_craft/Features/market_place/controller/market_filter_controll
 import 'package:sv_craft/Features/market_place/model/market_filter_model.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/constant/api_link.dart';
+import 'package:sv_craft/constant/color.dart';
 
 class MarketFilter extends StatefulWidget {
   MarketFilter({
@@ -32,9 +33,9 @@ class _MarketFilterState extends State<MarketFilter> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color.fromARGB(200, 32, 31, 36), //#201F24
+      // backgroundColor: const Color.fromARGB(200, 32, 31, 36), //#201F24
       appBar: AppBar(
-        title: const Text('vad vill du soka etter?'),
+        title: Text(widget.selectedCategory),
         backgroundColor: const Color.fromARGB(255, 48, 48, 48),
         elevation: 0,
       ),
@@ -43,25 +44,31 @@ class _MarketFilterState extends State<MarketFilter> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(
-              height: 2,
-            ),
+            // const SizedBox(
+            //   height: 2,
+            // ),
             Container(
               height: 50,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 48, 48, 48),
+                color: Color.fromARGB(255, 255, 255, 255),
                 borderRadius: BorderRadius.circular(0),
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text('Saljes i Stockhome',
-                      style: TextStyle(
-                          color: Colors.white,
+                children: [
+                  Text('Price : ${widget.priceRange.toString()} ',
+                      style: const TextStyle(
+                          color: Appcolor.primaryColor,
                           fontSize: 22,
-                          fontWeight: FontWeight.normal)),
+                          fontWeight: FontWeight.bold)),
+                  const Spacer(),
+                  Icon(Icons.location_on_sharp, color: Appcolor.primaryColor),
+                  Text(widget.cityName,
+                      style: const TextStyle(
+                          color: Appcolor.primaryColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
@@ -100,8 +107,8 @@ class _MarketFilterState extends State<MarketFilter> {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
                             childAspectRatio: .79,
-                            mainAxisSpacing: 1,
-                            crossAxisSpacing: 1,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 5,
                           ),
                           itemBuilder: (BuildContext context, int index) =>
                               Container(
@@ -113,10 +120,10 @@ class _MarketFilterState extends State<MarketFilter> {
                               boxShadow: const [
                                 BoxShadow(
                                   color: Colors.black12, //color of shadow
-                                  spreadRadius: 0, //spread radius
-                                  blurRadius: 0, // blur radius
+                                  spreadRadius: 1, //spread radius
+                                  blurRadius: 1, // blur radius
                                   offset: Offset(
-                                      0, 0), // changes position of shadow
+                                      1, 1), // changes position of shadow
                                   //first paramerter of offset is left-right
                                   //second parameter is top to down
                                 )
