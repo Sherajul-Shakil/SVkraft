@@ -40,25 +40,24 @@ class GroceryCategory {
 class GroceryCategoryData {
   GroceryCategoryData({
     required this.id,
+    required this.image,
     required this.name,
   });
 
   int id;
+  dynamic image;
   String name;
 
   factory GroceryCategoryData.fromJson(Map<String, dynamic> json) =>
       GroceryCategoryData(
         id: json["id"],
+        image: json["image"],
         name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "image": image,
         "name": name,
       };
-
-  @override
-  String toString() {
-    return 'GroceryCategoryData{id: $id, name: $name}';
-  }
 }

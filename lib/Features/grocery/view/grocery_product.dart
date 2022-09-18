@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:sv_craft/Features/bookmarks/controller/add_to_bookmarks_con.dart';
 import 'package:sv_craft/Features/grocery/controllar/all_product_controller.dart';
 import 'package:sv_craft/Features/grocery/controllar/category_controller.dart';
 import 'package:sv_craft/Features/grocery/controllar/searched_product_con.dart';
@@ -36,6 +37,8 @@ class _GroceryProductState extends State<GroceryProduct> {
       Get.put(GroceryAllProductController());
   final GrocerySearchController _grocerySearchController =
       Get.put(GrocerySearchController());
+  final AddtoBookmarksController _addtoBookmarksController =
+      Get.put(AddtoBookmarksController());
 
   // Variable
   var tokenp;
@@ -74,7 +77,7 @@ class _GroceryProductState extends State<GroceryProduct> {
     return TextField(
       controller: _searchController,
       onChanged: (String name) async {
-        Future.delayed(Duration(seconds: 1), () async {
+        Future.delayed(const Duration(seconds: 1), () async {
           final searchProduct = await _grocerySearchController
               .getGrocerySearchProduct(tokenp, name);
           print(name);
@@ -101,7 +104,7 @@ class _GroceryProductState extends State<GroceryProduct> {
       },
       autofocus: true,
       cursorColor: Colors.black,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.black,
         fontSize: 20,
       ),
@@ -144,10 +147,10 @@ class _GroceryProductState extends State<GroceryProduct> {
     Future.delayed(Duration.zero, () async {
       setTokenToVariable();
     });
-    Future.delayed(Duration(seconds: 2), () async {
-      Center(
+    Future.delayed(const Duration(seconds: 2), () async {
+      const Center(
           child: Center(
-              child: const SpinKitFadingCircle(
+              child: SpinKitFadingCircle(
         color: Colors.black,
       )));
     });
@@ -169,7 +172,7 @@ class _GroceryProductState extends State<GroceryProduct> {
           },
           child: Badge(
             elevation: 0,
-            badgeContent: Text(
+            badgeContent: const Text(
               '',
               style: TextStyle(
                 color: Colors.white,
@@ -235,9 +238,9 @@ class _GroceryProductState extends State<GroceryProduct> {
             ],
           ),
           title: !_searchBoolean
-              ? Text(
+              ? const Text(
                   "Grocery Products",
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Appcolor.primaryColor,
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -257,7 +260,8 @@ class _GroceryProductState extends State<GroceryProduct> {
                       ),
                       onPressed: () {
                         setState(() {
-                          Future.delayed(Duration(microseconds: 500), () async {
+                          Future.delayed(const Duration(microseconds: 500),
+                              () async {
                             _searchBoolean = true;
                           });
 
@@ -282,7 +286,8 @@ class _GroceryProductState extends State<GroceryProduct> {
                       ),
                       onPressed: () {
                         setState(() {
-                          Future.delayed(Duration(microseconds: 500), () async {
+                          Future.delayed(const Duration(microseconds: 500),
+                              () async {
                             _searchBoolean = false;
                             _isSearched = false;
                           });
@@ -388,15 +393,20 @@ class _GroceryProductState extends State<GroceryProduct> {
 
                     child: Column(
                       children: [
-                        SizedBox(height: size.height * .01),
+                        // SizedBox(height: size.height * .01),
                         Row(
                           children: [
                             SizedBox(width: size.width * .01),
-                            const Icon(
-                              Icons.list_alt,
-                              color: Colors.black,
-                            ),
-                            Spacer(),
+                            IconButton(
+                                onPressed: () {
+                                  //var message = _addtoBookmarksController.addToBookmarks(userid : userId, pro , token: tokenp,);
+                                },
+                                icon: const Icon(
+                                  FontAwesome.bookmark,
+                                  color: Colors.black,
+                                  size: 18,
+                                )),
+                            const Spacer(),
                             Text(
                               searchedData[index].marketPrice.toString(),
                               textAlign: TextAlign.center,
@@ -410,7 +420,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                         Stack(
                           children: [
                             Padding(
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10),
                               child: Image.network(
                                 '${Appurl.baseURL}${searchedData[index].image}',
@@ -430,7 +440,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                   child: Text(
                                     "${searchedData[index].offPrice.toString()}% off",
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w500,
                                         color: Colors.red),
@@ -452,7 +462,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                               children: [
                                 Text(
                                   searchedData[index].name,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black,
@@ -461,7 +471,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 ),
                                 Text(
                                   "${searchedData[index].price} kr",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black,
@@ -487,7 +497,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                   width: size.width * .4,
                                   child: Text(
                                     searchedData[index].description ?? "",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 12,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.black,
@@ -517,9 +527,9 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 productId: searchedData[index].id,
                                 price: searchedData[index].price,
                               )
-                            : Center(
+                            : const Center(
                                 child: Center(
-                                    child: const SpinKitFadingCircle(
+                                    child: SpinKitFadingCircle(
                                 color: Colors.black,
                               ))),
                       ],
@@ -592,15 +602,34 @@ class _GroceryProductState extends State<GroceryProduct> {
 
                                     child: Column(
                                       children: [
-                                        SizedBox(height: size.height * .01),
+                                        // SizedBox(height: size.height * .01),
                                         Row(
                                           children: [
                                             SizedBox(width: size.width * .01),
-                                            const Icon(
-                                              Icons.list_alt,
-                                              color: Colors.black,
-                                            ),
-                                            Spacer(),
+                                            IconButton(
+                                                onPressed: () async {
+                                                  var message =
+                                                      await _addtoBookmarksController
+                                                          .addToBookmarks(
+                                                              userId,
+                                                              data[index].id,
+                                                              "grocery",
+                                                              tokenp);
+
+                                                  if (message != null) {
+                                                    Get.snackbar(
+                                                        "Product Added to Bookmarks",
+                                                        message);
+                                                  } else {
+                                                    print("Not Added");
+                                                  }
+                                                },
+                                                icon: const Icon(
+                                                  FontAwesome.bookmark,
+                                                  color: Colors.black,
+                                                  size: 18,
+                                                )),
+                                            const Spacer(),
                                             Text(
                                               data[index]
                                                   .marketPrice
@@ -638,7 +667,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                   child: Text(
                                                     "${data[index].offPrice.toString()}% off",
                                                     textAlign: TextAlign.center,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontSize: 20,
                                                         fontWeight:
                                                             FontWeight.w500,
@@ -663,7 +692,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                               children: [
                                                 Text(
                                                   data[index].name,
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
                                                     color: Colors.black,
@@ -672,7 +701,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                 ),
                                                 Text(
                                                   "${data[index].price} kr",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontSize: 12,
                                                     fontWeight: FontWeight.w500,
                                                     color: Colors.black,
@@ -699,7 +728,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                   width: size.width * .4,
                                                   child: Text(
                                                     data[index].description,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       fontSize: 12,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -732,10 +761,9 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                 productId: data[index].id,
                                                 price: data[index].price,
                                               )
-                                            : Center(
+                                            : const Center(
                                                 child: Center(
-                                                    child:
-                                                        const SpinKitFadingCircle(
+                                                    child: SpinKitFadingCircle(
                                                 color: Colors.black,
                                               ))),
                                       ],

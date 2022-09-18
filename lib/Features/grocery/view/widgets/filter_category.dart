@@ -68,6 +68,20 @@ class FilterCatogory extends StatelessWidget {
                             },
                             child: Row(
                               children: [
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  child: Image.network(
+                                    data[index].image ??
+                                        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlwHeNYLE7WqyVjdQpNhbCKgpEHkfXcsmXqA&usqp=CAU',
+                                    fit: BoxFit.cover,
+                                    width: 40,
+                                    height: 40,
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 20,
+                                ),
                                 Text(
                                   data[index].name,
                                   style: TextStyle(

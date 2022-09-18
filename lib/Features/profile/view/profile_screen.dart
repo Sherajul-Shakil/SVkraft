@@ -272,6 +272,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
             ),
+            SizedBox(
+              height: size.height * .08,
+            ),
           ],
         ),
       ),

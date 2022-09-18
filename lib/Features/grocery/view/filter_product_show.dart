@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/grocery/controllar/filter_product_con.dart';
 import 'package:sv_craft/Features/grocery/model/filter_product_model.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
@@ -76,14 +77,17 @@ class _FilterProductShowState extends State<FilterProductShow> {
 
                       child: Column(
                         children: [
-                          SizedBox(height: size.height * .01),
+                          // SizedBox(height: size.height * .01),
                           Row(
                             children: [
                               SizedBox(width: size.width * .01),
-                              const Icon(
-                                Icons.list_alt,
-                                color: Colors.black,
-                              ),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    FontAwesome.bookmark,
+                                    color: Colors.black,
+                                    size: 18,
+                                  )),
                               Spacer(),
                               Text(
                                 data[index].marketPrice.toString(),

@@ -3,10 +3,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/cart_controller.dart';
 import 'package:sv_craft/Features/cart/controllar/delete_item_con.dart';
+import 'package:sv_craft/Features/cart/view/checkout_screen.dart';
 import 'package:sv_craft/Features/cart/view/widgets/grocery_cart_count.dart';
 import 'package:sv_craft/Features/home/bottom_bar.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
+import 'package:sv_craft/Features/profile/view/address_page.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
 import 'package:sv_craft/constant/api_link.dart';
 
@@ -170,13 +172,13 @@ class _CartScreenState extends State<CartScreen> {
                                             color: Colors.black87),
                                       ),
                                       Spacer(),
-                                      Text(
-                                        "SUMMA",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87),
-                                      ),
+                                      // Text(
+                                      //   "SUMMA",
+                                      //   style: TextStyle(
+                                      //       fontSize: 20,
+                                      //       fontWeight: FontWeight.w500,
+                                      //       color: Colors.black87),
+                                      // ),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -188,6 +190,10 @@ class _CartScreenState extends State<CartScreen> {
                                     shrinkWrap: true,
                                     itemCount: cartData.grocery.length,
                                     itemBuilder: (context, index) {
+                                      var singleGroceryPrice = cartData
+                                              .grocery[index].price /
+                                          int.parse(
+                                              cartData.grocery[index].quantity);
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 5),
@@ -236,7 +242,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       .black54),
                                                             ),
                                                             Text(
-                                                              'Price : ${cartData.grocery[index].price.toString()} kr',
+                                                              'Price : ${singleGroceryPrice.toString()} kr',
                                                               style: TextStyle(
                                                                   fontSize: 16,
                                                                   fontWeight:
@@ -418,13 +424,13 @@ class _CartScreenState extends State<CartScreen> {
                                             color: Colors.black87),
                                       ),
                                       Spacer(),
-                                      Text(
-                                        "SUMMA",
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black87),
-                                      ),
+                                      // Text(
+                                      //   "SUMMA",
+                                      //   style: TextStyle(
+                                      //       fontSize: 20,
+                                      //       fontWeight: FontWeight.w500,
+                                      //       color: Colors.black87),
+                                      // ),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -436,6 +442,10 @@ class _CartScreenState extends State<CartScreen> {
                                     shrinkWrap: true,
                                     itemCount: cartData.special_day.length,
                                     itemBuilder: (context, index) {
+                                      var singleSpecialPrice =
+                                          cartData.special_day[index].price /
+                                              int.parse(cartData
+                                                  .special_day[index].quantity);
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 5),
@@ -488,7 +498,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               maxLines: 2,
                                                             ),
                                                             Text(
-                                                              'Price : ${cartData.special_day[index].price.toString()} kr',
+                                                              'Price : ${singleSpecialPrice.toString()} kr',
                                                               style: TextStyle(
                                                                   fontSize: 16,
                                                                   fontWeight:
@@ -758,58 +768,66 @@ class _CartScreenState extends State<CartScreen> {
                       const CartListTile(
                           text: 'Du sparar totalt', price: '205,50'),
                       const SizedBox(height: 30),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        // margin: const EdgeInsets.symmetric(horizontal: 20),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Appcolor.primaryColor,
-                          borderRadius: BorderRadius.circular(0),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12, //color of shadow
-                              spreadRadius: 1, //spread radius
-                              blurRadius: 0, // blur radius
-                              offset:
-                                  Offset(0, 0), // changes position of shadow
-                              //first paramerter of offset is left-right
-                              //second parameter is top to down
-                            )
-                          ],
+                      InkWell(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          // margin: const EdgeInsets.symmetric(horizontal: 20),
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Appcolor.primaryColor,
+                            borderRadius: BorderRadius.circular(0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12, //color of shadow
+                                spreadRadius: 1, //spread radius
+                                blurRadius: 0, // blur radius
+                                offset:
+                                    Offset(0, 0), // changes position of shadow
+                                //first paramerter of offset is left-right
+                                //second parameter is top to down
+                              )
+                            ],
+                          ),
+                          width: size.width,
+                          height: 80,
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(width: size.width * .30),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Ga till kassan',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 22),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  Text(
+                                    'Total: ${totalPrice} kr',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(width: size.width * .15),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.arrow_forward),
+                                color: Colors.white,
+                              ),
+                              // SizedBox(width: 1),
+                            ],
+                          ),
                         ),
-                        width: size.width,
-                        height: 80,
-                        child: Row(
-                          // mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(width: size.width * .30),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text(
-                                  'Ga till kassan',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 22),
-                                  textAlign: TextAlign.center,
-                                ),
-                                Text(
-                                  'Total: 3711,01 kr',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 15),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: size.width * .15),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.arrow_forward),
-                              color: Colors.white,
-                            ),
-                            // SizedBox(width: 1),
-                          ],
-                        ),
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CheckoutScreen()));
+                        },
                       ),
                     ],
                   )

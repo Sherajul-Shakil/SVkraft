@@ -21,6 +21,14 @@ class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _signinController.phone.dispose();
+    _signinController.passwordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     bool _isObscure = true;
@@ -280,28 +288,23 @@ class _SigninScreenState extends State<SigninScreen> {
                   BottomButtonColumn(
                     onTap: () async {
                       if (_formKey.currentState!.validate()) {
-                        // Get.toNamed("/bottombar");
+                        Future.delayed(const Duration(seconds: 2), () {
+                          const SpinKitDancingSquare(
+                            color: Colors.black,
+                          );
+                        });
                         var tokenId = await _signinController.login(
                           _signinController.phone.trim(),
                           _signinController.passwordController.text.trim(),
                         );
-                        Future.delayed(Duration(seconds: 2), () {
+                        Future.delayed(const Duration(seconds: 2), () {
                           const SpinKitDancingSquare(
                             color: Colors.black,
                           );
                           if (tokenId != null) {
-                            Get.offAll(() => HomeScreen());
-                            // Navigator.of(context).pushNamedAndRemoveUntil(
-                            //     '/bottombar', (Route<dynamic> route) => false);
-
+                            Get.offAll(() => const HomeScreen());
                           }
                         });
-                        // if (tokenId != null) {
-                        //   Get.offAll(() => BottomBar());
-                        //   // Navigator.of(context).pushNamedAndRemoveUntil(
-                        //   //     '/bottombar', (Route<dynamic> route) => false);
-
-                        // }
                       }
                     },
                     buttonText: "SIGN IN",
