@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/common/typedefs.dart';
 
-Future<String?> register(String phone, username, email, password) async {
+Future<RegisterResponse> register(
+    String phone, username, email, password) async {
   Map data = {
     'email': email,
     'phone': phone,
@@ -33,53 +34,22 @@ Future<String?> register(String phone, username, email, password) async {
     await prefs.setString('auth-token', token);
     await prefs.setInt('user-id', userId);
 
-    return response.statusCode.toString();
+    // return response.statusCode.toString();
+    return RegisterResponse(token: token, errorMessage: null);
   } else {
-    print('Error from controller');
-    return null;
+    //print('failed');
+    return RegisterResponse(
+      token: null,
+      errorMessage:
+          (jsonDecode(response.body) as Map<String, dynamic>)['message']
+              .toString(),
+    );
   }
 }
-// class SignupController extends GetxController {
-//   String initialCountry = 'BD';
-//   PhoneNumber number = PhoneNumber(isoCode: 'BD');
-//   var phone;
-//   final TextEditingController phoneNumberController = TextEditingController();
-//   final TextEditingController userNameController = TextEditingController();
-//   final TextEditingController emailController = TextEditingController();
-//   final TextEditingController passwordController = TextEditingController();
 
-//   Future register(String phone, username, email, password) async {
-//     int? id;
-//     Map data = {
-//       'email': email,
-//       'phone': phone,
-//       'password': password,
-//       'username': username,
-//     };
-//     print(data);
+class RegisterResponse {
+  final String? token;
+  final String? errorMessage;
 
-//     String body = json.encode(data);
-//     var url = 'http://mamun.click/api/register';
-//     http.Response response = await http.post(
-//       Uri.parse(url),
-//       body: body,
-//       headers: {
-//         "Content-Type": "application/json",
-//         "accept": "application/json",
-//         "Access-Control-Allow-Origin": "*"
-//       },
-//     );
-//     print(response.body);
-//     print(response.statusCode);
-//     if (response.statusCode == 200) {
-//       final token = signupUserFromJson(response.body);
-
-//       id = token.data.user.id;
-//       print(id);
-//       return id;
-//     } else {
-//       print('error');
-//     }
-//     return id;
-//   }
-// }
+  RegisterResponse({required this.token, required this.errorMessage});
+}

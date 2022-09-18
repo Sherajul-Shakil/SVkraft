@@ -17,11 +17,7 @@ class SigninController extends GetxController {
 
   var phone;
 
-  final TextEditingController phoneNumberController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
-
-  Future<String?> login(String phone, password) async {
+  Future<LoginResponse> login(String phone, password) async {
     var tokenid;
     var userid;
     Map data = {
@@ -42,6 +38,8 @@ class SigninController extends GetxController {
         "Access-Control-Allow-Origin": "*"
       },
     );
+    print("#############################");
+    print(response.body);
 
     if (response.statusCode == 200) {
       final token = authUserFromJson(response.body);
@@ -52,11 +50,24 @@ class SigninController extends GetxController {
       await prefs.setString('auth-token', tokenid);
       await prefs.setInt('user-id', userid);
 
-      return tokenid;
+      return LoginResponse(token: tokenid, errorMessage: null);
     } else {
-      print('failed');
+      //print('failed');
+      return LoginResponse(
+        token: null,
+        errorMessage:
+            (jsonDecode(response.body) as Map<String, dynamic>)['message']
+                .toString(),
+      );
     }
 
-    return tokenid;
+//    return tokenid;
   }
+}
+
+class LoginResponse {
+  final String? token;
+  final String? errorMessage;
+
+  LoginResponse({required this.token, required this.errorMessage});
 }

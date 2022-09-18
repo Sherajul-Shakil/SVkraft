@@ -17,14 +17,26 @@ class SigninScreen extends StatefulWidget {
 
 class _SigninScreenState extends State<SigninScreen> {
   final SigninController _signinController = Get.put(SigninController());
+  final TextEditingController phoneNumberController = TextEditingController();
+
+  final TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   bool _isloading = false;
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    phoneNumberController.dispose();
+    passwordController.dispose();
+  }
+
+  bool _isObscure = true;
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    bool _isObscure = true;
 
     return SafeArea(
         child: Scaffold(
@@ -158,8 +170,7 @@ class _SigninScreenState extends State<SigninScreen> {
                                     selectorTextStyle:
                                         const TextStyle(color: Colors.black),
                                     initialValue: _signinController.number,
-                                    textFieldController:
-                                        _signinController.phoneNumberController,
+                                    textFieldController: phoneNumberController,
                                     formatInput: false,
                                     keyboardType:
                                         const TextInputType.numberWithOptions(
@@ -214,21 +225,21 @@ class _SigninScreenState extends State<SigninScreen> {
                             ),
                             child: Card(
                               child: TextFormField(
-                                controller:
-                                    _signinController.passwordController,
+                                controller: passwordController,
                                 decoration: InputDecoration(
                                   hintText: '* * * * * *',
                                   prefixIcon: Icon(Icons.lock),
                                   suffixIcon: IconButton(
-                                      icon: Icon(_isObscure == true
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isObscure = !_isObscure;
-                                          print(_isObscure);
-                                        });
-                                      }),
+                                    icon: Icon(_isObscure
+                                        ? Icons.visibility
+                                        : Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscure = !_isObscure;
+                                      });
+                                      print(_isObscure);
+                                    },
+                                  ),
                                   border: InputBorder.none,
                                 ),
                                 obscureText: _isObscure,
@@ -265,16 +276,26 @@ class _SigninScreenState extends State<SigninScreen> {
                               setState(() {
                                 _isloading = true;
                               });
-                              var tokenId = await _signinController.login(
+                              var loginResponse = await _signinController.login(
                                 _signinController.phone.trim(),
-                                _signinController.passwordController.text
-                                    .trim(),
+                                passwordController.text.trim(),
                               );
-                              if (tokenId != null) {
+                              if (loginResponse.token != null) {
                                 setState(() {
                                   _isloading = false;
                                 });
                                 Get.offAll(() => const HomeScreen());
+                              } else if (loginResponse.errorMessage != null) {
+                                setState(() {
+                                  _isloading = false;
+                                });
+                                Get.snackbar(
+                                  "Error",
+                                  loginResponse.errorMessage!,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.black38,
+                                  colorText: Colors.white,
+                                );
                               }
                             }
                           },

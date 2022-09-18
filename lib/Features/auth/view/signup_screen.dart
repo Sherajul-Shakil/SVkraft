@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
@@ -29,8 +30,19 @@ class _SignupScreenState extends State<SignupScreen> {
   var otpUser;
   bool _isloading = false;
   bool _poploading = false;
+  bool _ischecked = true;
 
   final _codeController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _phoneNumberController.dispose();
+    _userNameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
 
   Future loginUser(String phone, BuildContext context) async {
     FirebaseAuth _auth = FirebaseAuth.instance;
@@ -44,32 +56,33 @@ class _SignupScreenState extends State<SignupScreen> {
         UserCredential result = await _auth.signInWithCredential(credential);
 
         if (result.user != null) {
-          var token = await register(
+          var registerResponse = await register(
             phone.trim(),
             _userNameController.text.trim(),
             _emailController.text.trim(),
             _passwordController.text.trim(),
           );
 
-          if (token != null) {
+          if (registerResponse.token != null) {
             setState(() {
               _poploading = false;
             });
-            final snackBar = SnackBar(
-              content: const Text('Registration Successful'),
-              action: SnackBarAction(
-                label: '',
-                onPressed: () {},
-              ),
-            );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
+            Navigator.of(context).pop();
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          } else if (registerResponse.errorMessage != null) {
+            setState(() {
+              _isloading = false;
+            });
+            Navigator.of(context).pop();
+            Get.snackbar(
+              "Error",
+              registerResponse.errorMessage!,
+              snackPosition: SnackPosition.BOTTOM,
+              backgroundColor: Colors.black38,
+              colorText: Colors.white,
+            );
           }
-        } else {
-          Navigator.of(context).pop();
-          Get.snackbar("Account found", "Some data are alraedy exist");
         }
 
         //This callback would gets called when verification is done auto maticlly
@@ -122,14 +135,14 @@ class _SignupScreenState extends State<SignupScreen> {
                                 await _auth.signInWithCredential(credential);
 
                             if (result.user != null) {
-                              var token = await register(
+                              var registerResponse = await register(
                                 phone.trim(),
                                 _userNameController.text.trim(),
                                 _emailController.text.trim(),
                                 _passwordController.text.trim(),
                               );
 
-                              if (token != null) {
+                              if (registerResponse.token != null) {
                                 setState(() {
                                   _poploading = false;
                                 });
@@ -138,11 +151,17 @@ class _SignupScreenState extends State<SignupScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => HomeScreen()));
+                              } else if (registerResponse.errorMessage !=
+                                  null) {
+                                Navigator.of(context).pop();
+                                Get.snackbar(
+                                  "Error",
+                                  registerResponse.errorMessage!,
+                                  snackPosition: SnackPosition.BOTTOM,
+                                  backgroundColor: Colors.black38,
+                                  colorText: Colors.white,
+                                );
                               }
-                            } else {
-                              Navigator.of(context).pop();
-                              Get.snackbar("Account found",
-                                  "Some data are alraedy exist");
                             }
                           },
                         )
@@ -604,15 +623,26 @@ class _SignupScreenState extends State<SignupScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Checkbox(
-                                value: true,
-                                onChanged: (value) {
+                              // Checkbox(
+                              //   value: true,
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       //_isChecked = value;
+                              //     });
+                              //   },
+                              //   fillColor: MaterialStateProperty.all(
+                              //       Appcolor.primaryColor),
+                              // ),
+                              IconButton(
+                                icon: Icon(_ischecked
+                                    ? Icons.check_box
+                                    : Icons.check_box_outline_blank),
+                                onPressed: () {
                                   setState(() {
-                                    //_isChecked = value;
+                                    _ischecked = !_ischecked;
                                   });
+                                  print(_ischecked);
                                 },
-                                fillColor: MaterialStateProperty.all(
-                                    Appcolor.primaryColor),
                               ),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -642,24 +672,26 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: size.height * .05,
                   ),
                   !_isloading
-                      ? BottomButtonColumn(
-                          onTap: () async {
-                            if (_formKey.currentState!.validate()) {
-                              setState(() {
-                                _isloading = true;
-                              });
-                              await loginUser(phone, context);
+                      ? _ischecked
+                          ? BottomButtonColumn(
+                              onTap: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    _isloading = true;
+                                  });
+                                  await loginUser(phone, context);
 
-                              Future.delayed(Duration(seconds: 2), () {
-                                setState(() {
-                                  _isloading = false;
-                                });
-                              });
-                            }
-                          },
-                          buttonText: "SIGN UP",
-                          buttonIcon: Icons.login_outlined,
-                        )
+                                  Future.delayed(Duration(seconds: 2), () {
+                                    setState(() {
+                                      _isloading = false;
+                                    });
+                                  });
+                                }
+                              },
+                              buttonText: "SIGN UP",
+                              buttonIcon: Icons.login_outlined,
+                            )
+                          : Container()
                       : Center(
                           child: const SpinKitThreeBounce(
                           color: Colors.black,

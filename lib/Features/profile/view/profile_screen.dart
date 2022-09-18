@@ -45,7 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print('tokenp = ' + tokenp);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
