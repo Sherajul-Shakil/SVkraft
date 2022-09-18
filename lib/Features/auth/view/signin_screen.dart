@@ -19,6 +19,7 @@ class _SigninScreenState extends State<SigninScreen> {
   final SigninController _signinController = Get.put(SigninController());
 
   final _formKey = GlobalKey<FormState>();
+  bool _isloading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -228,27 +229,6 @@ class _SigninScreenState extends State<SigninScreen> {
                                           print(_isObscure);
                                         });
                                       }),
-                                  // suffixIcon: obsecure
-                                  //     ? IconButton(
-                                  //         icon: Icon(
-                                  //           Icons.remove_red_eye,
-                                  //         ),
-                                  //         onPressed: () {
-                                  //           setState(() {
-                                  //             obsecure = false;
-                                  //           });
-                                  //         },
-                                  //       )
-                                  //     : IconButton(
-                                  //         icon: const Icon(
-                                  //           Icons.person,
-                                  //         ),
-                                  //         onPressed: () {
-                                  //           setState(() {
-                                  //             obsecure = true;
-                                  //           });
-                                  //         },
-                                  //       ),
                                   border: InputBorder.none,
                                 ),
                                 obscureText: _isObscure,
@@ -277,31 +257,35 @@ class _SigninScreenState extends State<SigninScreen> {
                   SizedBox(
                     height: size.height * .20,
                   ),
-                  BottomButtonColumn(
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        Future.delayed(const Duration(seconds: 2), () {
-                          const SpinKitDancingSquare(
-                            color: Colors.black,
-                          );
-                        });
-                        var tokenId = await _signinController.login(
-                          _signinController.phone.trim(),
-                          _signinController.passwordController.text.trim(),
-                        );
-                        Future.delayed(const Duration(seconds: 2), () {
-                          const SpinKitDancingSquare(
-                            color: Colors.black,
-                          );
-                          if (tokenId != null) {
-                            Get.offAll(() => const HomeScreen());
-                          }
-                        });
-                      }
-                    },
-                    buttonText: "SIGN IN",
-                    buttonIcon: Icons.login_outlined,
-                  ),
+
+                  !_isloading
+                      ? BottomButtonColumn(
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                _isloading = true;
+                              });
+                              var tokenId = await _signinController.login(
+                                _signinController.phone.trim(),
+                                _signinController.passwordController.text
+                                    .trim(),
+                              );
+                              if (tokenId != null) {
+                                setState(() {
+                                  _isloading = false;
+                                });
+                                Get.offAll(() => const HomeScreen());
+                              }
+                            }
+                          },
+                          buttonText: "SIGN IN",
+                          buttonIcon: Icons.login_outlined,
+                        )
+                      : Center(
+                          child: const SpinKitThreeBounce(
+                          color: Colors.black,
+                          size: 24,
+                        )),
                   SizedBox(
                     height: size.height * .05,
                   ),

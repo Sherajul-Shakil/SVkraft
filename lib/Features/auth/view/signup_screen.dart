@@ -1,16 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
-import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
 
-import '../../../common/otp_botton.dart';
-import '../../home/bottom_bar.dart';
 import '../controllar/signup_controllar.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -31,6 +27,8 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _passwordController = TextEditingController();
 
   var otpUser;
+  bool _isloading = false;
+  bool _poploading = false;
 
   final _codeController = TextEditingController();
 
@@ -52,9 +50,11 @@ class _SignupScreenState extends State<SignupScreen> {
             _emailController.text.trim(),
             _passwordController.text.trim(),
           );
-          print('Token from ui $token');
+
           if (token != null) {
-            print('11111111111111111111111111111111111111111111111111111');
+            setState(() {
+              _poploading = false;
+            });
             final snackBar = SnackBar(
               content: const Text('Registration Successful'),
               action: SnackBarAction(
@@ -63,16 +63,13 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
             );
             ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            // Get.toNamed('/signupotp');
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(builder: (context) => LoginPage()),
-            // );
+
             Navigator.pushReplacement(
                 context, MaterialPageRoute(builder: (context) => HomeScreen()));
           }
         } else {
-          print("Error from ui");
+          Navigator.of(context).pop();
+          Get.snackbar("Account found", "Some data are alraedy exist");
         }
 
         //This callback would gets called when verification is done auto maticlly
@@ -98,46 +95,62 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 actions: <Widget>[
-                  FlatButton(
-                    child: const Text("Confirm"),
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                    onPressed: () async {
-                      // String comingSms = (await AltSmsAutofill().listenForSms)!;
-                      // String aStr =
-                      //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
-                      // String otp = aStr.substring(0, 6);
+                  !_poploading
+                      ? FlatButton(
+                          child: const Text("Confirm"),
+                          textColor: Colors.white,
+                          color: Colors.blue,
+                          onPressed: () async {
+                            setState(() {
+                              _poploading = true;
+                            });
+                            // String comingSms = (await AltSmsAutofill().listenForSms)!;
+                            // String aStr =
+                            //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
+                            // String otp = aStr.substring(0, 6);
 
-                      // final code = otp;
-                      // print(comingSms);
+                            // final code = otp;
+                            // print(comingSms);
 
-                      final code = _codeController.text.trim();
-                      AuthCredential credential = PhoneAuthProvider.credential(
-                          verificationId: verificationId, smsCode: code);
+                            final code = _codeController.text.trim();
+                            AuthCredential credential =
+                                PhoneAuthProvider.credential(
+                                    verificationId: verificationId,
+                                    smsCode: code);
 
-                      UserCredential result =
-                          await _auth.signInWithCredential(credential);
+                            UserCredential result =
+                                await _auth.signInWithCredential(credential);
 
-                      if (result.user != null) {
-                        var token = await register(
-                          phone.trim(),
-                          _userNameController.text.trim(),
-                          _emailController.text.trim(),
-                          _passwordController.text.trim(),
-                        );
+                            if (result.user != null) {
+                              var token = await register(
+                                phone.trim(),
+                                _userNameController.text.trim(),
+                                _emailController.text.trim(),
+                                _passwordController.text.trim(),
+                              );
 
-                        if (token != null) {
-                          Navigator.of(context).pop();
-                          Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => HomeScreen()));
-                        }
-                      } else {
-                        print("Error from ui 2");
-                      }
-                    },
-                  )
+                              if (token != null) {
+                                setState(() {
+                                  _poploading = false;
+                                });
+                                Navigator.of(context).pop();
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => HomeScreen()));
+                              }
+                            } else {
+                              Navigator.of(context).pop();
+                              Get.snackbar("Account found",
+                                  "Some data are alraedy exist");
+                            }
+                          },
+                        )
+                      : Center(
+                          child: const SpinKitThreeBounce(
+                          color: Colors.black,
+                          size: 24,
+                        )),
                 ],
               );
             });
@@ -628,48 +641,30 @@ class _SignupScreenState extends State<SignupScreen> {
                   SizedBox(
                     height: size.height * .05,
                   ),
-                  BottomButtonColumn(
-                    onTap: () async {
-                      if (_formKey.currentState!.validate()) {
-                        // var token = await register(
-                        //   phone.trim(),
-                        //   _userNameController.text.trim(),
-                        //   _emailController.text.trim(),
-                        //   _passwordController.text.trim(),
-                        // );
-                        // print(token);
-                        // if (token != null) {
-                        //   final snackBar = SnackBar(
-                        //     content: const Text('Registration Successful'),
-                        //     action: SnackBarAction(
-                        //       label: '',
-                        //       onPressed: () {},
-                        //     ),
-                        //   );
-                        //   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                        //   // Get.toNamed('/signupotp');
-                        //   // Navigator.push(
-                        //   //   context,
-                        //   //   MaterialPageRoute(builder: (context) => LoginPage()),
-                        //   // );
-                        // }
+                  !_isloading
+                      ? BottomButtonColumn(
+                          onTap: () async {
+                            if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                _isloading = true;
+                              });
+                              await loginUser(phone, context);
 
-                        await loginUser(phone, context);
-                        // var usercreated =
-                        // if (usercreated != null) {
-                        //   print('Print from ui ${otpUser}');
-                        // }
-                        //  else {
-                        //   print(
-                        //       'No userrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-                        // }
-
-                        // Get.toNamed('/signupotp');
-                      }
-                    },
-                    buttonText: "SIGN UP",
-                    buttonIcon: Icons.login_outlined,
-                  ),
+                              Future.delayed(Duration(seconds: 2), () {
+                                setState(() {
+                                  _isloading = false;
+                                });
+                              });
+                            }
+                          },
+                          buttonText: "SIGN UP",
+                          buttonIcon: Icons.login_outlined,
+                        )
+                      : Center(
+                          child: const SpinKitThreeBounce(
+                          color: Colors.black,
+                          size: 24,
+                        )),
                   SizedBox(
                     height: size.height * .02,
                   ),

@@ -23,7 +23,9 @@ Future<String?> register(String phone, username, email, password) async {
     },
   );
 
-  if (((jsonDecode(response.body) as JSON)['success'] as bool) == true) {
+  //((jsonDecode(response.body) as JSON)['success'] as bool) == true
+
+  if (response.statusCode == 200) {
     final token = (jsonDecode(response.body) as JSON)['data']['token'];
     final userId = (jsonDecode(response.body) as JSON)['data']['user']['id'];
 
@@ -31,7 +33,7 @@ Future<String?> register(String phone, username, email, password) async {
     await prefs.setString('auth-token', token);
     await prefs.setInt('user-id', userId);
 
-    return token;
+    return response.statusCode.toString();
   } else {
     print('Error from controller');
     return null;
