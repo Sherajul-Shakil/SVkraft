@@ -21,14 +21,6 @@ class _SigninScreenState extends State<SigninScreen> {
   final _formKey = GlobalKey<FormState>();
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    _signinController.phone.dispose();
-    _signinController.passwordController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     bool _isObscure = true;

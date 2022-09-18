@@ -54,7 +54,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    var finalPrice = CartSummary.totalPrice + CartSummary.shippingCharge;
 
     return SafeArea(
         child: Scaffold(
@@ -63,7 +62,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
               centerTitle: true,
               title: const Text('SV KRAFT'),
             ),
-            body: Address != null && CartSummary != null && finalPrice != null
+            body: Address != null && CartSummary != null
                 ? Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 10),
@@ -273,8 +272,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                               color: Appcolor.primaryColor),
                                         ),
                                         Spacer(),
+                                        // var finalPrice = CartSummary.totalPrice + CartSummary.shippingCharge;
                                         Text(
-                                          '$finalPrice kr',
+                                          '${CartSummary.totalPrice + CartSummary.shippingCharge} kr',
                                           style: TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.normal,

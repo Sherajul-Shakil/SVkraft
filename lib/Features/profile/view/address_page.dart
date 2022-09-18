@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/view/checkout_screen.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/profile/controller/address_controller.dart';
+import 'package:sv_craft/Features/profile/controller/get_address_con.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
@@ -17,11 +18,12 @@ class AddressScreen extends StatefulWidget {
 class _AddressScreenState extends State<AddressScreen> {
   AddressController _saveAddressController = Get.put(AddressController());
   HomeController _homeController = Get.put(HomeController());
+  GetAddressController _getAddressController = Get.put(GetAddressController());
   final _formKey = GlobalKey<FormState>();
   String initialCountry = 'BD';
   PhoneNumber number = PhoneNumber(isoCode: 'BD');
   var phone;
-  final TextEditingController _fullNameController = TextEditingController();
+  TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _houseController = TextEditingController();
   final TextEditingController _colonyController = TextEditingController();
@@ -32,6 +34,42 @@ class _AddressScreenState extends State<AddressScreen> {
   var otpUser;
 
   final _codeController = TextEditingController();
+
+  var Address;
+
+  @override
+  initState() {
+    super.initState();
+    Future.delayed(Duration(microseconds: 100), () async {
+      setTokenToVariable();
+    });
+  }
+
+  Future<void> setTokenToVariable() async {
+    var address =
+        await _getAddressController.getAddress(_homeController.tokenGlobal);
+    if (address != null) {
+      setState(() {
+        Address = address;
+      });
+
+      setState(() {
+        _fullNameController.text = Address.name ?? " ";
+        _phoneNumberController.text = Address.phone ?? " ";
+        _houseController.text = Address.house ?? " ";
+        _colonyController.text = Address.colony ?? " ";
+        _cityController.text = Address.city ?? " ";
+        _areaController.text = Address.area ?? " ";
+        _addressController.text = Address.address ?? " ";
+      });
+    }
+  }
+
+  // Future<void> setValueToController() async {
+  //   setState(() {
+  //     _fullNameController!.text = Address.name;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -102,8 +140,9 @@ class _AddressScreenState extends State<AddressScreen> {
                             child: Card(
                               child: TextFormField(
                                 controller: _fullNameController,
-                                decoration: const InputDecoration(
-                                  //labelText: 'Username',
+                                // initialValue: Address.name,
+                                decoration: InputDecoration(
+                                  // labelText: 'Username',
                                   hintText: "Enter first name and last name",
                                   prefixIcon: Icon(Icons.person_outline),
                                   border: InputBorder.none,
@@ -441,7 +480,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   Container(
                     alignment: Alignment.center,
                     width: size.width * 1,
-                    height: size.height / 15,
+                    height: size.height / 18,
                     decoration: BoxDecoration(
                       color: Colors.yellow,
                       borderRadius: BorderRadius.circular(10),
@@ -463,7 +502,7 @@ class _AddressScreenState extends State<AddressScreen> {
                           if (statusCode == 200) {
                             Get.snackbar("Address saved", "");
                             //Navigate to checkout page
-                            Get.to(() => CheckoutScreen());
+                            Get.offAll(() => CheckoutScreen());
                           } else {
                             Get.snackbar("Address not saved", "");
                           }

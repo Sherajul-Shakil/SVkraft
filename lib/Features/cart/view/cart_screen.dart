@@ -8,6 +8,7 @@ import 'package:sv_craft/Features/cart/view/widgets/grocery_cart_count.dart';
 import 'package:sv_craft/Features/home/bottom_bar.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
+import 'package:sv_craft/Features/profile/controller/get_address_con.dart';
 import 'package:sv_craft/Features/profile/view/address_page.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
 import 'package:sv_craft/constant/api_link.dart';
@@ -27,10 +28,13 @@ class _CartScreenState extends State<CartScreen> {
   final CartController _cartController = Get.put(CartController());
   final CartItemDeleteController _cartItemDeleteController =
       Get.put(CartItemDeleteController());
+  GetAddressController _getAddressController = Get.put(GetAddressController());
   bool _isLoading = true;
   var cartData;
   var totalPrice = 0.0;
   var _selectedIndex = 1;
+
+  var Address;
 
   @override
   void initState() {
@@ -38,7 +42,7 @@ class _CartScreenState extends State<CartScreen> {
 
     Future.delayed(Duration.zero, () async {
       setTokenToVariable();
-    }); //.then((value) => _allProductController.GetAllProduct(tokenp))
+    });
 
     Future.delayed(Duration(microseconds: 500), () async {
       setState(() {
@@ -48,7 +52,6 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Future<void> setTokenToVariable() async {
-    print('tokennnnnnnnnnnn = ' + _homeController.tokenGlobal);
     final data = await _cartController.getCartProduct(
         _homeController.tokenGlobal, _homeController.userId);
     if (data != null) {
@@ -67,6 +70,14 @@ class _CartScreenState extends State<CartScreen> {
           totalPrice += cartData.special_day[i].price;
         }
       }
+    }
+
+    var address =
+        await _getAddressController.getAddress(_homeController.tokenGlobal);
+    if (address != null) {
+      setState(() {
+        Address = address;
+      });
     }
   }
 
@@ -826,7 +837,9 @@ class _CartScreenState extends State<CartScreen> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => CheckoutScreen()));
+                                  builder: (context) => Address.name != null
+                                      ? CheckoutScreen()
+                                      : AddressScreen()));
                         },
                       ),
                     ],
