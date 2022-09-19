@@ -293,7 +293,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                       ),
                     ),
                   ),
-                  searchedData != null
+                  searchedData != null && _searchController.text.isNotEmpty
                       ? Container(
                           height: size.height - 120,
                           color: Colors.white,

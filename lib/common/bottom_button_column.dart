@@ -19,16 +19,17 @@ class BottomButtonColumn extends StatelessWidget {
     return Container(
       alignment: Alignment.center,
       width: size.width * 1,
-      height: size.height / 15,
+      height: size.height / 18,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Appcolor.circleColor,
-            Color.fromARGB(255, 253, 251, 250),
-          ],
-        ),
+        color: Colors.yellow,
+        // gradient: const LinearGradient(
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        //   colors: [
+        //     Appcolor.circleColor,
+        //     Color.fromARGB(255, 253, 251, 250),
+        //   ],
+        // ),
         borderRadius: BorderRadius.circular(10),
       ),
       child: TextButton(
@@ -41,14 +42,14 @@ class BottomButtonColumn extends StatelessWidget {
               buttonText,
               style: const TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 12,
+                  fontSize: 16,
                   color: Colors.black),
             ),
             SizedBox(width: 30),
             Icon(
               buttonIcon,
               color: Colors.black,
-              size: 36.0,
+              size: 28.0,
               //weight: IconWeight.bold
             ),
           ],

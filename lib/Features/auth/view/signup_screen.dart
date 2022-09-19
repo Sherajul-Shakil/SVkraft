@@ -31,6 +31,8 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isloading = false;
   bool _poploading = false;
   bool _ischecked = true;
+  bool _isbuttonactive = true;
+  bool _isObscure = true;
 
   final _codeController = TextEditingController();
 
@@ -95,82 +97,93 @@ class _SignupScreenState extends State<SignupScreen> {
             context: context,
             barrierDismissible: false,
             builder: (context) {
-              return AlertDialog(
-                title: const Text("Insert the code?"),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TextField(
-                      controller: _codeController,
-                      keyboardType:
-                          const TextInputType.numberWithOptions(signed: true),
-                    ),
-                  ],
+              return Container(
+                color: Colors.white,
+                child: AlertDialog(
+                  elevation: 0,
+                  backgroundColor: Colors.white,
+                  title: Text("Code Sent to\n ${phone}"),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TextField(
+                        controller: _codeController,
+                        keyboardType:
+                            const TextInputType.numberWithOptions(signed: true),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      !_poploading
+                          ? FlatButton(
+                              child: const Text("Confirm"),
+                              textColor: Colors.black,
+                              color: Colors.yellow,
+                              onPressed: () async {
+                                // setState(() {
+                                //   _poploading = true;
+                                // });
+                                // String comingSms = (await AltSmsAutofill().listenForSms)!;
+                                // String aStr =
+                                //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
+                                // String otp = aStr.substring(0, 6);
+
+                                // final code = otp;
+                                // print(comingSms);
+
+                                final code = _codeController.text.trim();
+                                AuthCredential credential =
+                                    PhoneAuthProvider.credential(
+                                        verificationId: verificationId,
+                                        smsCode: code);
+
+                                UserCredential result = await _auth
+                                    .signInWithCredential(credential);
+
+                                if (result.user != null) {
+                                  var registerResponse = await register(
+                                    phone.trim(),
+                                    _userNameController.text.trim(),
+                                    _emailController.text.trim(),
+                                    _passwordController.text.trim(),
+                                  );
+
+                                  if (registerResponse.token != null) {
+                                    // setState(() {
+                                    //   _poploading = false;
+                                    // });
+
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                HomeScreen()));
+                                    Navigator.of(context).pop();
+                                  } else if (registerResponse.errorMessage !=
+                                      null) {
+                                    Navigator.of(context).pop();
+                                    Get.snackbar(
+                                      "Error",
+                                      registerResponse.errorMessage!,
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: Colors.black38,
+                                      colorText: Colors.white,
+                                    );
+                                  }
+                                }
+                              },
+                            )
+                          : Center(
+                              child: const SpinKitThreeBounce(
+                              color: Colors.black,
+                              size: 24,
+                            )),
+                    ],
+                  ),
+                  // actions: <Widget>[
+
+                  // ],
                 ),
-                actions: <Widget>[
-                  !_poploading
-                      ? FlatButton(
-                          child: const Text("Confirm"),
-                          textColor: Colors.white,
-                          color: Colors.blue,
-                          onPressed: () async {
-                            setState(() {
-                              _poploading = true;
-                            });
-                            // String comingSms = (await AltSmsAutofill().listenForSms)!;
-                            // String aStr =
-                            //     comingSms.replaceAll(new RegExp(r'[^0-9]'), '');
-                            // String otp = aStr.substring(0, 6);
-
-                            // final code = otp;
-                            // print(comingSms);
-
-                            final code = _codeController.text.trim();
-                            AuthCredential credential =
-                                PhoneAuthProvider.credential(
-                                    verificationId: verificationId,
-                                    smsCode: code);
-
-                            UserCredential result =
-                                await _auth.signInWithCredential(credential);
-
-                            if (result.user != null) {
-                              var registerResponse = await register(
-                                phone.trim(),
-                                _userNameController.text.trim(),
-                                _emailController.text.trim(),
-                                _passwordController.text.trim(),
-                              );
-
-                              if (registerResponse.token != null) {
-                                setState(() {
-                                  _poploading = false;
-                                });
-                                Navigator.of(context).pop();
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => HomeScreen()));
-                              } else if (registerResponse.errorMessage !=
-                                  null) {
-                                Navigator.of(context).pop();
-                                Get.snackbar(
-                                  "Error",
-                                  registerResponse.errorMessage!,
-                                  snackPosition: SnackPosition.BOTTOM,
-                                  backgroundColor: Colors.black38,
-                                  colorText: Colors.white,
-                                );
-                              }
-                            }
-                          },
-                        )
-                      : Center(
-                          child: const SpinKitThreeBounce(
-                          color: Colors.black,
-                          size: 24,
-                        )),
-                ],
               );
             });
       },
@@ -179,150 +192,6 @@ class _SignupScreenState extends State<SignupScreen> {
       },
     );
   }
-
-  // Future getUser({required String verificationId}) async {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-  //   final code = _codeController.text.trim();
-  //   AuthCredential credential = PhoneAuthProvider.credential(
-  //       verificationId: verificationId, smsCode: code);
-
-  //   UserCredential result = await _auth.signInWithCredential(credential);
-
-  //   if (result.user != null) {
-  //     var token = await register(
-  //       phone.trim(),
-  //       _userNameController.text.trim(),
-  //       _emailController.text.trim(),
-  //       _passwordController.text.trim(),
-  //     );
-  //     print(token);
-  //     if (token != null) {
-  //       final snackBar = SnackBar(
-  //         content: const Text('Registration Successful 1'),
-  //         action: SnackBarAction(
-  //           label: '',
-  //           onPressed: () {},
-  //         ),
-  //       );
-  //       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //       Get.toNamed('/signin');
-  //       // Navigator.push(
-  //       //   context,
-  //       //   MaterialPageRoute(builder: (context) => LoginPage()),
-  //       // );
-  //     }
-  //   } else {
-  //     print("Error");
-  //   }
-  // }
-
-  // Future loginUser(String phone, BuildContext context) async {
-  //   FirebaseAuth _auth = FirebaseAuth.instance;
-
-  //   _auth.verifyPhoneNumber(
-  //     phoneNumber: phone,
-  //     timeout: const Duration(seconds: 60),
-  //     verificationCompleted: (PhoneAuthCredential credential) async {
-  //       Navigator.of(context).pop();
-
-  //       UserCredential result = await _auth.signInWithCredential(credential);
-
-  //       if (result.user != null) {
-  //         var token = await register(
-  //           phone.trim(),
-  //           _userNameController.text.trim(),
-  //           _emailController.text.trim(),
-  //           _passwordController.text.trim(),
-  //         );
-  //         print(token);
-  //         if (token != null) {
-  //           final snackBar = SnackBar(
-  //             content: const Text('Registration Successful 2'),
-  //             action: SnackBarAction(
-  //               label: '',
-  //               onPressed: () {},
-  //             ),
-  //           );
-  //           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  //           Get.toNamed('/signin');
-  //           // Navigator.push(
-  //           //   context,
-  //           //   MaterialPageRoute(builder: (context) => LoginPage()),
-  //           // );
-  //         }
-  //       } else {
-  //         print("Error");
-  //       }
-  //     },
-  //     verificationFailed: (Exception exception) {
-  //       print(exception);
-  //     },
-  //     codeSent: (String verificationId, int? resendToken) {
-  //       showDialog(
-  //           context: context,
-  //           barrierDismissible: false,
-  //           builder: (context) {
-  //             return AlertDialog(
-  //               title: const Text("Insert the code?"),
-  //               content: Column(
-  //                 mainAxisSize: MainAxisSize.min,
-  //                 children: <Widget>[
-  //                   TextField(
-  //                     controller: _codeController,
-  //                     keyboardType:
-  //                         const TextInputType.numberWithOptions(signed: true),
-  //                   ),
-  //                 ],
-  //               ),
-  //               actions: <Widget>[
-  //                 FlatButton(
-  //                   child: const Text("Confirm"),
-  //                   textColor: Colors.white,
-  //                   color: Colors.blue,
-  //                   onPressed: () async {
-  //                     // var userValue =
-  //                     getUser(verificationId: verificationId).then(
-  //                       (value) async {
-  //                         if (value != null) {
-  //                           var token = await register(
-  //                             phone.trim(),
-  //                             _userNameController.text.trim(),
-  //                             _emailController.text.trim(),
-  //                             _passwordController.text.trim(),
-  //                           );
-  //                           print(token);
-  //                           if (token != null) {
-  //                             final snackBar = SnackBar(
-  //                               content:
-  //                                   const Text('Registration Successful 3'),
-  //                               action: SnackBarAction(
-  //                                 label: '',
-  //                                 onPressed: () {},
-  //                               ),
-  //                             );
-  //                             ScaffoldMessenger.of(context)
-  //                                 .showSnackBar(snackBar);
-  //                             Get.toNamed('/signin');
-  //                             // Navigator.push(
-  //                             //   context,
-  //                             //   MaterialPageRoute(builder: (context) => LoginPage()),
-  //                             // );
-  //                           }
-  //                         }
-  //                       },
-  //                     );
-
-  //                   },
-  //                 )
-  //               ],
-  //             );
-  //           });
-  //     },
-  //     codeAutoRetrievalTimeout: (String verificationId) {
-  //       print('Time Out');
-  //     },
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -598,13 +467,23 @@ class _SignupScreenState extends State<SignupScreen> {
                             child: Card(
                               child: TextFormField(
                                 controller: _passwordController,
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   hintText: '* * * * * *',
                                   prefixIcon: Icon(Icons.lock),
-                                  suffixIcon: Icon(Icons.remove_red_eye),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(_isObscure
+                                        ? Icons.visibility
+                                        : Icons.visibility_off),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscure = !_isObscure;
+                                      });
+                                      print(_isObscure);
+                                    },
+                                  ),
                                   border: InputBorder.none,
                                 ),
-                                obscureText: true,
+                                obscureText: _isObscure,
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
                                     return 'This field is required';
@@ -623,16 +502,6 @@ class _SignupScreenState extends State<SignupScreen> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              // Checkbox(
-                              //   value: true,
-                              //   onChanged: (value) {
-                              //     setState(() {
-                              //       //_isChecked = value;
-                              //     });
-                              //   },
-                              //   fillColor: MaterialStateProperty.all(
-                              //       Appcolor.primaryColor),
-                              // ),
                               IconButton(
                                 icon: Icon(_ischecked
                                     ? Icons.check_box
@@ -640,6 +509,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 onPressed: () {
                                   setState(() {
                                     _ischecked = !_ischecked;
+                                    _isbuttonactive = !_isbuttonactive;
                                   });
                                   print(_ischecked);
                                 },
@@ -672,26 +542,77 @@ class _SignupScreenState extends State<SignupScreen> {
                     height: size.height * .05,
                   ),
                   !_isloading
-                      ? _ischecked
-                          ? BottomButtonColumn(
-                              onTap: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(() {
-                                    _isloading = true;
-                                  });
-                                  await loginUser(phone, context);
+                      ? Container(
+                          alignment: Alignment.center,
+                          width: size.width * 1,
+                          height: size.height / 18,
+                          decoration: BoxDecoration(
+                            color: _isbuttonactive
+                                ? Colors.yellow
+                                : Colors.grey.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: TextButton(
+                            onPressed: _isbuttonactive
+                                ? () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        _isloading = true;
+                                      });
+                                      await loginUser(phone, context);
 
-                                  Future.delayed(Duration(seconds: 2), () {
-                                    setState(() {
-                                      _isloading = false;
-                                    });
-                                  });
-                                }
-                              },
-                              buttonText: "SIGN UP",
-                              buttonIcon: Icons.login_outlined,
-                            )
-                          : Container()
+                                      Future.delayed(Duration(seconds: 2), () {
+                                        setState(() {
+                                          _isloading = false;
+                                        });
+                                      });
+                                    }
+                                  }
+                                : () => null,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(width: size.width * 0.25),
+                                Text(
+                                  "Sign Up",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 18,
+                                      color: Colors.black),
+                                ),
+                                SizedBox(width: 30),
+                                Icon(
+                                  Icons.arrow_forward,
+                                  color: Colors.black,
+                                  size: 28.0,
+                                  //weight: IconWeight.bold
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      // ? BottomButtonColumn(
+                      //     onTap: _isbuttonactive
+                      //         ? () async {
+                      //             if (_formKey.currentState!.validate()) {
+                      //               setState(() {
+                      //                 _isloading = true;
+                      //               });
+                      //               await loginUser(phone, context);
+
+                      //               Future.delayed(Duration(seconds: 2), () {
+                      //                 setState(() {
+                      //                   _isloading = false;
+                      //                 });
+                      //               });
+                      //             }
+                      //           }
+                      //         : () => null,
+                      //     buttonText: _isbuttonactive
+                      //         ? "SIGN UP"
+                      //         : "CHECK CONDITION BOX",
+                      //     buttonIcon: Icons.login_outlined,
+                      //   )
                       : Center(
                           child: const SpinKitThreeBounce(
                           color: Colors.black,
