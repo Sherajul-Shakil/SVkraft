@@ -124,27 +124,19 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                           )
                                         ],
                                       ),
-                                      width: 200,
-                                      height: 55,
+                                      width: 180,
+                                      height: 45,
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: const [
                                           Text(
-                                            'Add to cart',
+                                            'Show Profile',
                                             style: TextStyle(
                                                 color: Appcolor.textColor,
-                                                fontSize: 25),
+                                                fontSize: 18),
                                             textAlign: TextAlign.center,
                                           ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Icon(
-                                            FontAwesome.cart_plus,
-                                            color: Appcolor.textColor,
-                                            size: 25,
-                                          )
                                         ],
                                       ),
                                     ),

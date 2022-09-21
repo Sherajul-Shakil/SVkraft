@@ -59,7 +59,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
 
                       return GridView.builder(
                         padding: const EdgeInsets.only(
-                            left: 15, right: 15, top: 20, bottom: 10),
+                            left: 10, right: 10, top: 20, bottom: 10),
                         itemCount: data!.length,
                         scrollDirection: Axis.vertical,
                         gridDelegate:
@@ -109,8 +109,8 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                                 ),
                                 Row(
                                   children: [
-                                    const SizedBox(
-                                      width: 10,
+                                    SizedBox(
+                                      width: size.width * .03,
                                     ),
                                     Column(
                                       crossAxisAlignment:
@@ -131,9 +131,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
+                                        SizedBox(height: size.height * .01),
                                         Text(
                                           'Price : ${data[index].price} kr',
                                           style: TextStyle(
@@ -170,9 +168,7 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                   }
                 }),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          SizedBox(height: size.height * .02),
         ],
       ),
     )));

@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color.fromARGB(255, 145, 31, 42),
+                        Color.fromARGB(255, 35, 117, 53),
                         Color.fromARGB(255, 253, 251, 250),
                       ],
                     ),
@@ -239,7 +239,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color.fromARGB(255, 35, 117, 53),
+                        Color.fromARGB(255, 145, 31, 42),
                         Color.fromARGB(255, 253, 251, 250),
                       ],
                     ),
@@ -286,12 +286,12 @@ class _HomeScreenState extends State<HomeScreen> {
               print(_selectedIndex);
               if (_selectedIndex == 0) {
               } else if (_selectedIndex == 1) {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const CartScreen()),
                 );
               } else if (_selectedIndex == 2) {
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => ProfileScreen()),
                 );

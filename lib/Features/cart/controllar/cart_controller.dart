@@ -7,6 +7,10 @@ import 'package:sv_craft/Features/cart/model/show_cart_model.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 
 class CartController extends GetxController {
+  var count = 0.obs;
+  var singlePrice = 0.obs;
+  var subTotal = 0.obs;
+
   Future<Data?> getCartProduct(String textToken, int userId) async {
     try {
       var url = "http://mamun.click/api/cart/all/${userId}";

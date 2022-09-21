@@ -162,6 +162,7 @@ class _GroceryProductState extends State<GroceryProduct> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 135, 235, 157),
         key: _scaffoldKey,
         drawer: buildDrawer(),
         //drawer: Drawer(backgroundColor: Colors.blue.withOpacity(0)),
@@ -191,7 +192,7 @@ class _GroceryProductState extends State<GroceryProduct> {
         appBar: AppBar(
           leadingWidth: 100,
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.white10,
+          backgroundColor: Colors.white,
           elevation: 0,
           leading: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -548,7 +549,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                     )
                   : Container(
                       height: size.height,
-                      // color: Colors.blue,
+                      color: Color.fromARGB(255, 135, 235, 157),
                       child: FutureBuilder<List<GroceryAllProductData>?>(
                           future: _groceryAllProductController
                               .getGroceryAllProduct(tokenp),
@@ -568,7 +569,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 final data = snapshot.data;
                                 return GridView.builder(
                                   padding: const EdgeInsets.only(
-                                      left: 15, right: 15, top: 20, bottom: 10),
+                                      left: 10, right: 10, top: 20, bottom: 10),
                                   itemCount: data!.length,
                                   scrollDirection: Axis.vertical,
                                   gridDelegate:
@@ -676,14 +677,12 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                 ))
                                           ],
                                         ),
-                                        SizedBox(
-                                          height: size.height * .02,
-                                        ),
+                                        // SizedBox(
+                                        //   height: size.height * .02,
+                                        // ),
                                         Row(
                                           children: [
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
+                                            SizedBox(width: size.width * .03),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -716,15 +715,13 @@ class _GroceryProductState extends State<GroceryProduct> {
                                         ),
                                         Row(
                                           children: [
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
+                                            SizedBox(width: size.width * .03),
                                             Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  height: 50,
+                                                  height: size.height * .06,
                                                   width: size.width * .4,
                                                   child: Text(
                                                     data[index].description,

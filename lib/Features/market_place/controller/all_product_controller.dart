@@ -21,9 +21,9 @@ class AllProductController extends GetxController {
   }
 
   String? tokenGlobal;
-  Future<List<Datum>?> GetAllProduct(String textToken) async {
+  Future<List<Datum>?> getCategoryProduct(String textToken, int id) async {
     try {
-      const url = "http://mamun.click/api/product/all";
+      var url = "http://mamun.click/api/product/$id";
 
       http.Response response = await http.get(Uri.parse(url), headers: {
         'Content-Type': 'application/json',

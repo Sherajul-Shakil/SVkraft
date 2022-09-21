@@ -32,6 +32,11 @@ class ProductDetails {
         "message": message,
         "data": data.toJson(),
       };
+
+  @override
+  String toString() {
+    return 'ProductDetails{success: $success, message: $message, data: $data}';
+  }
 }
 
 class ProductDetailsData {
@@ -56,7 +61,7 @@ class ProductDetailsData {
   String description;
   int price;
   int quantity;
-  String colors;
+  dynamic colors;
   String sizes;
   String location;
   String productCode;
@@ -98,9 +103,9 @@ class ProductDetailsData {
         "updated_at": updatedAt.toIso8601String(),
         "image": List<dynamic>.from(image.map((x) => x.toJson())),
       };
+
   @override
   String toString() {
-    // TODO: implement toString
     return 'ProductDetailsData{id: $id, productName: $productName, description: $description, price: $price, quantity: $quantity, colors: $colors, sizes: $sizes, location: $location, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image}';
   }
 }

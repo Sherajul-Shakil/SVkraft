@@ -33,10 +33,10 @@ class _MarketFilterState extends State<MarketFilter> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-      // backgroundColor: const Color.fromARGB(200, 32, 31, 36), //#201F24
+      backgroundColor: Color.fromARGB(255, 143, 211, 231),
       appBar: AppBar(
         title: Text(widget.selectedCategory),
-        backgroundColor: const Color.fromARGB(255, 48, 48, 48),
+        backgroundColor: Appcolor.primaryColor,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -51,7 +51,7 @@ class _MarketFilterState extends State<MarketFilter> {
               height: 50,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 255, 255, 255),
+                color: Color.fromARGB(255, 143, 211, 231),
                 borderRadius: BorderRadius.circular(0),
               ),
               padding: EdgeInsets.symmetric(horizontal: 20),
@@ -72,14 +72,14 @@ class _MarketFilterState extends State<MarketFilter> {
                 ],
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            // const SizedBox(
+            //   height: 20,
+            // ),
 
             //filtered product
             Container(
-              height: size.height - 150,
-              color: Colors.white,
+              height: size.height,
+              color: Color.fromARGB(255, 143, 211, 231),
               child: FutureBuilder<List<MarketFilterdata>?>(
                   future: _marketFilterController.getFilterProduct(
                       widget.token,

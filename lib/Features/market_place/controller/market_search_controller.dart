@@ -7,6 +7,8 @@ import 'package:sv_craft/Features/market_place/model/market_search.dart';
 class MarketSearchController extends GetxController {
   Future<List<mSearch>?> getmarketSearchProduct(String textToken, name) async {
     try {
+      print('name $name');
+      print('token $textToken');
       var url = "http://mamun.click/api/search/product/$name";
 
       http.Response response = await http.get(Uri.parse(url), headers: {

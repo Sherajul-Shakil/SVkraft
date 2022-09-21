@@ -26,6 +26,7 @@ class _FilterProductShowState extends State<FilterProductShow> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
+      backgroundColor: Color.fromARGB(255, 135, 235, 157),
       body: Container(
         height: size.height,
         // color: Colors.blue,

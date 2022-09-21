@@ -38,11 +38,13 @@ class Data {
     required this.user,
     required this.grocery,
     required this.special_day,
+    required this.totalPrice,
   });
 
   User user;
   List<Grocery> grocery;
   List<SpecialDay> special_day;
+  int totalPrice;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
         user: User.fromJson(json["user"]),
@@ -50,12 +52,14 @@ class Data {
             List<Grocery>.from(json["grocery"].map((x) => Grocery.fromJson(x))),
         special_day: List<SpecialDay>.from(
             json["special_day"].map((x) => SpecialDay.fromJson(x))),
+        totalPrice: json["total_price"],
       );
 
   Map<String, dynamic> toJson() => {
         "user": user.toJson(),
         "grocery": List<dynamic>.from(grocery.map((x) => x.toJson())),
         "special_day": List<dynamic>.from(special_day.map((x) => x.toJson())),
+        "total_price": totalPrice,
       };
 }
 
@@ -72,7 +76,7 @@ class Grocery {
   String name;
   String image;
   int price;
-  String quantity;
+  int quantity;
 
   factory Grocery.fromJson(Map<String, dynamic> json) => Grocery(
         id: json["id"],
@@ -104,7 +108,7 @@ class SpecialDay {
   String name;
   String image;
   int price;
-  String quantity;
+  int quantity;
 
   factory SpecialDay.fromJson(Map<String, dynamic> json) => SpecialDay(
         id: json["id"],
