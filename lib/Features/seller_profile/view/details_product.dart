@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/market_place/controller/dproduct_details_controller.dart';
 import 'package:sv_craft/Features/market_place/model/product_details.dart';
-import 'package:sv_craft/Features/seller_profile/view/profile.dart';
 import 'package:sv_craft/constant/api_link.dart';
-import 'package:sv_craft/constant/color.dart';
 
-class MarketProductDetails extends StatefulWidget {
-  const MarketProductDetails({
+class SellerProductDetails extends StatefulWidget {
+  const SellerProductDetails({
     Key? key,
     required this.id,
     required this.token,
@@ -19,16 +16,15 @@ class MarketProductDetails extends StatefulWidget {
   final String token;
 
   @override
-  State<MarketProductDetails> createState() => _MarketProductDetailsState();
+  State<SellerProductDetails> createState() => _SellerProductDetailsState();
 }
 
-class _MarketProductDetailsState extends State<MarketProductDetails> {
+class _SellerProductDetailsState extends State<SellerProductDetails> {
   final ProductDetailsController _productDetailsController =
       Get.put(ProductDetailsController());
 
   @override
   Widget build(BuildContext context) {
-    print('idddddddddddddddddddddddddd ${widget.id}');
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
@@ -102,55 +98,55 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                               const SizedBox(
                                 height: 70,
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  InkWell(
-                                    onTap: () {
-                                      //Navigate to SellerProfile with material route
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  SellerProfile()));
-                                    },
-                                    child: Container(
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                        color: Appcolor.buttonColor,
-                                        borderRadius: BorderRadius.circular(8),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors
-                                                .black12, //color of shadow
-                                            spreadRadius: 2, //spread radius
-                                            blurRadius: 5, // blur radius
-                                            offset: Offset(0,
-                                                2), // changes position of shadow
-                                            //first paramerter of offset is left-right
-                                            //second parameter is top to down
-                                          )
-                                        ],
-                                      ),
-                                      width: 180,
-                                      height: 45,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: const [
-                                          Text(
-                                            'Show Profile',
-                                            style: TextStyle(
-                                                color: Appcolor.textColor,
-                                                fontSize: 18),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //     InkWell(
+                              //       onTap: () {
+                              //         //Navigate to SellerProfile with material route
+                              //         Navigator.push(
+                              //             context,
+                              //             MaterialPageRoute(
+                              //                 builder: (context) =>
+                              //                     SellerProfile()));
+                              //       },
+                              //       child: Container(
+                              //         alignment: Alignment.center,
+                              //         decoration: BoxDecoration(
+                              //           color: Appcolor.buttonColor,
+                              //           borderRadius: BorderRadius.circular(8),
+                              //           boxShadow: const [
+                              //             BoxShadow(
+                              //               color: Colors
+                              //                   .black12, //color of shadow
+                              //               spreadRadius: 2, //spread radius
+                              //               blurRadius: 5, // blur radius
+                              //               offset: Offset(0,
+                              //                   2), // changes position of shadow
+                              //               //first paramerter of offset is left-right
+                              //               //second parameter is top to down
+                              //             )
+                              //           ],
+                              //         ),
+                              //         width: 180,
+                              //         height: 45,
+                              //         child: Row(
+                              //           mainAxisAlignment:
+                              //               MainAxisAlignment.center,
+                              //           children: const [
+                              //             Text(
+                              //               'Show Profile',
+                              //               style: TextStyle(
+                              //                   color: Appcolor.textColor,
+                              //                   fontSize: 18),
+                              //               textAlign: TextAlign.center,
+                              //             ),
+                              //           ],
+                              //         ),
+                              //       ),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         )

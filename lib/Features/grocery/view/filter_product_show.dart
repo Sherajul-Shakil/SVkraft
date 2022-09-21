@@ -52,8 +52,8 @@ class _FilterProductShowState extends State<FilterProductShow> {
                     itemCount: data!.length,
                     scrollDirection: Axis.vertical,
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 200,
                       childAspectRatio: .48,
                       mainAxisSpacing: 10,
                       crossAxisSpacing: 10,

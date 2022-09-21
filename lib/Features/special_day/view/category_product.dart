@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/home/home_screen.dart';
+import 'package:sv_craft/Features/profile/view/profile_screen.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
 import 'package:sv_craft/constant/api_link.dart';
+import 'package:sv_craft/constant/color.dart';
 import '../model/special_all_product_model.dart';
 
 class CategoryProuctScreen extends StatefulWidget {
@@ -22,155 +25,197 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
   final SpecialAllProductController _specialAllProductController =
       Get.put(SpecialAllProductController());
   var id;
+  var _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     // final productCount = AppImage.carouselImages.length;
     return SafeArea(
-        child: Scaffold(
-            // appBar: AppBar(
-            //   title: Text(''),
-            // ),
-            body: SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            height: size.height - 80,
-            // color: Colors.blue,
-            child: FutureBuilder<List<SpecialAllProductData>?>(
-                future: _specialAllProductController.getSpecialAllProduct(
-                    widget.token, widget.id),
-                builder: (context, snapshot) {
-                  // print('Print from ui ${snapshot.data}');
-                  if (!snapshot.hasData || snapshot.data == []) {
-                    return const Center(
-                        child: Center(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   title: Text(''),
+        // ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Container(
+                height: size.height - 80,
+                // color: Colors.blue,
+                child: FutureBuilder<List<SpecialAllProductData>?>(
+                    future: _specialAllProductController.getSpecialAllProduct(
+                        widget.token, widget.id),
+                    builder: (context, snapshot) {
+                      // print('Print from ui ${snapshot.data}');
+                      if (!snapshot.hasData || snapshot.data == []) {
+                        return const Center(
                             child: Center(
-                                child: const SpinKitFadingCircle(
-                      color: Colors.black,
-                    ))));
-                  } else {
-                    if (!snapshot.hasData) {
-                      //snapshot.data!.isEmpty
-                      return const Center(child: Text('No Product Found'));
-                    } else {
-                      final data = snapshot.data;
+                                child: Center(
+                                    child: const SpinKitFadingCircle(
+                          color: Colors.black,
+                        ))));
+                      } else {
+                        if (!snapshot.hasData) {
+                          //snapshot.data!.isEmpty
+                          return const Center(child: Text('No Product Found'));
+                        } else {
+                          final data = snapshot.data;
 
-                      return GridView.builder(
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 20, bottom: 10),
-                        itemCount: data!.length,
-                        scrollDirection: Axis.vertical,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: .65,
-                          mainAxisSpacing: 10,
-                          crossAxisSpacing: 10,
-                        ),
-                        itemBuilder: (BuildContext context, int index) =>
-                            InkWell(
-                          child: Container(
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12, //color of shadow
-                                  spreadRadius: 2, //spread radius
-                                  blurRadius: 5, // blur radius
-                                  offset: Offset(
-                                      0, 1), // changes position of shadow
-                                  //first paramerter of offset is left-right
-                                  //second parameter is top to down
-                                )
-                              ],
+                          return GridView.builder(
+                            padding: const EdgeInsets.only(
+                                left: 10, right: 10, top: 20, bottom: 10),
+                            itemCount: data!.length,
+                            scrollDirection: Axis.vertical,
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              childAspectRatio: .65,
+                              mainAxisSpacing: 10,
+                              crossAxisSpacing: 10,
                             ),
+                            itemBuilder: (BuildContext context, int index) =>
+                                InkWell(
+                              child: Container(
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12, //color of shadow
+                                      spreadRadius: 2, //spread radius
+                                      blurRadius: 5, // blur radius
+                                      offset: Offset(
+                                          0, 1), // changes position of shadow
+                                      //first paramerter of offset is left-right
+                                      //second parameter is top to down
+                                    )
+                                  ],
+                                ),
 
-                            child: Column(
-                              children: [
-                                SizedBox(height: size.height * .01),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
-                                  child: Image.network(
-                                    data[index].image != null
-                                        ? '${Appurl.baseURL}${data[index].image}'
-                                        : 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Avatar_flower.png',
-                                    fit: BoxFit.cover,
-                                    width: size.width * .4,
-                                    height: size.height * .22,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: size.height * .01,
-                                ),
-                                Row(
+                                child: Column(
                                   children: [
-                                    SizedBox(
-                                      width: size.width * .03,
+                                    SizedBox(height: size.height * .01),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 5),
+                                      child: Image.network(
+                                        data[index].image != null
+                                            ? '${Appurl.baseURL}${data[index].image}'
+                                            : 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Avatar_flower.png',
+                                        fit: BoxFit.cover,
+                                        width: size.width * .4,
+                                        height: size.height * .22,
+                                      ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    SizedBox(
+                                      height: size.height * .01,
+                                    ),
+                                    Row(
                                       children: [
-                                        Container(
-                                          width: size.width * .4,
-                                          child: Text(
-                                            data[index].name,
-                                            style: const TextStyle(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w500,
-                                              color: Colors.black,
-                                            ),
-                                            textAlign: TextAlign.start,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                        SizedBox(
+                                          width: size.width * .03,
                                         ),
-                                        SizedBox(height: size.height * .01),
-                                        Text(
-                                          'Price : ${data[index].price} kr',
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            fontWeight: FontWeight.w500,
-                                            color: Colors.black,
-                                          ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: size.width * .4,
+                                              child: Text(
+                                                data[index].name,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                                textAlign: TextAlign.start,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ),
+                                            SizedBox(height: size.height * .01),
+                                            Text(
+                                              'Price : ${data[index].price} kr',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                            ),
+                                          ],
                                         ),
                                       ],
                                     ),
+                                    SizedBox(
+                                      height: size.height * .02,
+                                    ),
                                   ],
                                 ),
-                                SizedBox(
-                                  height: size.height * .02,
-                                ),
-                              ],
+                                // height: 147,
+                                // width: ,
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ProductDetails(
+                                            id: data[index].id,
+                                            token: widget.token,
+                                          )),
+                                );
+                              },
                             ),
-                            // height: 147,
-                            // width: ,
-                          ),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ProductDetails(
-                                        id: data[index].id,
-                                        token: widget.token,
-                                      )),
-                            );
-                          },
-                        ),
-                      );
-                    }
-                  }
-                }),
+                          );
+                        }
+                      }
+                    }),
+              ),
+              SizedBox(height: size.height * .02),
+            ],
           ),
-          SizedBox(height: size.height * .02),
-        ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Appcolor.primaryColor,
+          selectedItemColor: Appcolor.iconColor,
+          unselectedItemColor: Colors.grey,
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+              print(_selectedIndex);
+              if (_selectedIndex == 0) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              } else if (_selectedIndex == 1) {
+                print("This is Special day");
+              } else if (_selectedIndex == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              }
+            });
+          },
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.favorite),
+              label: 'Special Day',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
-    )));
+    );
   }
 }

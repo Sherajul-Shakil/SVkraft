@@ -104,8 +104,8 @@ class _MarketFilterState extends State<MarketFilter> {
                           itemCount: data!.length,
                           scrollDirection: Axis.vertical,
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 200,
                             childAspectRatio: .79,
                             mainAxisSpacing: 5,
                             crossAxisSpacing: 5,

@@ -364,12 +364,14 @@ class _GroceryProductState extends State<GroceryProduct> {
           },
           body: _isSearched
               ? GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
                   padding: const EdgeInsets.only(
                       left: 15, right: 15, top: 20, bottom: 10),
                   itemCount: searchedData!.length,
                   scrollDirection: Axis.vertical,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
                     childAspectRatio: .48,
                     mainAxisSpacing: 10,
                     crossAxisSpacing: 10,
@@ -547,232 +549,222 @@ class _GroceryProductState extends State<GroceryProduct> {
                         color: Colors.black,
                       ))),
                     )
-                  : Container(
-                      height: size.height,
-                      color: Color.fromARGB(255, 135, 235, 157),
-                      child: FutureBuilder<List<GroceryAllProductData>?>(
-                          future: _groceryAllProductController
-                              .getGroceryAllProduct(tokenp),
-                          builder: (context, snapshot) {
-                            if (!snapshot.hasData || snapshot.data == null) {
-                              return const Center(
+                  : FutureBuilder<List<GroceryAllProductData>?>(
+                      future: _groceryAllProductController
+                          .getGroceryAllProduct(tokenp),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData || snapshot.data == null) {
+                          return const Center(
+                              child: Center(
                                   child: Center(
-                                      child: Center(
-                                          child: const SpinKitFadingCircle(
-                                color: Colors.black,
-                              ))));
-                            } else {
-                              if (snapshot.data!.isEmpty) {
-                                return const Center(
-                                    child: Text('No Product Found'));
-                              } else {
-                                final data = snapshot.data;
-                                return GridView.builder(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10, top: 20, bottom: 10),
-                                  itemCount: data!.length,
-                                  scrollDirection: Axis.vertical,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: .48,
-                                    mainAxisSpacing: 10,
-                                    crossAxisSpacing: 10,
-                                  ),
-                                  itemBuilder:
-                                      (BuildContext context, int index) =>
-                                          Container(
-                                    //color: Colors.green,
-                                    alignment: Alignment.center,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color:
-                                              Colors.black12, //color of shadow
-                                          spreadRadius: 2, //spread radius
-                                          blurRadius: 5, // blur radius
-                                          offset: Offset(0,
-                                              2), // changes position of shadow
-                                          //first paramerter of offset is left-right
-                                          //second parameter is top to down
-                                        )
+                                      child: const SpinKitFadingCircle(
+                            color: Colors.black,
+                          ))));
+                        } else {
+                          if (snapshot.data!.isEmpty) {
+                            return const Center(
+                                child: Text('No Product Found'));
+                          } else {
+                            final data = snapshot.data;
+                            return GridView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.only(
+                                  left: 10, right: 10, top: 20, bottom: 10),
+                              itemCount: data!.length,
+                              scrollDirection: Axis.vertical,
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
+                                // crossAxisCount: 2,
+                                childAspectRatio: .48,
+                                mainAxisSpacing: 10,
+                                crossAxisSpacing: 10,
+                              ),
+                              itemBuilder: (BuildContext context, int index) =>
+                                  Container(
+                                //color: Colors.green,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(10),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: Colors.black12, //color of shadow
+                                      spreadRadius: 2, //spread radius
+                                      blurRadius: 5, // blur radius
+                                      offset: Offset(
+                                          0, 2), // changes position of shadow
+                                      //first paramerter of offset is left-right
+                                      //second parameter is top to down
+                                    )
+                                  ],
+                                ),
+
+                                child: Column(
+                                  children: [
+                                    // SizedBox(height: size.height * .01),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: size.width * .01),
+                                        IconButton(
+                                            onPressed: () async {
+                                              var message =
+                                                  await _addtoBookmarksController
+                                                      .addToBookmarks(
+                                                          userId,
+                                                          data[index].id,
+                                                          "grocery",
+                                                          tokenp);
+
+                                              if (message != null) {
+                                                Get.snackbar(
+                                                    "Product Added to Bookmarks",
+                                                    message);
+                                              } else {
+                                                print("Not Added");
+                                              }
+                                            },
+                                            icon: const Icon(
+                                              FontAwesome.bookmark,
+                                              color: Colors.black,
+                                              size: 18,
+                                            )),
+                                        const Spacer(),
+                                        Text(
+                                          data[index].marketPrice.toString(),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                        SizedBox(width: size.width * .01),
                                       ],
                                     ),
-
-                                    child: Column(
+                                    Stack(
                                       children: [
-                                        // SizedBox(height: size.height * .01),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: size.width * .01),
-                                            IconButton(
-                                                onPressed: () async {
-                                                  var message =
-                                                      await _addtoBookmarksController
-                                                          .addToBookmarks(
-                                                              userId,
-                                                              data[index].id,
-                                                              "grocery",
-                                                              tokenp);
-
-                                                  if (message != null) {
-                                                    Get.snackbar(
-                                                        "Product Added to Bookmarks",
-                                                        message);
-                                                  } else {
-                                                    print("Not Added");
-                                                  }
-                                                },
-                                                icon: const Icon(
-                                                  FontAwesome.bookmark,
-                                                  color: Colors.black,
-                                                  size: 18,
-                                                )),
-                                            const Spacer(),
-                                            Text(
-                                              data[index]
-                                                  .marketPrice
-                                                  .toString(),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                            SizedBox(width: size.width * .01),
-                                          ],
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 10),
+                                          child: Image.network(
+                                            // 'http://mamun.click/${data[index].image}' ??
+                                            'http://mamun.click/${data[index].image}',
+                                            fit: BoxFit.cover,
+                                            width: 140,
+                                            height: 160,
+                                          ),
                                         ),
-                                        Stack(
+                                        Positioned(
+                                            top: 20,
+                                            right: 0,
+                                            child: Container(
+                                              height: 50,
+                                              width: 50,
+                                              color: Colors.yellow,
+                                              child: Text(
+                                                "${data[index].offPrice.toString()}% off",
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.red),
+                                              ),
+                                            ))
+                                      ],
+                                    ),
+                                    // SizedBox(
+                                    //   height: size.height * .02,
+                                    // ),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: size.width * .03),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                              child: Image.network(
-                                                // 'http://mamun.click/${data[index].image}' ??
-                                                'http://mamun.click/${data[index].image}',
-                                                fit: BoxFit.cover,
-                                                width: 140,
-                                                height: 160,
+                                            Text(
+                                              data[index].name,
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Text(
+                                              "${data[index].price} kr",
+                                              style: const TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.black,
                                               ),
                                             ),
-                                            Positioned(
-                                                top: 20,
-                                                right: 0,
-                                                child: Container(
-                                                  height: 50,
-                                                  width: 50,
-                                                  color: Colors.yellow,
-                                                  child: Text(
-                                                    "${data[index].offPrice.toString()}% off",
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: Colors.red),
-                                                  ),
-                                                ))
                                           ],
                                         ),
-                                        // SizedBox(
-                                        //   height: size.height * .02,
-                                        // ),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: size.width * .03),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  data[index].name,
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black,
-                                                  ),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                                Text(
-                                                  "${data[index].price} kr",
-                                                  style: const TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: size.height * .01,
-                                        ),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: size.width * .03),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  height: size.height * .06,
-                                                  width: size.width * .4,
-                                                  child: Text(
-                                                    data[index].description,
-                                                    style: const TextStyle(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color: Colors.black,
-                                                    ),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    maxLines: 3,
-                                                  ),
-                                                ),
-                                                // Text(
-                                                //   "also the leap into electronic",
-                                                //   style: TextStyle(
-                                                //     fontSize: 12,
-                                                //     fontWeight: FontWeight.w500,
-                                                //     color: Colors.black,
-                                                //   ),
-                                                // ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: size.height * .01,
-                                        ),
-                                        data != null
-                                            ? GroceryCount(
-                                                index: index,
-                                                // userId: userId,
-                                                productId: data[index].id,
-                                                price: data[index].price,
-                                              )
-                                            : const Center(
-                                                child: Center(
-                                                    child: SpinKitFadingCircle(
-                                                color: Colors.black,
-                                              ))),
                                       ],
                                     ),
-                                    // height: 147,
-                                    // width: ,
-                                  ),
-                                );
-                              }
-                            }
-                          }),
-                    ),
+                                    SizedBox(
+                                      height: size.height * .01,
+                                    ),
+                                    Row(
+                                      children: [
+                                        SizedBox(width: size.width * .03),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              height: size.height * .06,
+                                              width: size.width * .4,
+                                              child: Text(
+                                                data[index].description,
+                                                style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 3,
+                                              ),
+                                            ),
+                                            // Text(
+                                            //   "also the leap into electronic",
+                                            //   style: TextStyle(
+                                            //     fontSize: 12,
+                                            //     fontWeight: FontWeight.w500,
+                                            //     color: Colors.black,
+                                            //   ),
+                                            // ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: size.height * .01,
+                                    ),
+                                    data != null
+                                        ? GroceryCount(
+                                            index: index,
+                                            // userId: userId,
+                                            productId: data[index].id,
+                                            price: data[index].price,
+                                          )
+                                        : const Center(
+                                            child: Center(
+                                                child: SpinKitFadingCircle(
+                                            color: Colors.black,
+                                          ))),
+                                  ],
+                                ),
+                                // height: 147,
+                                // width: ,
+                              ),
+                            );
+                          }
+                        }
+                      }),
         ),
         // bottomNavigationBar: const GroceryNav(),
         bottomNavigationBar: BottomNavigationBar(

@@ -37,6 +37,7 @@ class _CartScreenState extends State<CartScreen> {
   var itemCount = 0;
 
   var Address;
+  var totalPrice = 0;
 
   @override
   void initState() {
@@ -215,6 +216,9 @@ class _CartScreenState extends State<CartScreen> {
                                           cartData.grocery[index].price /
                                               cartData.grocery[index].quantity;
 
+                                      totalPrice = cartData.totalPrice;
+                                      print(totalPrice);
+
                                       getindex(cartData.grocery.length);
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -332,92 +336,72 @@ class _CartScreenState extends State<CartScreen> {
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    //Product count
-                                                                    cartData.grocery[index].quantity >
-                                                                            1
-                                                                        ? cartData
-                                                                            .grocery[
-                                                                                index]
-                                                                            .quantity = (cartData
-                                                                                .grocery[index].quantity) -
-                                                                            1
-                                                                        : null;
+                                                              cartData.grocery[index]
+                                                                          .quantity >
+                                                                      1
+                                                                  ? InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          //Product count
+                                                                          cartData.grocery[index].quantity > 1
+                                                                              ? cartData.grocery[index].quantity = (cartData.grocery[index].quantity) - 1
+                                                                              : null;
 
-                                                                    //Item price total
-                                                                    cartData
-                                                                        .grocery[
-                                                                            index]
-                                                                        .price = cartData
-                                                                            .grocery[
-                                                                                index]
-                                                                            .quantity *
-                                                                        singleGroceryPrice
-                                                                            .toInt();
+                                                                          //Item price total
+                                                                          cartData
+                                                                              .grocery[index]
+                                                                              .price = cartData.grocery[index].quantity * singleGroceryPrice.toInt();
 
-                                                                    //Total price
-                                                                    cartData.grocery[index].quantity >
-                                                                            1
-                                                                        ? cartData
-                                                                            .totalPrice = cartData
-                                                                                .totalPrice -
-                                                                            (cartData.grocery[index].price / cartData.grocery[index].quantity).toInt()
-                                                                        : null;
-                                                                  });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(5),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            220,
-                                                                            245,
-                                                                            243,
-                                                                            243),
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(0),
-                                                                    boxShadow: const [
-                                                                      BoxShadow(
-                                                                        color: Colors
-                                                                            .black12, //color of shadow
-                                                                        spreadRadius:
-                                                                            1, //spread radius
-                                                                        blurRadius:
-                                                                            0, // blur radius
-                                                                        offset: Offset(
-                                                                            0,
-                                                                            0), // changes position of shadow
-                                                                        //first paramerter of offset is left-right
-                                                                        //second parameter is top to down
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  width: 35,
-                                                                  height: 35,
-                                                                  child:
-                                                                      const Text(
-                                                                    '-',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black54,
-                                                                        fontSize:
-                                                                            20),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                                          //Total price
+                                                                          cartData.grocery[index].quantity >= 1 && cartData.totalPrice > 0
+                                                                              ? cartData.totalPrice = cartData.totalPrice - (cartData.grocery[index].price / cartData.grocery[index].quantity).toInt()
+                                                                              : null;
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        padding:
+                                                                            const EdgeInsets.all(5),
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color: Color.fromARGB(
+                                                                              220,
+                                                                              245,
+                                                                              243,
+                                                                              243),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(0),
+                                                                          boxShadow: const [
+                                                                            BoxShadow(
+                                                                              color: Colors.black12, //color of shadow
+                                                                              spreadRadius: 1, //spread radius
+                                                                              blurRadius: 0, // blur radius
+                                                                              offset: Offset(0, 0), // changes position of shadow
+                                                                              //first paramerter of offset is left-right
+                                                                              //second parameter is top to down
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        width:
+                                                                            35,
+                                                                        height:
+                                                                            35,
+                                                                        child:
+                                                                            const Text(
+                                                                          '-',
+                                                                          style: TextStyle(
+                                                                              color: Colors.black54,
+                                                                              fontSize: 20),
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : Container(),
                                                               SizedBox(
                                                                 height: 2,
                                                               ),

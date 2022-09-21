@@ -48,7 +48,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   var searchedData;
   bool _showfilter = false;
   String? priceRange;
-  var _selectedIndex = 2;
+  var _selectedIndex = 1;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -348,8 +348,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                               itemCount: searchedData.length,
                               scrollDirection: Axis.vertical,
                               gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 200,
                                 childAspectRatio: .79,
                                 mainAxisSpacing: 5,
                                 crossAxisSpacing: 5,
@@ -504,8 +504,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                   scrollDirection:
                                                       Axis.vertical,
                                                   gridDelegate:
-                                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount: 2,
+                                                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                    maxCrossAxisExtent: 200,
                                                     childAspectRatio: .79,
                                                     mainAxisSpacing: 5,
                                                     crossAxisSpacing: 5,

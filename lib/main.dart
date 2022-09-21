@@ -9,6 +9,7 @@ import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/view/market_place.dart';
 import 'package:sv_craft/Features/profile/view/address_page.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
+import 'package:sv_craft/Features/seller_profile/view/profile.dart';
 import 'package:sv_craft/Features/special_day/view/special_home_screen.dart';
 import 'package:sv_craft/common/test.dart';
 import 'package:sv_craft/constant/color.dart';

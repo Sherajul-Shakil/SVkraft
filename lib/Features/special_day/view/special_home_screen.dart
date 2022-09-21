@@ -34,7 +34,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
   var id;
-  var _selectedIndex = 2;
+  var _selectedIndex = 1;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -264,8 +264,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                   physics: NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
+                                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
                                     childAspectRatio: 1.4,
                                     mainAxisSpacing: 0.0,
                                     crossAxisSpacing: 0.0,
@@ -363,8 +363,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                           itemCount: data.length,
                                           scrollDirection: Axis.horizontal,
                                           gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 1,
+                                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 400,
                                             childAspectRatio: 1.35,
                                             mainAxisSpacing: 10,
                                             crossAxisSpacing: 10,
@@ -546,8 +546,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                           itemCount: data.length,
                                           scrollDirection: Axis.horizontal,
                                           gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 1,
+                                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 400,
                                             childAspectRatio: 1.35,
                                             mainAxisSpacing: 10,
                                             crossAxisSpacing: 10,
@@ -728,8 +728,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                           itemCount: data.length,
                                           scrollDirection: Axis.horizontal,
                                           gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 1,
+                                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                            maxCrossAxisExtent: 400,
                                             childAspectRatio: 1.35,
                                             mainAxisSpacing: 10,
                                             crossAxisSpacing: 10,
