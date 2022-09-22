@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:sv_craft/Features/add_market_product/view/category_city.dart';
 import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
+import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
@@ -48,7 +51,8 @@ class _MarketPlaceState extends State<MarketPlace> {
   var searchedData;
   bool _showfilter = false;
   String? priceRange;
-  var _selectedIndex = 1;
+  var _selectedIndex = 2;
+  PageController? _pageController;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -168,6 +172,17 @@ class _MarketPlaceState extends State<MarketPlace> {
     //print(tokenp);
     return SafeArea(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddCategoryCity(),
+              ),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
         backgroundColor: Color.fromARGB(255, 143, 211, 231),
         appBar: AppBar(
           leadingWidth: 300,
@@ -704,8 +719,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                               underline: Container(),
                               // set the color of the dropdown menu
                               dropdownColor: Colors.white,
-                              icon: const Icon(
-                                Icons.arrow_downward,
+                              icon: Icon(
+                                FontAwesome.chevron_down,
                                 color: Colors.white,
                               ),
                               isExpanded: true,
@@ -727,7 +742,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                           alignment: Alignment.centerLeft,
                                           child: ListTile(
                                             leading: Image.network(
-                                              item.image!,
+                                              "http://mamun.click/${item.image}",
                                               height: 20,
                                               width: 20,
                                               fit: BoxFit.cover,
@@ -741,7 +756,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                     value: item.categoryName,
                                     child: ListTile(
                                       leading: Image.network(
-                                        item.image!,
+                                        "http://mamun.click/${item.image}",
                                         height: 20,
                                         width: 20,
                                         fit: BoxFit.cover,
@@ -813,7 +828,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                               focusColor: Colors.red,
 
                               icon: const Icon(
-                                Icons.arrow_downward,
+                                FontAwesome.chevron_down,
                                 color: Colors.white,
                               ),
                               isExpanded: true,
@@ -919,7 +934,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                               // set the color of the dropdown menu
                               dropdownColor: Colors.white,
                               icon: const Icon(
-                                Icons.arrow_downward,
+                                FontAwesome.chevron_down,
                                 color: Colors.white,
                               ),
                               isExpanded: true,
@@ -1083,43 +1098,68 @@ class _MarketPlaceState extends State<MarketPlace> {
                   ],
                 ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavyBar(
           backgroundColor: Appcolor.primaryColor,
-          selectedItemColor: Appcolor.iconColor,
-          unselectedItemColor: Colors.grey,
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-              print(_selectedIndex);
-              if (_selectedIndex == 0) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              } else if (_selectedIndex == 1) {
-                print("This is Market place");
-              } else if (_selectedIndex == 2) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              }
-            });
-          },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+          selectedIndex: _selectedIndex,
+          showElevation: true,
+          onItemSelected: (index) => setState(() {
+            _selectedIndex = index;
+            _pageController?.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.ease);
+
+            if (_selectedIndex == 0) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            } else if (_selectedIndex == 1) {
+              setState(() {
+                _showfilter = true;
+              });
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => const CartScreen()),
+              // );
+            } else if (_selectedIndex == 2) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+              // );
+
+            } else if (_selectedIndex == 3) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+              // );
+            } else if (_selectedIndex == 4) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            }
+          }),
+          items: [
+            BottomNavyBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              title: Text('Home'),
+              activeColor: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag),
-              label: 'Market Place',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
+            BottomNavyBarItem(
+                icon: Icon(Icons.search),
+                title: Text('Search'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.favorite),
+                title: Text('Market Pace'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.bookmark_border),
+                title: Text('Bookmarks'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profile'),
+                activeColor: Colors.white),
           ],
         ),
       ),

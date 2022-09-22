@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/addtocart_con.dart';
@@ -156,12 +157,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           color: Colors.black87,
                                           fontSize: 30,
                                           fontWeight: FontWeight.normal)),
-                                  Text(
-                                      "${data.description} uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.normal)),
+                                  Html(
+                                    data: data.description,
+                                    style: {
+                                      "html": Style(
+                                        fontSize: FontSize(18.0),
+                                        color: Colors.black87,
+                                      ),
+                                    },
+                                  ),
                                   SizedBox(
                                     height: size.height * .05,
                                   ),

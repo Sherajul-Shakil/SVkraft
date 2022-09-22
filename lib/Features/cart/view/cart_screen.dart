@@ -1,3 +1,4 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
@@ -33,6 +34,7 @@ class _CartScreenState extends State<CartScreen> {
   var cartData;
   // var totalPrice = 0.0;
   var _selectedIndex = 1;
+  PageController? _pageController;
 
   var itemCount = 0;
 
@@ -1440,43 +1442,55 @@ class _CartScreenState extends State<CartScreen> {
                     ],
                   ),
           ),
-          bottomNavigationBar: BottomNavigationBar(
+          bottomNavigationBar: BottomNavyBar(
             backgroundColor: Appcolor.primaryColor,
-            selectedItemColor: Appcolor.iconColor,
-            unselectedItemColor: Colors.grey,
-            currentIndex: _selectedIndex,
-            onTap: (int index) {
-              setState(() {
-                _selectedIndex = index;
-                print(_selectedIndex);
-                if (_selectedIndex == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  );
-                } else if (_selectedIndex == 1) {
-                  print('This is Grocery page');
-                } else if (_selectedIndex == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
-                  );
-                }
-              });
-            },
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
+            selectedIndex: _selectedIndex,
+            showElevation: true,
+            onItemSelected: (index) => setState(() {
+              _selectedIndex = index;
+              _pageController?.animateToPage(index,
+                  duration: Duration(milliseconds: 300), curve: Curves.ease);
+
+              if (_selectedIndex == 0) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                );
+              } else if (_selectedIndex == 1) {
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => const CartScreen()),
+                // );
+              } else if (_selectedIndex == 2) {
+                // Navigator.pushReplacement(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+                // );
+              } else if (_selectedIndex == 3) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                );
+              }
+            }),
+            items: [
+              BottomNavyBarItem(
                 icon: Icon(Icons.home),
-                label: 'Home',
+                title: Text('Home'),
+                activeColor: Colors.white,
               ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_cart),
-                label: 'Cart',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.person),
-                label: 'Profile',
-              ),
+              BottomNavyBarItem(
+                  icon: Icon(Icons.shopping_cart),
+                  title: Text('Cart'),
+                  activeColor: Colors.white),
+              BottomNavyBarItem(
+                  icon: Icon(Icons.bookmark_border),
+                  title: Text('Bookmarks'),
+                  activeColor: Colors.white),
+              BottomNavyBarItem(
+                  icon: Icon(Icons.person),
+                  title: Text('Profile'),
+                  activeColor: Colors.white),
             ],
           ),
         ),

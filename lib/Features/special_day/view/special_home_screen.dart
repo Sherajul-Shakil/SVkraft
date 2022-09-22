@@ -1,6 +1,9 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
@@ -10,6 +13,7 @@ import 'package:sv_craft/Features/special_day/model/category_1.dart';
 import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
 import 'package:sv_craft/Features/special_day/view/category_product.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
+import 'package:sv_craft/Features/special_day/view/widgets/alarm_system.dart';
 import 'package:sv_craft/constant/api_link.dart';
 
 import '../../../constant/color.dart';
@@ -34,7 +38,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
   bool _searchBoolean = false;
   List<int> _searchIndexList = [];
   var id;
-  var _selectedIndex = 1;
+  var _selectedIndex = 2;
+  PageController? _pageController;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -111,6 +116,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Color.fromARGB(255, 235, 102, 179),
         key: _scaffoldKey,
         drawer: buildDrawer(),
         appBar: AppBar(
@@ -270,7 +276,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                     mainAxisSpacing: 0.0,
                                     crossAxisSpacing: 0.0,
                                   ),
-                                  itemCount: data!.length,
+                                  itemCount: data!.length > 4 ? 4 : data.length,
                                   itemBuilder: (context, index) {
                                     return CategoryCard(
                                       text: data[index].name,
@@ -295,10 +301,51 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                             }
                           }),
                     ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AlarmScreen()),
+                        );
+                      },
+                      child: DottedBorder(
+                        borderType: BorderType.RRect,
+                        radius: Radius.circular(12),
+                        padding: EdgeInsets.all(6),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.all(Radius.circular(12)),
+                          child: Container(
+                            height: size.height * .2,
+                            width: size.width * .9,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "https://cdn.pixabay.com/photo/2014/12/08/11/49/couple-560783__340.jpg"),
+                                    fit: BoxFit.cover,
+                                    colorFilter: ColorFilter.mode(
+                                        Colors.black.withOpacity(0.5),
+                                        BlendMode.darken))),
+                            // color: Colors.amber,
+                            child: Center(
+                              child: Text("Set Your Special Day",
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
                     Container(
                       width: size.width,
-                      height: size.height * .37 * 3,
-                      color: const Color.fromARGB(255, 238, 238, 238),
+                      height: size.height * .37,
+                      color: const Color.fromARGB(255, 235, 102, 179),
                       child: Column(
                         children: [
                           // SizedBox(
@@ -312,7 +359,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                               children: [
                                 const Text("Eid Adha",
                                     style: TextStyle(
-                                        color: Colors.black54,
+                                        color: Colors.black,
                                         fontSize: 20,
                                         fontWeight: FontWeight.normal)),
                                 InkWell(
@@ -330,7 +377,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                           ),
                           InkWell(
                             child: Container(
-                              height: size.height * .3,
+                              height: size.height * .32,
                               // color: Colors.blue,
                               child: FutureBuilder<
                                       List<SpecialAllProductData>?>(
@@ -365,7 +412,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                           gridDelegate:
                                               const SliverGridDelegateWithMaxCrossAxisExtent(
                                             maxCrossAxisExtent: 400,
-                                            childAspectRatio: 1.35,
+                                            childAspectRatio: 1.30,
                                             mainAxisSpacing: 10,
                                             crossAxisSpacing: 10,
                                           ),
@@ -404,8 +451,8 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                                   child: Image.network(
                                                     'http://mamun.click/${data[index].image}',
                                                     fit: BoxFit.cover,
-                                                    width: 130,
-                                                    height: 140,
+                                                    width: size.width * .38,
+                                                    height: size.height * .16,
                                                   ),
                                                 ),
                                                 SizedBox(
@@ -426,7 +473,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                                       children: [
                                                         Container(
                                                           width:
-                                                              size.width * .4,
+                                                              size.width * .3,
                                                           child: Text(
                                                             data[index].name,
                                                             style:
@@ -487,412 +534,434 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                           ),
 
                           //2nd row
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 20, right: 20, bottom: 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("best Sellers",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.normal)),
-                                InkWell(
-                                  child: const Text("View All",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.normal)),
-                                  onTap: () {
-                                    Get.toNamed("/specialcategoryproduct");
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            child: Container(
-                              height: size.height * .3,
-                              // color: Colors.blue,
-                              child: FutureBuilder<
-                                      List<SpecialAllProductData>?>(
-                                  future: _specialAllProductController
-                                      .getSpecialAllProduct(tokenp, 2),
-                                  builder: (context, snapshot) {
-                                    if (!snapshot.hasData ||
-                                        snapshot.data == null) {
-                                      return const Center(
-                                          child: Center(
-                                              child: Center(
-                                                  child:
-                                                      const SpinKitFadingCircle(
-                                        color: Colors.black,
-                                      ))));
-                                    } else {
-                                      if (snapshot.data!.isEmpty) {
-                                        //snapshot.data!.isEmpty
-                                        return const Center(
-                                            child: Text('No Product Found'));
-                                      } else {
-                                        final data = snapshot.data;
-                                        id = data![0].id;
-                                        return GridView.builder(
-                                          padding: const EdgeInsets.only(
-                                              left: 15,
-                                              right: 15,
-                                              top: 20,
-                                              bottom: 10),
-                                          itemCount: data.length,
-                                          scrollDirection: Axis.horizontal,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 400,
-                                            childAspectRatio: 1.35,
-                                            mainAxisSpacing: 10,
-                                            crossAxisSpacing: 10,
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              Container(
-                                            // color: Colors.red,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors
-                                                      .black12, //color of shadow
-                                                  spreadRadius:
-                                                      2, //spread radius
-                                                  blurRadius: 5, // blur radius
-                                                  offset: Offset(0,
-                                                      1), // changes position of shadow
-                                                  //first paramerter of offset is left-right
-                                                  //second parameter is top to down
-                                                )
-                                              ],
-                                            ),
+                          // Padding(
+                          //   padding: const EdgeInsets.only(
+                          //       top: 20, left: 20, right: 20, bottom: 0),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       const Text("best Sellers",
+                          //           style: TextStyle(
+                          //               color: Colors.black54,
+                          //               fontSize: 20,
+                          //               fontWeight: FontWeight.normal)),
+                          //       InkWell(
+                          //         child: const Text("View All",
+                          //             style: TextStyle(
+                          //                 color: Colors.black54,
+                          //                 fontSize: 20,
+                          //                 fontWeight: FontWeight.normal)),
+                          //         onTap: () {
+                          //           Get.toNamed("/specialcategoryproduct");
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // InkWell(
+                          //   child: Container(
+                          //     height: size.height * .3,
+                          //     // color: Colors.blue,
+                          //     child: FutureBuilder<
+                          //             List<SpecialAllProductData>?>(
+                          //         future: _specialAllProductController
+                          //             .getSpecialAllProduct(tokenp, 2),
+                          //         builder: (context, snapshot) {
+                          //           if (!snapshot.hasData ||
+                          //               snapshot.data == null) {
+                          //             return const Center(
+                          //                 child: Center(
+                          //                     child: Center(
+                          //                         child:
+                          //                             const SpinKitFadingCircle(
+                          //               color: Colors.black,
+                          //             ))));
+                          //           } else {
+                          //             if (snapshot.data!.isEmpty) {
+                          //               //snapshot.data!.isEmpty
+                          //               return const Center(
+                          //                   child: Text('No Product Found'));
+                          //             } else {
+                          //               final data = snapshot.data;
+                          //               id = data![0].id;
+                          //               return GridView.builder(
+                          //                 padding: const EdgeInsets.only(
+                          //                     left: 15,
+                          //                     right: 15,
+                          //                     top: 20,
+                          //                     bottom: 10),
+                          //                 itemCount: data.length,
+                          //                 scrollDirection: Axis.horizontal,
+                          //                 gridDelegate:
+                          //                     const SliverGridDelegateWithMaxCrossAxisExtent(
+                          //                   maxCrossAxisExtent: 400,
+                          //                   childAspectRatio: 1.35,
+                          //                   mainAxisSpacing: 10,
+                          //                   crossAxisSpacing: 10,
+                          //                 ),
+                          //                 itemBuilder: (BuildContext context,
+                          //                         int index) =>
+                          //                     Container(
+                          //                   // color: Colors.red,
+                          //                   alignment: Alignment.center,
+                          //                   decoration: BoxDecoration(
+                          //                     color: Colors.white,
+                          //                     borderRadius:
+                          //                         BorderRadius.circular(10),
+                          //                     boxShadow: const [
+                          //                       BoxShadow(
+                          //                         color: Colors
+                          //                             .black12, //color of shadow
+                          //                         spreadRadius:
+                          //                             2, //spread radius
+                          //                         blurRadius: 5, // blur radius
+                          //                         offset: Offset(0,
+                          //                             1), // changes position of shadow
+                          //                         //first paramerter of offset is left-right
+                          //                         //second parameter is top to down
+                          //                       )
+                          //                     ],
+                          //                   ),
 
-                                            child: Column(
-                                              children: [
-                                                //SizedBox(height: size.height * .01),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                                  child: Image.network(
-                                                    'http://mamun.click/${data[index].image}',
-                                                    fit: BoxFit.cover,
-                                                    width: 130,
-                                                    height: 140,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: size.height * .02,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                          width:
-                                                              size.width * .4,
-                                                          child: Text(
-                                                            data[index].name,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Text(
-                                                          "Price: ${data[index].price}",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: size.height * .02,
-                                                ),
-                                              ],
-                                            ),
-                                            // height: 147,
-                                            // width: ,
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  }),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProductDetails(
-                                          id: id,
-                                          token: tokenp,
-                                        )),
-                              );
-                            },
-                          ),
-                          //3rd row
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 20, right: 20, bottom: 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("New In",
-                                    style: TextStyle(
-                                        color: Colors.black54,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.normal)),
-                                InkWell(
-                                  child: const Text("View All",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.normal)),
-                                  onTap: () {
-                                    Get.toNamed("/specialcategoryproduct");
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            child: Container(
-                              height: size.height * .3,
-                              // color: Colors.blue,
-                              child: FutureBuilder<
-                                      List<SpecialAllProductData>?>(
-                                  future: _specialAllProductController
-                                      .getSpecialAllProduct(tokenp, 2),
-                                  builder: (context, snapshot) {
-                                    if (!snapshot.hasData ||
-                                        snapshot.data == null) {
-                                      return const Center(
-                                          child: Center(
-                                              child: Center(
-                                                  child:
-                                                      const SpinKitFadingCircle(
-                                        color: Colors.black,
-                                      ))));
-                                    } else {
-                                      if (snapshot.data!.isEmpty) {
-                                        //snapshot.data!.isEmpty
-                                        return const Center(
-                                            child: Text('No Product Found'));
-                                      } else {
-                                        final data = snapshot.data;
-                                        id = data![0].id;
-                                        return GridView.builder(
-                                          padding: const EdgeInsets.only(
-                                              left: 15,
-                                              right: 15,
-                                              top: 20,
-                                              bottom: 10),
-                                          itemCount: data.length,
-                                          scrollDirection: Axis.horizontal,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 400,
-                                            childAspectRatio: 1.35,
-                                            mainAxisSpacing: 10,
-                                            crossAxisSpacing: 10,
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              Container(
-                                            // color: Colors.red,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors
-                                                      .black12, //color of shadow
-                                                  spreadRadius:
-                                                      2, //spread radius
-                                                  blurRadius: 5, // blur radius
-                                                  offset: Offset(0,
-                                                      1), // changes position of shadow
-                                                  //first paramerter of offset is left-right
-                                                  //second parameter is top to down
-                                                )
-                                              ],
-                                            ),
+                          //                   child: Column(
+                          //                     children: [
+                          //                       //SizedBox(height: size.height * .01),
+                          //                       Padding(
+                          //                         padding: const EdgeInsets
+                          //                                 .symmetric(
+                          //                             horizontal: 10,
+                          //                             vertical: 10),
+                          //                         child: Image.network(
+                          //                           'http://mamun.click/${data[index].image}',
+                          //                           fit: BoxFit.cover,
+                          //                           width: 130,
+                          //                           height: 140,
+                          //                         ),
+                          //                       ),
+                          //                       SizedBox(
+                          //                         height: size.height * .02,
+                          //                       ),
+                          //                       Row(
+                          //                         children: [
+                          //                           const SizedBox(
+                          //                             width: 10,
+                          //                           ),
+                          //                           Column(
+                          //                             crossAxisAlignment:
+                          //                                 CrossAxisAlignment
+                          //                                     .start,
+                          //                             mainAxisAlignment:
+                          //                                 MainAxisAlignment
+                          //                                     .center,
+                          //                             children: [
+                          //                               Container(
+                          //                                 width:
+                          //                                     size.width * .4,
+                          //                                 child: Text(
+                          //                                   data[index].name,
+                          //                                   style:
+                          //                                       const TextStyle(
+                          //                                     fontSize: 12,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .w500,
+                          //                                     color:
+                          //                                         Colors.black,
+                          //                                   ),
+                          //                                   textAlign:
+                          //                                       TextAlign.start,
+                          //                                   overflow:
+                          //                                       TextOverflow
+                          //                                           .ellipsis,
+                          //                                 ),
+                          //                               ),
+                          //                               SizedBox(
+                          //                                 height: 10,
+                          //                               ),
+                          //                               Text(
+                          //                                 "Price: ${data[index].price}",
+                          //                                 style: TextStyle(
+                          //                                   fontSize: 12,
+                          //                                   fontWeight:
+                          //                                       FontWeight.w500,
+                          //                                   color: Colors.black,
+                          //                                 ),
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                         ],
+                          //                       ),
+                          //                       SizedBox(
+                          //                         height: size.height * .02,
+                          //                       ),
+                          //                     ],
+                          //                   ),
+                          //                   // height: 147,
+                          //                   // width: ,
+                          //                 ),
+                          //               );
+                          //             }
+                          //           }
+                          //         }),
+                          //   ),
+                          //   onTap: () {
+                          //     Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => ProductDetails(
+                          //                 id: id,
+                          //                 token: tokenp,
+                          //               )),
+                          //     );
+                          //   },
+                          // ),
+                          // //3rd row
+                          // Padding(
+                          //   padding: const EdgeInsets.only(
+                          //       top: 20, left: 20, right: 20, bottom: 0),
+                          //   child: Row(
+                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //     children: [
+                          //       const Text("New In",
+                          //           style: TextStyle(
+                          //               color: Colors.black54,
+                          //               fontSize: 20,
+                          //               fontWeight: FontWeight.normal)),
+                          //       InkWell(
+                          //         child: const Text("View All",
+                          //             style: TextStyle(
+                          //                 color: Colors.black54,
+                          //                 fontSize: 20,
+                          //                 fontWeight: FontWeight.normal)),
+                          //         onTap: () {
+                          //           Get.toNamed("/specialcategoryproduct");
+                          //         },
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
+                          // InkWell(
+                          //   child: Container(
+                          //     height: size.height * .3,
+                          //     // color: Colors.blue,
+                          //     child: FutureBuilder<
+                          //             List<SpecialAllProductData>?>(
+                          //         future: _specialAllProductController
+                          //             .getSpecialAllProduct(tokenp, 2),
+                          //         builder: (context, snapshot) {
+                          //           if (!snapshot.hasData ||
+                          //               snapshot.data == null) {
+                          //             return const Center(
+                          //                 child: Center(
+                          //                     child: Center(
+                          //                         child:
+                          //                             const SpinKitFadingCircle(
+                          //               color: Colors.black,
+                          //             ))));
+                          //           } else {
+                          //             if (snapshot.data!.isEmpty) {
+                          //               //snapshot.data!.isEmpty
+                          //               return const Center(
+                          //                   child: Text('No Product Found'));
+                          //             } else {
+                          //               final data = snapshot.data;
+                          //               id = data![0].id;
+                          //               return GridView.builder(
+                          //                 padding: const EdgeInsets.only(
+                          //                     left: 15,
+                          //                     right: 15,
+                          //                     top: 20,
+                          //                     bottom: 10),
+                          //                 itemCount: data.length,
+                          //                 scrollDirection: Axis.horizontal,
+                          //                 gridDelegate:
+                          //                     const SliverGridDelegateWithMaxCrossAxisExtent(
+                          //                   maxCrossAxisExtent: 400,
+                          //                   childAspectRatio: 1.35,
+                          //                   mainAxisSpacing: 10,
+                          //                   crossAxisSpacing: 10,
+                          //                 ),
+                          //                 itemBuilder: (BuildContext context,
+                          //                         int index) =>
+                          //                     Container(
+                          //                   // color: Colors.red,
+                          //                   alignment: Alignment.center,
+                          //                   decoration: BoxDecoration(
+                          //                     color: Colors.white,
+                          //                     borderRadius:
+                          //                         BorderRadius.circular(10),
+                          //                     boxShadow: const [
+                          //                       BoxShadow(
+                          //                         color: Colors
+                          //                             .black12, //color of shadow
+                          //                         spreadRadius:
+                          //                             2, //spread radius
+                          //                         blurRadius: 5, // blur radius
+                          //                         offset: Offset(0,
+                          //                             1), // changes position of shadow
+                          //                         //first paramerter of offset is left-right
+                          //                         //second parameter is top to down
+                          //                       )
+                          //                     ],
+                          //                   ),
 
-                                            child: Column(
-                                              children: [
-                                                //SizedBox(height: size.height * .01),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                                  child: Image.network(
-                                                    'http://mamun.click/${data[index].image}',
-                                                    fit: BoxFit.cover,
-                                                    width: 130,
-                                                    height: 140,
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: size.height * .02,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 10,
-                                                    ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
-                                                      children: [
-                                                        Container(
-                                                          width:
-                                                              size.width * .4,
-                                                          child: Text(
-                                                            data[index].name,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                          ),
-                                                        ),
-                                                        SizedBox(
-                                                          height: 10,
-                                                        ),
-                                                        Text(
-                                                          "Price: ${data[index].price}",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.black,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: size.height * .02,
-                                                ),
-                                              ],
-                                            ),
-                                            // height: 147,
-                                            // width: ,
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  }),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProductDetails(
-                                          id: id,
-                                          token: tokenp,
-                                        )),
-                              );
-                            },
-                          ),
+                          //                   child: Column(
+                          //                     children: [
+                          //                       //SizedBox(height: size.height * .01),
+                          //                       Padding(
+                          //                         padding: const EdgeInsets
+                          //                                 .symmetric(
+                          //                             horizontal: 10,
+                          //                             vertical: 10),
+                          //                         child: Image.network(
+                          //                           'http://mamun.click/${data[index].image}',
+                          //                           fit: BoxFit.cover,
+                          //                           width: 130,
+                          //                           height: 140,
+                          //                         ),
+                          //                       ),
+                          //                       SizedBox(
+                          //                         height: size.height * .02,
+                          //                       ),
+                          //                       Row(
+                          //                         children: [
+                          //                           const SizedBox(
+                          //                             width: 10,
+                          //                           ),
+                          //                           Column(
+                          //                             crossAxisAlignment:
+                          //                                 CrossAxisAlignment
+                          //                                     .start,
+                          //                             mainAxisAlignment:
+                          //                                 MainAxisAlignment
+                          //                                     .center,
+                          //                             children: [
+                          //                               Container(
+                          //                                 width:
+                          //                                     size.width * .4,
+                          //                                 child: Text(
+                          //                                   data[index].name,
+                          //                                   style:
+                          //                                       const TextStyle(
+                          //                                     fontSize: 12,
+                          //                                     fontWeight:
+                          //                                         FontWeight
+                          //                                             .w500,
+                          //                                     color:
+                          //                                         Colors.black,
+                          //                                   ),
+                          //                                   textAlign:
+                          //                                       TextAlign.start,
+                          //                                   overflow:
+                          //                                       TextOverflow
+                          //                                           .ellipsis,
+                          //                                 ),
+                          //                               ),
+                          //                               SizedBox(
+                          //                                 height: 10,
+                          //                               ),
+                          //                               Text(
+                          //                                 "Price: ${data[index].price}",
+                          //                                 style: TextStyle(
+                          //                                   fontSize: 12,
+                          //                                   fontWeight:
+                          //                                       FontWeight.w500,
+                          //                                   color: Colors.black,
+                          //                                 ),
+                          //                               ),
+                          //                             ],
+                          //                           ),
+                          //                         ],
+                          //                       ),
+                          //                       SizedBox(
+                          //                         height: size.height * .02,
+                          //                       ),
+                          //                     ],
+                          //                   ),
+                          //                   // height: 147,
+                          //                   // width: ,
+                          //                 ),
+                          //               );
+                          //             }
+                          //           }
+                          //         }),
+                          //   ),
+                          //   onTap: () {
+                          //     Navigator.push(
+                          //       context,
+                          //       MaterialPageRoute(
+                          //           builder: (context) => ProductDetails(
+                          //                 id: id,
+                          //                 token: tokenp,
+                          //               )),
+                          //     );
+                          //   },
+                          // ),
                         ],
                       ),
                     ),
                   ],
                 ),
               ),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavyBar(
           backgroundColor: Appcolor.primaryColor,
-          selectedItemColor: Appcolor.iconColor,
-          unselectedItemColor: Colors.grey,
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-              print(_selectedIndex);
-              if (_selectedIndex == 0) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              } else if (_selectedIndex == 1) {
-                print("This is Special day");
-              } else if (_selectedIndex == 2) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              }
-            });
-          },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+          selectedIndex: _selectedIndex,
+          showElevation: true,
+          onItemSelected: (index) => setState(() {
+            _selectedIndex = index;
+            _pageController?.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.ease);
+
+            if (_selectedIndex == 0) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            } else if (_selectedIndex == 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              );
+            } else if (_selectedIndex == 2) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+              // );
+
+            } else if (_selectedIndex == 3) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+              // );
+            } else if (_selectedIndex == 4) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            }
+          }),
+          items: [
+            BottomNavyBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              title: Text('Home'),
+              activeColor: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Special Day',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
+            BottomNavyBarItem(
+                icon: Icon(Icons.shopping_cart),
+                title: Text('Cart'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.favorite),
+                title: Text('Special Day'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.bookmark_border),
+                title: Text('Bookmarks'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profile'),
+                activeColor: Colors.white),
           ],
         ),
       ),

@@ -1,15 +1,18 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:badges/badges.dart';
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/bookmarks/controller/add_to_bookmarks_con.dart';
+import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/grocery/controllar/all_product_controller.dart';
 import 'package:sv_craft/Features/grocery/controllar/category_controller.dart';
 import 'package:sv_craft/Features/grocery/controllar/searched_product_con.dart';
 import 'package:sv_craft/Features/grocery/model/all_product_model.dart';
+import 'package:sv_craft/Features/grocery/view/bookmarks_screen.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/filter_category.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_drawer.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
@@ -45,7 +48,8 @@ class _GroceryProductState extends State<GroceryProduct> {
   late int userId;
   bool _isSearched = false;
   var searchedData;
-  var _selectedIndex = 1;
+  var _selectedIndex = 2;
+  PageController? _pageController;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -400,15 +404,22 @@ class _GroceryProductState extends State<GroceryProduct> {
                         Row(
                           children: [
                             SizedBox(width: size.width * .01),
-                            IconButton(
-                                onPressed: () {
-                                  //var message = _addtoBookmarksController.addToBookmarks(userid : userId, pro , token: tokenp,);
-                                },
-                                icon: const Icon(
-                                  FontAwesome.bookmark,
-                                  color: Colors.black,
-                                  size: 18,
-                                )),
+                            // IconButton(
+                            //     onPressed: () {
+                            //       print("object");
+                            //       Navigator.pushReplacement(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //             builder: (context) =>
+                            //                 GroceryBookmarks()),
+                            //       );
+                            //       //var message = _addtoBookmarksController.addToBookmarks(userid : userId, pro , token: tokenp,);
+                            //     },
+                            //     icon: const Icon(
+                            //       FontAwesome.bookmark,
+                            //       color: Colors.black,
+                            //       size: 18,
+                            //     )),
                             const Spacer(),
                             Text(
                               searchedData[index].marketPrice.toString(),
@@ -767,45 +778,64 @@ class _GroceryProductState extends State<GroceryProduct> {
                       }),
         ),
         // bottomNavigationBar: const GroceryNav(),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavyBar(
           backgroundColor: Appcolor.primaryColor,
-          selectedItemColor: Appcolor.iconColor,
-          unselectedItemColor: Colors.grey,
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-              print(_selectedIndex);
-              if (_selectedIndex == 0) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              } else if (_selectedIndex == 1) {
-                print('This is Grocery page');
-              } else if (_selectedIndex == 2) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              }
-            });
-          },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+          selectedIndex: _selectedIndex,
+          showElevation: true,
+          onItemSelected: (index) => setState(() {
+            _selectedIndex = index;
+            _pageController?.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.ease);
+
+            if (_selectedIndex == 0) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            } else if (_selectedIndex == 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              );
+            } else if (_selectedIndex == 2) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => GroceryProduct()),
+              // );
+            } else if (_selectedIndex == 3) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => GroceryBookmarks()),
+              );
+            } else if (_selectedIndex == 4) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileScreen()),
+              );
+            }
+          }),
+          items: [
+            BottomNavyBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              title: Text('Home'),
+              activeColor: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesome.bag_shopping,
-              ),
-              label: 'Grocery',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
+            BottomNavyBarItem(
+                icon: Icon(Icons.shopping_cart),
+                title: Text('Cart'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.shopping_bag),
+                title: Text('Grocery'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.bookmark_border),
+                title: Text('Bookmarks'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profile'),
+                activeColor: Colors.white),
           ],
         ),
       ),
