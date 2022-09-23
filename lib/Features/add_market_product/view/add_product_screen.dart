@@ -37,11 +37,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
     // if (_addProductFormKey.currentState!.validate() && images.isNotEmpty) {
     //   adminServices.sellProduct(
     //     context: context,
-    //     name: productNameController.text,
-    //     description: descriptionController.text,
-    //     price: double.parse(priceController.text),
-    //     quantity: double.parse(quantityController.text),
-    //     category: category,
+    // name: productNameController.text,
+    // description: descriptionController.text,
+    // price: double.parse(priceController.text),
+    // quantity: double.parse(quantityController.text),
+    // category: category,
     //     images: images,
     //   );
     // }
@@ -53,42 +53,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
       images = res;
     });
   }
-
-  //   Future<void> uploadImage() async {
-  //   setState(() {
-  //     showSpinner = true;
-  //   });
-
-  //   var stream = new http.ByteStream(image!.openRead());
-  //   stream.cast();
-
-  //   var length = await image!.length();
-
-  //   var uri = Uri.parse('https://fakestoreapi.com/products');
-
-  //   var request = new http.MultipartRequest('POST', uri);
-
-  //   request.fields['title'] = "Static title";
-
-  //   var multiport = new http.MultipartFile('image', stream, length);
-
-  //   request.files.add(multiport);
-
-  //   var response = await request.send();
-
-  //   print(response.stream.toString());
-  //   if (response.statusCode == 200) {
-  //     setState(() {
-  //       showSpinner = false;
-  //     });
-  //     print('image uploaded');
-  //   } else {
-  //     print('failed');
-  //     setState(() {
-  //       showSpinner = false;
-  //     });
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -187,14 +151,29 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
                 ElevatedButton(
+                  onPressed: () {
+                    print('iaiugfa');
+                  },
+                  child: const Text('Add Product'),
+                ),
+                ElevatedButton(
                   child: const Text(
-                    'Sell',
+                    'Posttt',
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
                     ),
                   ),
-                  onPressed: sellProduct,
+                  onPressed: () {
+                    // _addProductController.uploadImage(images);
+                    print('sdasdhkahafkj');
+                    _addProductController.uploadProduct(
+                      name: productNameController.text,
+                      description: descriptionController.text,
+                      price: double.parse(priceController.text),
+                      quantity: double.parse(quantityController.text),
+                    );
+                  },
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size(150, 50),
                     primary: Colors.yellow,

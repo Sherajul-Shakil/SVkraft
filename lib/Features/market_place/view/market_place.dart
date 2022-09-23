@@ -104,7 +104,6 @@ class _MarketPlaceState extends State<MarketPlace> {
             image: task.image,
           ),
         );
-        print(_categoryList);
       }
     }
   }
@@ -579,7 +578,13 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                                         5),
                                                             child:
                                                                 Image.network(
-                                                              'http://mamun.click/${data[index].image[0].filePath}',
+                                                              data[index]
+                                                                          .image[
+                                                                              0]
+                                                                          .filePath !=
+                                                                      null
+                                                                  ? 'http://mamun.click/${data[index].image[0].filePath}'
+                                                                  : "",
                                                               fit: BoxFit.cover,
                                                               height: 180,
                                                               width: 170,
@@ -1041,9 +1046,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                                     if (selectedCategory != null &&
                                         selectedCity != null &&
                                         selectedPrice != null) {
-                                      print(selectedCategory! +
-                                          selectedCity! +
-                                          selectedPrice!);
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(

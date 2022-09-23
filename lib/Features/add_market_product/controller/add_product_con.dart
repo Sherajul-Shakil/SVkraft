@@ -11,10 +11,10 @@ class AddProductController extends GetxController {
   String? selectedCity;
   String? selectedBrand;
   String? condition;
+  List<File> images = [];
 
   //pick images in add product page
   Future<List<File>> pickImages() async {
-    List<File> images = [];
     try {
       var files = await FilePicker.platform.pickFiles(
         type: FileType.image,
@@ -31,34 +31,30 @@ class AddProductController extends GetxController {
     return images;
   }
 
-  multipartProdecudre(String category, city, productName, description, price,
-      image, token, int quantity) async {
-    try {
-      //for multipartrequest
-      var request = http.MultipartRequest('POST', Uri.parse('YOUR URL'));
-
-      //for token
-      request.headers.addAll({"Authorization": token});
-
-      //for image and videos and files
-
-      request.files.add(await http.MultipartFile.fromPath("image", "$image"));
-
-      //for completeing the request
-      var response = await request.send();
-
-      //for getting and decoding the response into json format
-      var responsed = await http.Response.fromStream(response);
-      final responseData = json.decode(responsed.body);
-
-      if (response.statusCode == 200) {
-        print("SUCCESS");
-        print(responseData);
-      } else {
-        print("ERROR");
+  void uploadProduct({name, description, price, quantity}) async {
+    if (images.isNotEmpty) {
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('http://mamun.click/api/product/create'));
+      request.headers.addAll({
+        'Authorization': 'Bearer 31|CSTDHfyWAJyATK3QJNafQEDHDElHZgTpOrjwtKQg'
+      });
+      request.fields['category_id'] = '27';
+      request.fields['location'] = "$selectedCity";
+      request.fields['product_name'] = '$name';
+      request.fields['price'] = '$price';
+      request.fields['description'] = '$description';
+      request.fields['quantity'] = '$quantity';
+      for (int i = 0; i < images.length; i++) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image[]', images[i].path),
+        );
       }
-    } catch (e) {
-      print(e.toString());
+
+      var response = await request.send();
+      print(response.statusCode);
+      response.stream.transform(utf8.decoder).listen((value) {
+        print(value);
+      });
     }
   }
 }

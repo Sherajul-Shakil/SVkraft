@@ -16,7 +16,7 @@ class AllProductController extends GetxController {
   getUserId() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? userId = prefs.getInt('user-id');
-    print('User id from controller $userId');
+
     return userId;
   }
 

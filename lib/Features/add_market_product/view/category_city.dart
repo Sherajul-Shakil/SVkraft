@@ -66,7 +66,6 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
             image: task.image,
           ),
         );
-        print(_categoryList);
       }
     }
 
@@ -189,9 +188,11 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(50),
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                        "http://mamun.click/${_categoryData[index].image}" ??
-                                            "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
+                                    image: NetworkImage(_categoryData[index]
+                                                .image !=
+                                            null
+                                        ? "http://mamun.click/${_categoryData[index].image}"
+                                        : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png"),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
