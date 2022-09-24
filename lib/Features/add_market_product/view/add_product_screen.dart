@@ -35,20 +35,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     quantityController.dispose();
   }
 
-  void sellProduct() {
-    // if (_addProductFormKey.currentState!.validate() && images.isNotEmpty) {
-    //   adminServices.sellProduct(
-    //     context: context,
-    // name: productNameController.text,
-    // description: descriptionController.text,
-    // price: double.parse(priceController.text),
-    // quantity: double.parse(quantityController.text),
-    // category: category,
-    //     images: images,
-    //   );
-    // }
-  }
-
   void selectImages() async {
     var res = await _addProductController.pickImages();
     setState(() {
@@ -58,7 +44,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print('images = ' + images.toString());
+    // print('images = ' + images.toString());
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),

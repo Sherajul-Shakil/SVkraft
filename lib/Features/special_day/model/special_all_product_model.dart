@@ -35,6 +35,11 @@ class SpecialAllProduct {
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
+
+  @override
+  String toString() {
+    return 'SpecialAllProduct{success: $success, message: $message, data: $data}';
+  }
 }
 
 class SpecialAllProductData {
@@ -93,4 +98,9 @@ class Category {
   Map<String, dynamic> toJson() => {
         "name": name,
       };
+
+  @override
+  String toString() {
+    return 'Category{name: $name}';
+  }
 }

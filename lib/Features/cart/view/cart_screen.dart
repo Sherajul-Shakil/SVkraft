@@ -196,13 +196,6 @@ class _CartScreenState extends State<CartScreen> {
                                             color: Colors.black87),
                                       ),
                                       Spacer(),
-                                      // Text(
-                                      //   "SUMMA",
-                                      //   style: TextStyle(
-                                      //       fontSize: 20,
-                                      //       fontWeight: FontWeight.w500,
-                                      //       color: Colors.black87),
-                                      // ),
                                       SizedBox(
                                         width: 10,
                                       ),
@@ -219,7 +212,6 @@ class _CartScreenState extends State<CartScreen> {
                                               cartData.grocery[index].quantity;
 
                                       totalPrice = cartData.totalPrice;
-                                      print(totalPrice);
 
                                       getindex(cartData.grocery.length);
                                       return Padding(
@@ -617,6 +609,8 @@ class _CartScreenState extends State<CartScreen> {
                                               .special_day[index].price /
                                           cartData.special_day[index].quantity;
 
+                                      totalPrice = cartData.totalPrice;
+
                                       getindex(cartData.special_day.length);
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
@@ -734,92 +728,72 @@ class _CartScreenState extends State<CartScreen> {
                                                                 MainAxisAlignment
                                                                     .center,
                                                             children: [
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  setState(() {
-                                                                    //Product count
-                                                                    cartData.special_day[index].quantity >
-                                                                            1
-                                                                        ? cartData
-                                                                            .special_day[
-                                                                                index]
-                                                                            .quantity = (cartData
-                                                                                .special_day[index].quantity) -
-                                                                            1
-                                                                        : null;
+                                                              cartData.special_day[index]
+                                                                          .quantity >
+                                                                      1
+                                                                  ? InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        setState(
+                                                                            () {
+                                                                          //Product count
+                                                                          cartData.special_day[index].quantity > 1
+                                                                              ? cartData.special_day[index].quantity = (cartData.special_day[index].quantity) - 1
+                                                                              : null;
 
-                                                                    //Item price total
-                                                                    cartData
-                                                                        .special_day[
-                                                                            index]
-                                                                        .price = cartData
-                                                                            .special_day[
-                                                                                index]
-                                                                            .quantity *
-                                                                        singlespecial_dayPrice
-                                                                            .toInt();
+                                                                          //Item price total
+                                                                          cartData
+                                                                              .special_day[index]
+                                                                              .price = cartData.special_day[index].quantity * singlespecial_dayPrice.toInt();
 
-                                                                    //Total price
-                                                                    cartData.special_day[index].quantity >
-                                                                            1
-                                                                        ? cartData
-                                                                            .totalPrice = cartData
-                                                                                .totalPrice -
-                                                                            (cartData.special_day[index].price / cartData.special_day[index].quantity).toInt()
-                                                                        : null;
-                                                                  });
-                                                                },
-                                                                child:
-                                                                    Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(5),
-                                                                  alignment:
-                                                                      Alignment
-                                                                          .center,
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            220,
-                                                                            245,
-                                                                            243,
-                                                                            243),
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .circular(0),
-                                                                    boxShadow: const [
-                                                                      BoxShadow(
-                                                                        color: Colors
-                                                                            .black12, //color of shadow
-                                                                        spreadRadius:
-                                                                            1, //spread radius
-                                                                        blurRadius:
-                                                                            0, // blur radius
-                                                                        offset: Offset(
-                                                                            0,
-                                                                            0), // changes position of shadow
-                                                                        //first paramerter of offset is left-right
-                                                                        //second parameter is top to down
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                  width: 35,
-                                                                  height: 35,
-                                                                  child:
-                                                                      const Text(
-                                                                    '-',
-                                                                    style: TextStyle(
-                                                                        color: Colors
-                                                                            .black54,
-                                                                        fontSize:
-                                                                            20),
-                                                                    textAlign:
-                                                                        TextAlign
-                                                                            .center,
-                                                                  ),
-                                                                ),
-                                                              ),
+                                                                          //  Total price
+                                                                          cartData.special_day[index].quantity >= 1 && cartData.totalPrice > 0
+                                                                              ? cartData.totalPrice = cartData.totalPrice - (cartData.special_day[index].price / cartData.special_day[index].quantity).toInt()
+                                                                              : null;
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          Container(
+                                                                        padding:
+                                                                            const EdgeInsets.all(5),
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        decoration:
+                                                                            BoxDecoration(
+                                                                          color: Color.fromARGB(
+                                                                              220,
+                                                                              245,
+                                                                              243,
+                                                                              243),
+                                                                          borderRadius:
+                                                                              BorderRadius.circular(0),
+                                                                          boxShadow: const [
+                                                                            BoxShadow(
+                                                                              color: Colors.black12, //color of shadow
+                                                                              spreadRadius: 1, //spread radius
+                                                                              blurRadius: 0, // blur radius
+                                                                              offset: Offset(0, 0), // changes position of shadow
+                                                                              //first paramerter of offset is left-right
+                                                                              //second parameter is top to down
+                                                                            )
+                                                                          ],
+                                                                        ),
+                                                                        width:
+                                                                            35,
+                                                                        height:
+                                                                            35,
+                                                                        child:
+                                                                            const Text(
+                                                                          '-',
+                                                                          style: TextStyle(
+                                                                              color: Colors.black54,
+                                                                              fontSize: 20),
+                                                                          textAlign:
+                                                                              TextAlign.center,
+                                                                        ),
+                                                                      ),
+                                                                    )
+                                                                  : Container(),
                                                               SizedBox(
                                                                 height: 2,
                                                               ),
@@ -1267,10 +1241,30 @@ class _CartScreenState extends State<CartScreen> {
                         height: 50,
                         child: InkWell(
                           onTap: () {
+                            // print(cartData.grocery[0].toJson());
                             // print(cartData.grocery.toString());
-                            // for (int i = 0; i < cartData.grocery.length; i++) {
-                            //   print(cartData.grocery[i].toJson());
-                            // }
+                            List groceryList = [];
+                            for (int i = 0; i < cartData.grocery.length; i++) {
+                              groceryList.add(cartData.grocery[i].toJson());
+                              //print(groceryList);
+                            }
+                            // var groceryMap = groceryList.map((e) {
+                            //   return {
+                            //     "id": e.id,
+                            //     "quantity": e.quantity,
+                            //     "name": e.name,
+                            //   };
+                            // }).toList();
+                            // print(groceryMap);
+                            for (int i = 0;
+                                i < cartData.special_day.length;
+                                i++) {
+                              List specialList = [];
+                              specialList.add(cartData.special_day[i].toJson());
+                              //print(specialList);
+                            }
+                            print(totalPrice);
+
                             // final mybody = {
                             //   "grocery": cartData.grocery.toJson(),
                             //   "special_day": cartData.special_day.toJson(),

@@ -4,16 +4,23 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sv_craft/Features/auth/view/signin_screen.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
+import 'package:sv_craft/Features/grocery/view/grocery_product.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
+import 'package:sv_craft/Features/market_place/view/market_place.dart';
 import 'package:sv_craft/Features/profile/controller/get_profile_con.dart';
 import 'package:sv_craft/Features/profile/view/edit_profile.dart';
+import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
+import 'package:sv_craft/Features/special_day/view/special_home_screen.dart';
 import 'package:sv_craft/constant/color.dart';
 import 'package:icons_plus/icons_plus.dart';
 import '../controller/logout_controller.dart';
 import 'custom_shape.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({Key? key, this.from}) : super(key: key);
+
+  final String? from;
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
@@ -345,12 +352,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 MaterialPageRoute(builder: (context) => const CartScreen()),
               );
             } else if (_selectedIndex == 2) {
+              if (widget.from == "market") {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MarketPlace()),
+                );
+              } else if (widget.from == "grocery") {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => GroceryProduct()),
+                );
+              } else if (widget.from == "special") {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => SpecialHomeScreen()),
+                );
+              }
+            } else if (_selectedIndex == 3) {
               // Navigator.pushReplacement(
               //   context,
               //   MaterialPageRoute(builder: (context) => ProfileScreen()),
               // );
 
-            } else if (_selectedIndex == 3) {
+            } else if (_selectedIndex == 4) {
               // Navigator.pushReplacement(
               //   context,
               //   MaterialPageRoute(builder: (context) => ProfileScreen()),
@@ -366,6 +390,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             BottomNavyBarItem(
                 icon: Icon(Icons.shopping_cart),
                 title: Text('Cart'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.shopping_bag),
+                title: Text(''),
                 activeColor: Colors.white),
             BottomNavyBarItem(
                 icon: Icon(Icons.bookmark_border),

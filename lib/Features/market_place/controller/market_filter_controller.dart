@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../model/market_filter_model.dart';
 
 class MarketFilterController extends GetxController {
-  Future<List<MarketFilterdata>?> getFilterProduct(
+  Future<List<MarketFilterData>?> getFilterProduct(
       String token, selectedCategory, cityName, priceRange) async {
     try {
       print('tokeneeeeee: $token'

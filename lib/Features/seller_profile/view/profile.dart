@@ -5,6 +5,7 @@ import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
+import 'package:sv_craft/Features/seller_profile/controller/seller_profile_con.dart';
 import 'package:sv_craft/Features/seller_profile/models/show_all_product.dart';
 import 'package:sv_craft/Features/seller_profile/controller/show_all_product.dart';
 import 'package:sv_craft/Features/seller_profile/view/details_product.dart';
@@ -12,6 +13,11 @@ import 'package:sv_craft/constant/color.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class SellerProfile extends StatefulWidget {
+  const SellerProfile({
+    Key? key,
+    required this.sellerId,
+  }) : super(key: key);
+  final int sellerId;
   @override
   State<SellerProfile> createState() => _SellerProfileState();
 }
@@ -20,8 +26,11 @@ class _SellerProfileState extends State<SellerProfile> {
   HomeController _homeController = Get.put(HomeController());
   ShowAllProductController _showAllProductController =
       Get.put(ShowAllProductController());
+
+  ShowSellerProfileController _showSellerProfileController =
+      Get.put(ShowSellerProfileController());
   var _selectedIndex = 1;
-  var Profile;
+  var sellerProfile;
 
   @override
   void initState() {
@@ -33,18 +42,19 @@ class _SellerProfileState extends State<SellerProfile> {
   }
 
   Future<void> setTokenToVariable() async {
-    // var profile =
-    //     await _getProfileController.getProfile(_homeController.tokenGlobal);
-    // if (profile != null) {
-    //   setState(() {
-    //     Profile = profile;
-    //   });
-    // }
+    var profile = await _showSellerProfileController.getSellerProfileProduct(
+        _homeController.tokenGlobal, widget.sellerId);
+    if (profile != null) {
+      setState(() {
+        sellerProfile = profile;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("Seller profile = " + sellerProfile.toString());
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -57,181 +67,273 @@ class _SellerProfileState extends State<SellerProfile> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: size.height * .02,
-          ),
-          Card(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: size.width * .30,
-                    height: size.height * .15,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        image: DecorationImage(
-                            image: NetworkImage(
-                                "https://scontent.fdac8-1.fna.fbcdn.net/v/t39.30808-6/251820896_1143322412741186_1065801067419300564_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=174925&_nc_ohc=ikjGP6Ij3GgAX85HQzu&tn=aIpka5cxd_2TbP7r&_nc_ht=scontent.fdac8-1.fna&oh=00_AT-nzaxoir4eZFTE3SPGHl5HhEQwwGt4RYkdk2251QGl8g&oe=63302807"),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(
-                    width: size.width * .05,
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      SizedBox(height: size.height * .02),
-                      Text(
-                        "Sherajul Islam ",
-                        style: TextStyle(fontSize: 24),
-                      ),
-                      Text(
-                        "Phone : 01985740244",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ),
-          SizedBox(
-            height: size.height * .05,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text(
-              "Products to sell",
-              style: TextStyle(fontSize: 22),
-            ),
-          ),
-          SizedBox(
-            height: size.height * .02,
-          ),
-          SingleChildScrollView(
-            child: FutureBuilder<List<ShowAllProductData>?>(
-                future: _showAllProductController
-                    .getAllProduct(_homeController.tokenGlobal),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData || snapshot.data == null) {
-                    return const Center(
-                        child: Center(
-                            child: Center(
-                                child: const SpinKitFadingCircle(
-                      color: Colors.black,
-                    ))));
-                  } else {
-                    if (snapshot.data!.isEmpty) {
-                      return const Center(child: Text('No Product Found'));
-                    } else {
-                      final data = snapshot.data;
-                      return GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.only(
-                            left: 10, right: 10, top: 10, bottom: 30),
-                        itemCount: data!.length,
-                        scrollDirection: Axis.vertical,
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 200,
-                          childAspectRatio: .79,
-                          mainAxisSpacing: 5,
-                          crossAxisSpacing: 5,
-                        ),
-                        itemBuilder: (BuildContext context, int index) =>
-                            Container(
-                          // color: Colors.red,
-                          alignment: Alignment.center,
+      body: sellerProfile != null
+          ? SingleChildScrollView(
+              child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: size.height * .02,
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: size.width * .30,
+                          height: size.height * .15,
                           decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(5),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black12, //color of shadow
-                                spreadRadius: 1, //spread radius
-                                blurRadius: 1, // blur radius
-                                offset:
-                                    Offset(1, 1), // changes position of shadow
-                                //first paramerter of offset is left-right
-                                //second parameter is top to down
-                              )
-                            ],
-                          ),
+                              borderRadius: BorderRadius.circular(10),
+                              image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://scontent.fdac8-1.fna.fbcdn.net/v/t39.30808-6/251820896_1143322412741186_1065801067419300564_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=174925&_nc_ohc=ikjGP6Ij3GgAX85HQzu&tn=aIpka5cxd_2TbP7r&_nc_ht=scontent.fdac8-1.fna&oh=00_AT-nzaxoir4eZFTE3SPGHl5HhEQwwGt4RYkdk2251QGl8g&oe=63302807"),
+                                  fit: BoxFit.cover)),
+                        ),
+                        SizedBox(
+                          width: size.width * .05,
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(height: size.height * .02),
+                            Text(
+                              sellerProfile.user.name,
+                              style: TextStyle(fontSize: 24),
+                            ),
+                            Text(
+                              "Phone : " + sellerProfile.user.phone,
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * .05,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Products to sell",
+                    style: TextStyle(fontSize: 22),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * .02,
+                ),
+                GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 10, bottom: 30),
+                  itemCount: sellerProfile.product.length,
+                  scrollDirection: Axis.vertical,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 200,
+                    childAspectRatio: .79,
+                    mainAxisSpacing: 5,
+                    crossAxisSpacing: 5,
+                  ),
+                  itemBuilder: (BuildContext context, int index) => Container(
+                    // color: Colors.red,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(5),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12, //color of shadow
+                          spreadRadius: 1, //spread radius
+                          blurRadius: 1, // blur radius
+                          offset: Offset(1, 1), // changes position of shadow
+                          //first paramerter of offset is left-right
+                          //second parameter is top to down
+                        )
+                      ],
+                    ),
 
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SellerProductDetails(
-                                          id: data[index].id,
-                                          token: _homeController.tokenGlobal,
-                                        )),
-                              );
-                            },
-                            child: Column(
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SellerProductDetails(
+                                    id: sellerProfile.product[index].id,
+                                    token: _homeController.tokenGlobal,
+                                  )),
+                        );
+                      },
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 5),
+                            child: Image.network(
+                              'http://mamun.click/${sellerProfile.product[index].image[0].filePath}',
+                              fit: BoxFit.cover,
+                              height: 180,
+                              width: 170,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 6),
+                            child: Row(
+                              // mainAxisAlignment:
+                              //     MainAxisAlignment
+                              //         .spaceBetween,
                               children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
-                                  child: Image.network(
-                                    'http://mamun.click/${data[index].image[0].filePath}',
-                                    fit: BoxFit.cover,
-                                    height: 180,
-                                    width: 170,
-                                  ),
+                                Text('${sellerProfile.product[index].price} Kr',
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.normal)),
+                                SizedBox(
+                                  width: 5,
                                 ),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
-                                  child: Row(
-                                    // mainAxisAlignment:
-                                    //     MainAxisAlignment
-                                    //         .spaceBetween,
-                                    children: [
-                                      Text('${data[index].price} Kr',
-                                          maxLines: 3,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.normal)),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      SizedBox(
-                                        width: 100.0,
-                                        child: Text(
-                                          data[index].productName,
-                                          softWrap: false,
-                                          style: TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.normal,
-                                              fontSize: 16.0),
-                                          overflow: TextOverflow.ellipsis,
-                                        ),
-                                      ),
-                                    ],
+                                SizedBox(
+                                  width: 100.0,
+                                  child: Text(
+                                    sellerProfile.product[index].productName,
+                                    softWrap: false,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 16.0),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                        ),
-                      );
-                    }
-                  }
-                }),
-          )
-        ],
-      )),
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+                // FutureBuilder<List<ShowAllProductData>?>(
+                //     future: _showAllProductController
+                //         .getAllProduct(_homeController.tokenGlobal),
+                //     builder: (context, snapshot) {
+                //       if (!snapshot.hasData || snapshot.data == null) {
+                //         return const Center(
+                //             child: Center(
+                //                 child: Center(
+                //                     child: const SpinKitFadingCircle(
+                //           color: Colors.black,
+                //         ))));
+                //       } else {
+                //         if (snapshot.data!.isEmpty) {
+                //           return const Center(child: Text('No Product Found'));
+                //         } else {
+                //           final data = snapshot.data;
+                //           return GridView.builder(
+                //             physics: NeverScrollableScrollPhysics(),
+                //             shrinkWrap: true,
+                //             padding: const EdgeInsets.only(
+                //                 left: 10, right: 10, top: 10, bottom: 30),
+                //             itemCount: data!.length,
+                //             scrollDirection: Axis.vertical,
+                //             gridDelegate:
+                //                 const SliverGridDelegateWithMaxCrossAxisExtent(
+                //               maxCrossAxisExtent: 200,
+                //               childAspectRatio: .79,
+                //               mainAxisSpacing: 5,
+                //               crossAxisSpacing: 5,
+                //             ),
+                //             itemBuilder: (BuildContext context, int index) =>
+                //                 Container(
+                //               // color: Colors.red,
+                //               alignment: Alignment.center,
+                //               decoration: BoxDecoration(
+                //                 color: Colors.white,
+                //                 borderRadius: BorderRadius.circular(5),
+                //                 boxShadow: const [
+                //                   BoxShadow(
+                //                     color: Colors.black12, //color of shadow
+                //                     spreadRadius: 1, //spread radius
+                //                     blurRadius: 1, // blur radius
+                //                     offset:
+                //                         Offset(1, 1), // changes position of shadow
+                //                     //first paramerter of offset is left-right
+                //                     //second parameter is top to down
+                //                   )
+                //                 ],
+                //               ),
+
+                //               child: InkWell(
+                //                 onTap: () {
+                //                   Navigator.push(
+                //                     context,
+                //                     MaterialPageRoute(
+                //                         builder: (context) => SellerProductDetails(
+                //                               id: data[index].id,
+                //                               token: _homeController.tokenGlobal,
+                //                             )),
+                //                   );
+                //                 },
+                //                 child: Column(
+                //                   children: [
+                //                     Padding(
+                //                       padding: const EdgeInsets.symmetric(
+                //                           horizontal: 5, vertical: 5),
+                //                       child: Image.network(
+                //                         'http://mamun.click/${data[index].image[0].filePath}',
+                //                         fit: BoxFit.cover,
+                //                         height: 180,
+                //                         width: 170,
+                //                       ),
+                //                     ),
+                //                     Padding(
+                //                       padding:
+                //                           const EdgeInsets.symmetric(horizontal: 6),
+                //                       child: Row(
+                //                         // mainAxisAlignment:
+                //                         //     MainAxisAlignment
+                //                         //         .spaceBetween,
+                //                         children: [
+                //                           Text('${data[index].price} Kr',
+                //                               maxLines: 3,
+                //                               style: TextStyle(
+                //                                   color: Colors.black,
+                //                                   fontSize: 16,
+                //                                   fontWeight: FontWeight.normal)),
+                //                           SizedBox(
+                //                             width: 5,
+                //                           ),
+                //                           SizedBox(
+                //                             width: 100.0,
+                //                             child: Text(
+                //                               data[index].productName,
+                //                               softWrap: false,
+                //                               style: TextStyle(
+                //                                   color: Colors.black,
+                //                                   fontWeight: FontWeight.normal,
+                //                                   fontSize: 16.0),
+                //                               overflow: TextOverflow.ellipsis,
+                //                             ),
+                //                           ),
+                //                         ],
+                //                       ),
+                //                     ),
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //           );
+                //         }
+                //       }
+                //     })
+              ],
+            ))
+          : const Center(child: SpinKitFadingCircle(color: Colors.black)),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Appcolor.primaryColor,
         selectedItemColor: Appcolor.iconColor,

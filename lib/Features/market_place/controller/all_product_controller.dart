@@ -39,7 +39,7 @@ class AllProductController extends GetxController {
 
         return allProduct.data;
       } else {
-        print('User not found');
+        print('Product not found');
       }
     } catch (e) {
       print(e.toString());

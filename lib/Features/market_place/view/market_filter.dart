@@ -80,7 +80,7 @@ class _MarketFilterState extends State<MarketFilter> {
             Container(
               height: size.height,
               color: Color.fromARGB(255, 143, 211, 231),
-              child: FutureBuilder<List<MarketFilterdata>?>(
+              child: FutureBuilder<List<MarketFilterData>?>(
                   future: _marketFilterController.getFilterProduct(
                       widget.token,
                       widget.selectedCategory,

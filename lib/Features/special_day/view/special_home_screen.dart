@@ -40,6 +40,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
   var id;
   var _selectedIndex = 2;
   PageController? _pageController;
+  var SpecialOfferName;
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -58,6 +59,13 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
     print('token = ' + token);
     setState(() {
       tokenp = token;
+    });
+
+    //Get Special offer name
+    var specialOfferName =
+        await _specialCategory1Controller.getCategory1Product(tokenp);
+    setState(() {
+      SpecialOfferName = specialOfferName;
     });
   }
 
@@ -342,47 +350,17 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                         ),
                       ),
                     ),
-                    Container(
-                      width: size.width,
-                      height: size.height * .37,
-                      color: const Color.fromARGB(255, 235, 102, 179),
-                      child: Column(
-                        children: [
-                          // SizedBox(
-                          //   height: 10,
-                          // ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 20, left: 20, right: 20, bottom: 0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text("Eid Adha",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.normal)),
-                                InkWell(
-                                  child: const Text("View All",
-                                      style: TextStyle(
-                                          color: Colors.black54,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.normal)),
-                                  onTap: () {
-                                    Get.toNamed("/specialcategoryproduct");
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                          InkWell(
-                            child: Container(
-                              height: size.height * .32,
-                              // color: Colors.blue,
-                              child: FutureBuilder<
+                    SpecialOfferName != null
+                        ? ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: SpecialOfferName.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return FutureBuilder<
                                       List<SpecialAllProductData>?>(
                                   future: _specialAllProductController
-                                      .getSpecialAllProduct(tokenp, 2),
+                                      .getSpecialAllProduct(
+                                          tokenp, SpecialOfferName[index].id),
                                   builder: (context, snapshot) {
                                     if (!snapshot.hasData ||
                                         snapshot.data == null) {
@@ -400,506 +378,207 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                             child: Text('No Product Found'));
                                       } else {
                                         final data = snapshot.data;
-                                        id = data![0].id;
-                                        return GridView.builder(
-                                          padding: const EdgeInsets.only(
-                                              left: 15,
-                                              right: 15,
-                                              top: 20,
-                                              bottom: 10),
-                                          itemCount: data.length,
-                                          scrollDirection: Axis.horizontal,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                            maxCrossAxisExtent: 400,
-                                            childAspectRatio: 1.30,
-                                            mainAxisSpacing: 10,
-                                            crossAxisSpacing: 10,
-                                          ),
-                                          itemBuilder: (BuildContext context,
-                                                  int index) =>
-                                              Container(
-                                            // color: Colors.red,
-                                            alignment: Alignment.center,
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors
-                                                      .black12, //color of shadow
-                                                  spreadRadius:
-                                                      2, //spread radius
-                                                  blurRadius: 5, // blur radius
-                                                  offset: Offset(0,
-                                                      1), // changes position of shadow
-                                                  //first paramerter of offset is left-right
-                                                  //second parameter is top to down
-                                                )
-                                              ],
-                                            ),
 
-                                            child: Column(
-                                              children: [
-                                                //SizedBox(height: size.height * .01),
-                                                Padding(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 10,
-                                                      vertical: 10),
-                                                  child: Image.network(
-                                                    'http://mamun.click/${data[index].image}',
-                                                    fit: BoxFit.cover,
-                                                    width: size.width * .38,
-                                                    height: size.height * .16,
+                                        // id = data![0].id;
+                                        return Column(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 20,
+                                                  left: 20,
+                                                  right: 20,
+                                                  bottom: 0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                      "${data![0].category.name}",
+                                                      style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight
+                                                              .normal)),
+                                                  InkWell(
+                                                    child: const Text(
+                                                        "View All",
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal)),
+                                                    onTap: () {
+                                                      // Get.toNamed(
+                                                      //     "/specialcategoryproduct");
+                                                    },
                                                   ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              height: size.height * .32,
+                                              child: GridView.builder(
+                                                // physics: NeverScrollableScrollPhysics(),
+                                                // shrinkWrap: true,
+                                                padding: const EdgeInsets.only(
+                                                    left: 15,
+                                                    right: 15,
+                                                    top: 20,
+                                                    bottom: 10),
+                                                itemCount: data!.length,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithMaxCrossAxisExtent(
+                                                  maxCrossAxisExtent: 400,
+                                                  childAspectRatio: 1.30,
+                                                  mainAxisSpacing: 10,
+                                                  crossAxisSpacing: 10,
                                                 ),
-                                                SizedBox(
-                                                  height: size.height * .02,
-                                                ),
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 10,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                            int index) =>
+                                                        InkWell(
+                                                  child: Container(
+                                                    // color: Colors.red,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      boxShadow: const [
+                                                        BoxShadow(
+                                                          color: Colors
+                                                              .black12, //color of shadow
+                                                          spreadRadius:
+                                                              2, //spread radius
+                                                          blurRadius:
+                                                              5, // blur radius
+                                                          offset: Offset(0,
+                                                              1), // changes position of shadow
+                                                          //first paramerter of offset is left-right
+                                                          //second parameter is top to down
+                                                        )
+                                                      ],
                                                     ),
-                                                    Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .center,
+
+                                                    child: Column(
                                                       children: [
-                                                        Container(
-                                                          width:
-                                                              size.width * .3,
-                                                          child: Text(
-                                                            data[index].name,
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 12,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              color:
-                                                                  Colors.black,
-                                                            ),
-                                                            textAlign:
-                                                                TextAlign.start,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
+                                                        //SizedBox(height: size.height * .01),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 10),
+                                                          child: Image.network(
+                                                            'http://mamun.click/${data[index].image}',
+                                                            fit: BoxFit.cover,
+                                                            width: size.width *
+                                                                .38,
+                                                            height:
+                                                                size.height *
+                                                                    .16,
                                                           ),
                                                         ),
                                                         SizedBox(
-                                                          height: 10,
+                                                          height:
+                                                              size.height * .02,
                                                         ),
-                                                        Text(
-                                                          "Price: ${data[index].price}",
-                                                          style: TextStyle(
-                                                            fontSize: 12,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color: Colors.black,
-                                                          ),
+                                                        Row(
+                                                          children: [
+                                                            const SizedBox(
+                                                              width: 10,
+                                                            ),
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .center,
+                                                              children: [
+                                                                Container(
+                                                                  width:
+                                                                      size.width *
+                                                                          .3,
+                                                                  child: Text(
+                                                                    data[index]
+                                                                        .name,
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          12,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .black,
+                                                                    ),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .ellipsis,
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                  height: 10,
+                                                                ),
+                                                                Text(
+                                                                  "Price: ${data[index].price}",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Colors
+                                                                        .black,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          height:
+                                                              size.height * .02,
                                                         ),
                                                       ],
                                                     ),
-                                                  ],
+                                                    // height: 147,
+                                                    // width: ,
+                                                  ),
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ProductDetails(
+                                                                id: data[index]
+                                                                    .id,
+                                                                token: tokenp,
+                                                              )),
+                                                    );
+                                                  },
                                                 ),
-                                                SizedBox(
-                                                  height: size.height * .02,
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                            // height: 147,
-                                            // width: ,
-                                          ),
+                                          ],
                                         );
                                       }
                                     }
-                                  }),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ProductDetails(
-                                          id: id,
-                                          token: tokenp,
-                                        )),
-                              );
-                            },
-                          ),
-
-                          //2nd row
-                          // Padding(
-                          //   padding: const EdgeInsets.only(
-                          //       top: 20, left: 20, right: 20, bottom: 0),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       const Text("best Sellers",
-                          //           style: TextStyle(
-                          //               color: Colors.black54,
-                          //               fontSize: 20,
-                          //               fontWeight: FontWeight.normal)),
-                          //       InkWell(
-                          //         child: const Text("View All",
-                          //             style: TextStyle(
-                          //                 color: Colors.black54,
-                          //                 fontSize: 20,
-                          //                 fontWeight: FontWeight.normal)),
-                          //         onTap: () {
-                          //           Get.toNamed("/specialcategoryproduct");
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // InkWell(
-                          //   child: Container(
-                          //     height: size.height * .3,
-                          //     // color: Colors.blue,
-                          //     child: FutureBuilder<
-                          //             List<SpecialAllProductData>?>(
-                          //         future: _specialAllProductController
-                          //             .getSpecialAllProduct(tokenp, 2),
-                          //         builder: (context, snapshot) {
-                          //           if (!snapshot.hasData ||
-                          //               snapshot.data == null) {
-                          //             return const Center(
-                          //                 child: Center(
-                          //                     child: Center(
-                          //                         child:
-                          //                             const SpinKitFadingCircle(
-                          //               color: Colors.black,
-                          //             ))));
-                          //           } else {
-                          //             if (snapshot.data!.isEmpty) {
-                          //               //snapshot.data!.isEmpty
-                          //               return const Center(
-                          //                   child: Text('No Product Found'));
-                          //             } else {
-                          //               final data = snapshot.data;
-                          //               id = data![0].id;
-                          //               return GridView.builder(
-                          //                 padding: const EdgeInsets.only(
-                          //                     left: 15,
-                          //                     right: 15,
-                          //                     top: 20,
-                          //                     bottom: 10),
-                          //                 itemCount: data.length,
-                          //                 scrollDirection: Axis.horizontal,
-                          //                 gridDelegate:
-                          //                     const SliverGridDelegateWithMaxCrossAxisExtent(
-                          //                   maxCrossAxisExtent: 400,
-                          //                   childAspectRatio: 1.35,
-                          //                   mainAxisSpacing: 10,
-                          //                   crossAxisSpacing: 10,
-                          //                 ),
-                          //                 itemBuilder: (BuildContext context,
-                          //                         int index) =>
-                          //                     Container(
-                          //                   // color: Colors.red,
-                          //                   alignment: Alignment.center,
-                          //                   decoration: BoxDecoration(
-                          //                     color: Colors.white,
-                          //                     borderRadius:
-                          //                         BorderRadius.circular(10),
-                          //                     boxShadow: const [
-                          //                       BoxShadow(
-                          //                         color: Colors
-                          //                             .black12, //color of shadow
-                          //                         spreadRadius:
-                          //                             2, //spread radius
-                          //                         blurRadius: 5, // blur radius
-                          //                         offset: Offset(0,
-                          //                             1), // changes position of shadow
-                          //                         //first paramerter of offset is left-right
-                          //                         //second parameter is top to down
-                          //                       )
-                          //                     ],
-                          //                   ),
-
-                          //                   child: Column(
-                          //                     children: [
-                          //                       //SizedBox(height: size.height * .01),
-                          //                       Padding(
-                          //                         padding: const EdgeInsets
-                          //                                 .symmetric(
-                          //                             horizontal: 10,
-                          //                             vertical: 10),
-                          //                         child: Image.network(
-                          //                           'http://mamun.click/${data[index].image}',
-                          //                           fit: BoxFit.cover,
-                          //                           width: 130,
-                          //                           height: 140,
-                          //                         ),
-                          //                       ),
-                          //                       SizedBox(
-                          //                         height: size.height * .02,
-                          //                       ),
-                          //                       Row(
-                          //                         children: [
-                          //                           const SizedBox(
-                          //                             width: 10,
-                          //                           ),
-                          //                           Column(
-                          //                             crossAxisAlignment:
-                          //                                 CrossAxisAlignment
-                          //                                     .start,
-                          //                             mainAxisAlignment:
-                          //                                 MainAxisAlignment
-                          //                                     .center,
-                          //                             children: [
-                          //                               Container(
-                          //                                 width:
-                          //                                     size.width * .4,
-                          //                                 child: Text(
-                          //                                   data[index].name,
-                          //                                   style:
-                          //                                       const TextStyle(
-                          //                                     fontSize: 12,
-                          //                                     fontWeight:
-                          //                                         FontWeight
-                          //                                             .w500,
-                          //                                     color:
-                          //                                         Colors.black,
-                          //                                   ),
-                          //                                   textAlign:
-                          //                                       TextAlign.start,
-                          //                                   overflow:
-                          //                                       TextOverflow
-                          //                                           .ellipsis,
-                          //                                 ),
-                          //                               ),
-                          //                               SizedBox(
-                          //                                 height: 10,
-                          //                               ),
-                          //                               Text(
-                          //                                 "Price: ${data[index].price}",
-                          //                                 style: TextStyle(
-                          //                                   fontSize: 12,
-                          //                                   fontWeight:
-                          //                                       FontWeight.w500,
-                          //                                   color: Colors.black,
-                          //                                 ),
-                          //                               ),
-                          //                             ],
-                          //                           ),
-                          //                         ],
-                          //                       ),
-                          //                       SizedBox(
-                          //                         height: size.height * .02,
-                          //                       ),
-                          //                     ],
-                          //                   ),
-                          //                   // height: 147,
-                          //                   // width: ,
-                          //                 ),
-                          //               );
-                          //             }
-                          //           }
-                          //         }),
-                          //   ),
-                          //   onTap: () {
-                          //     Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => ProductDetails(
-                          //                 id: id,
-                          //                 token: tokenp,
-                          //               )),
-                          //     );
-                          //   },
-                          // ),
-                          // //3rd row
-                          // Padding(
-                          //   padding: const EdgeInsets.only(
-                          //       top: 20, left: 20, right: 20, bottom: 0),
-                          //   child: Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: [
-                          //       const Text("New In",
-                          //           style: TextStyle(
-                          //               color: Colors.black54,
-                          //               fontSize: 20,
-                          //               fontWeight: FontWeight.normal)),
-                          //       InkWell(
-                          //         child: const Text("View All",
-                          //             style: TextStyle(
-                          //                 color: Colors.black54,
-                          //                 fontSize: 20,
-                          //                 fontWeight: FontWeight.normal)),
-                          //         onTap: () {
-                          //           Get.toNamed("/specialcategoryproduct");
-                          //         },
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // InkWell(
-                          //   child: Container(
-                          //     height: size.height * .3,
-                          //     // color: Colors.blue,
-                          //     child: FutureBuilder<
-                          //             List<SpecialAllProductData>?>(
-                          //         future: _specialAllProductController
-                          //             .getSpecialAllProduct(tokenp, 2),
-                          //         builder: (context, snapshot) {
-                          //           if (!snapshot.hasData ||
-                          //               snapshot.data == null) {
-                          //             return const Center(
-                          //                 child: Center(
-                          //                     child: Center(
-                          //                         child:
-                          //                             const SpinKitFadingCircle(
-                          //               color: Colors.black,
-                          //             ))));
-                          //           } else {
-                          //             if (snapshot.data!.isEmpty) {
-                          //               //snapshot.data!.isEmpty
-                          //               return const Center(
-                          //                   child: Text('No Product Found'));
-                          //             } else {
-                          //               final data = snapshot.data;
-                          //               id = data![0].id;
-                          //               return GridView.builder(
-                          //                 padding: const EdgeInsets.only(
-                          //                     left: 15,
-                          //                     right: 15,
-                          //                     top: 20,
-                          //                     bottom: 10),
-                          //                 itemCount: data.length,
-                          //                 scrollDirection: Axis.horizontal,
-                          //                 gridDelegate:
-                          //                     const SliverGridDelegateWithMaxCrossAxisExtent(
-                          //                   maxCrossAxisExtent: 400,
-                          //                   childAspectRatio: 1.35,
-                          //                   mainAxisSpacing: 10,
-                          //                   crossAxisSpacing: 10,
-                          //                 ),
-                          //                 itemBuilder: (BuildContext context,
-                          //                         int index) =>
-                          //                     Container(
-                          //                   // color: Colors.red,
-                          //                   alignment: Alignment.center,
-                          //                   decoration: BoxDecoration(
-                          //                     color: Colors.white,
-                          //                     borderRadius:
-                          //                         BorderRadius.circular(10),
-                          //                     boxShadow: const [
-                          //                       BoxShadow(
-                          //                         color: Colors
-                          //                             .black12, //color of shadow
-                          //                         spreadRadius:
-                          //                             2, //spread radius
-                          //                         blurRadius: 5, // blur radius
-                          //                         offset: Offset(0,
-                          //                             1), // changes position of shadow
-                          //                         //first paramerter of offset is left-right
-                          //                         //second parameter is top to down
-                          //                       )
-                          //                     ],
-                          //                   ),
-
-                          //                   child: Column(
-                          //                     children: [
-                          //                       //SizedBox(height: size.height * .01),
-                          //                       Padding(
-                          //                         padding: const EdgeInsets
-                          //                                 .symmetric(
-                          //                             horizontal: 10,
-                          //                             vertical: 10),
-                          //                         child: Image.network(
-                          //                           'http://mamun.click/${data[index].image}',
-                          //                           fit: BoxFit.cover,
-                          //                           width: 130,
-                          //                           height: 140,
-                          //                         ),
-                          //                       ),
-                          //                       SizedBox(
-                          //                         height: size.height * .02,
-                          //                       ),
-                          //                       Row(
-                          //                         children: [
-                          //                           const SizedBox(
-                          //                             width: 10,
-                          //                           ),
-                          //                           Column(
-                          //                             crossAxisAlignment:
-                          //                                 CrossAxisAlignment
-                          //                                     .start,
-                          //                             mainAxisAlignment:
-                          //                                 MainAxisAlignment
-                          //                                     .center,
-                          //                             children: [
-                          //                               Container(
-                          //                                 width:
-                          //                                     size.width * .4,
-                          //                                 child: Text(
-                          //                                   data[index].name,
-                          //                                   style:
-                          //                                       const TextStyle(
-                          //                                     fontSize: 12,
-                          //                                     fontWeight:
-                          //                                         FontWeight
-                          //                                             .w500,
-                          //                                     color:
-                          //                                         Colors.black,
-                          //                                   ),
-                          //                                   textAlign:
-                          //                                       TextAlign.start,
-                          //                                   overflow:
-                          //                                       TextOverflow
-                          //                                           .ellipsis,
-                          //                                 ),
-                          //                               ),
-                          //                               SizedBox(
-                          //                                 height: 10,
-                          //                               ),
-                          //                               Text(
-                          //                                 "Price: ${data[index].price}",
-                          //                                 style: TextStyle(
-                          //                                   fontSize: 12,
-                          //                                   fontWeight:
-                          //                                       FontWeight.w500,
-                          //                                   color: Colors.black,
-                          //                                 ),
-                          //                               ),
-                          //                             ],
-                          //                           ),
-                          //                         ],
-                          //                       ),
-                          //                       SizedBox(
-                          //                         height: size.height * .02,
-                          //                       ),
-                          //                     ],
-                          //                   ),
-                          //                   // height: 147,
-                          //                   // width: ,
-                          //                 ),
-                          //               );
-                          //             }
-                          //           }
-                          //         }),
-                          //   ),
-                          //   onTap: () {
-                          //     Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) => ProductDetails(
-                          //                 id: id,
-                          //                 token: tokenp,
-                          //               )),
-                          //     );
-                          //   },
-                          // ),
-                        ],
-                      ),
-                    ),
+                                  });
+                            })
+                        : Container(),
                   ],
                 ),
               ),
@@ -936,7 +615,10 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
             } else if (_selectedIndex == 4) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                          from: "special",
+                        )),
               );
             }
           }),

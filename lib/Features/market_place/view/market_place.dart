@@ -463,7 +463,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                                           .getCategoryProduct(
                                               tokenp, _categoryData[index].id),
                                       builder: (context, snapshot) {
-                                        matchCategory = snapshot.data;
                                         // print(
                                         //     'matchCategory ${snapshot.data![0].category.categoryName}');
 
@@ -479,6 +478,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                     Text('No Product Found'));
                                           } else {
                                             final data = snapshot.data;
+                                            print(data);
                                             return Column(
                                               children: [
                                                 Container(
@@ -1136,7 +1136,10 @@ class _MarketPlaceState extends State<MarketPlace> {
             } else if (_selectedIndex == 4) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                          from: "market",
+                        )),
               );
             }
           }),

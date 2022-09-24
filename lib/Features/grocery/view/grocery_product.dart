@@ -810,7 +810,10 @@ class _GroceryProductState extends State<GroceryProduct> {
             } else if (_selectedIndex == 4) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                          from: "grocery",
+                        )),
               );
             }
           }),

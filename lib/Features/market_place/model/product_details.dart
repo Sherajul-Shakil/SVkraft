@@ -32,23 +32,19 @@ class ProductDetails {
         "message": message,
         "data": data.toJson(),
       };
-
-  @override
-  String toString() {
-    return 'ProductDetails{success: $success, message: $message, data: $data}';
-  }
 }
 
 class ProductDetailsData {
   ProductDetailsData({
     required this.id,
+    required this.userId,
     required this.productName,
     required this.description,
     required this.price,
     required this.quantity,
-    required this.colors,
-    required this.sizes,
     required this.location,
+    required this.brand,
+    required this.condition,
     required this.productCode,
     required this.inStock,
     required this.createdAt,
@@ -57,46 +53,49 @@ class ProductDetailsData {
   });
 
   int id;
+  int userId;
   String productName;
   String description;
   int price;
   int quantity;
-  dynamic colors;
-  String sizes;
   String location;
+  String brand;
+  String condition;
   String productCode;
   int inStock;
   DateTime createdAt;
   DateTime updatedAt;
-  List<DetailsImage> image;
+  List<ProductDetailsImage> image;
 
   factory ProductDetailsData.fromJson(Map<String, dynamic> json) =>
       ProductDetailsData(
         id: json["id"],
+        userId: json["user_id"],
         productName: json["product_name"],
         description: json["description"],
         price: json["price"],
         quantity: json["quantity"],
-        colors: json["colors"],
-        sizes: json["sizes"],
         location: json["location"],
+        brand: json["brand"],
+        condition: json["condition"],
         productCode: json["product_code"],
         inStock: json["in_stock"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
-        image: List<DetailsImage>.from(
-            json["image"].map((x) => DetailsImage.fromJson(x))),
+        image: List<ProductDetailsImage>.from(
+            json["image"].map((x) => ProductDetailsImage.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
+        "user_id": userId,
         "product_name": productName,
         "description": description,
         "price": price,
         "quantity": quantity,
-        "colors": colors,
-        "sizes": sizes,
         "location": location,
+        "brand": brand,
+        "condition": condition,
         "product_code": productCode,
         "in_stock": inStock,
         "created_at": createdAt.toIso8601String(),
@@ -106,22 +105,157 @@ class ProductDetailsData {
 
   @override
   String toString() {
-    return 'ProductDetailsData{id: $id, productName: $productName, description: $description, price: $price, quantity: $quantity, colors: $colors, sizes: $sizes, location: $location, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image}';
+    return 'ProductDetailsData{id: $id, userId: $userId, productName: $productName, description: $description, price: $price, quantity: $quantity, location: $location, brand: $brand, condition: $condition, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image}';
   }
 }
 
-class DetailsImage {
-  DetailsImage({
+class ProductDetailsImage {
+  ProductDetailsImage({
     required this.filePath,
   });
 
   String filePath;
 
-  factory DetailsImage.fromJson(Map<String, dynamic> json) => DetailsImage(
+  factory ProductDetailsImage.fromJson(Map<String, dynamic> json) =>
+      ProductDetailsImage(
         filePath: json["file_path"],
       );
 
   Map<String, dynamic> toJson() => {
         "file_path": filePath,
       };
+
+  @override
+  String toString() {
+    return 'ProductDetailsImage{filePath: $filePath}';
+  }
 }
+
+
+
+
+
+// // To parse this JSON data, do
+// //
+// //     final productDetails = productDetailsFromJson(jsonString);
+
+// import 'package:meta/meta.dart';
+// import 'dart:convert';
+
+// ProductDetails productDetailsFromJson(String str) =>
+//     ProductDetails.fromJson(json.decode(str));
+
+// String productDetailsToJson(ProductDetails data) => json.encode(data.toJson());
+
+// class ProductDetails {
+//   ProductDetails({
+//    required this.success,
+//    required this.message,
+//    required this.data,
+//   });
+
+//   bool success;
+//   String message;
+//   ProductDetailsProductDetailsData data;
+
+//   factory ProductDetails.fromJson(Map<String, dynamic> json) => ProductDetails(
+//         success: json["success"],
+//         message: json["message"],
+//         data: ProductDetailsProductDetailsData.fromJson(json["data"]),
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "success": success,
+//         "message": message,
+//         "data": data.toJson(),
+//       };
+// }
+
+// class ProductDetailsProductDetailsData {
+//   ProductDetailsProductDetailsData({
+//    required this.id,
+//    required this.userId,
+//    required this.productName,
+//    required this.description,
+//    required this.price,
+//    required this.quantity,
+//    required this.location,
+//    required this.brand,
+//    required this.condition,
+//    required this.productCode,
+//    required this.inStock,
+//    required this.createdAt,
+//    required this.updatedAt,
+//    required this.image,
+//   });
+
+//   int id;
+//   int userId;
+//   String productName;
+//   String description;
+//   int price;
+//   int quantity;
+//   String location;
+//   String brand;
+//   String condition;
+//   String productCode;
+//   int inStock;
+//   DateTime createdAt;
+//   DateTime updatedAt;
+//   List<ProductDetailsProductDetailsImage> image;
+
+//   factory ProductDetailsProductDetailsData.fromJson(Map<String, dynamic> json) =>
+//       ProductDetailsProductDetailsData(
+//         id: json["id"],
+//         userId: json["user_id"],
+//         productName: json["product_name"],
+//         description: json["description"],
+//         price: json["price"],
+//         quantity: json["quantity"],
+//         location: json["location"],
+//         brand: json["brand"],
+//         condition: json["condition"],
+//         productCode: json["product_code"],
+//         inStock: json["in_stock"],
+//         createdAt: DateTime.parse(json["created_at"]),
+//         updatedAt: DateTime.parse(json["updated_at"]),
+//         image: List<ProductDetailsProductDetailsImage>.from(
+//             json["image"].map((x) => ProductDetailsProductDetailsImage.fromJson(x))),
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//         "user_id": userId,
+//         "product_name": productName,
+//         "description": description,
+//         "price": price,
+//         "quantity": quantity,
+//         "location": location,
+//         "brand": brand,
+//         "condition": condition,
+//         "product_code": productCode,
+//         "in_stock": inStock,
+//         "created_at": createdAt.toIso8601String(),
+//         "updated_at": updatedAt.toIso8601String(),
+//         "image": List<dynamic>.from(image.map((x) => x.toJson())),
+//       };
+// }
+
+// class ProductDetailsProductDetailsImage {
+//   ProductDetailsProductDetailsImage({
+//    required this.filePath,
+//   });
+
+//   String filePath;
+
+//   factory ProductDetailsProductDetailsImage.fromJson(Map<String, dynamic> json) =>
+//       ProductDetailsProductDetailsImage(
+//         filePath: json["file_path"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "file_path": filePath,
+//       };
+// }
+
+

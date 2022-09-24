@@ -19,13 +19,13 @@ class MarketFilter {
 
   bool success;
   String message;
-  List<MarketFilterdata> data;
+  List<MarketFilterData> data;
 
   factory MarketFilter.fromJson(Map<String, dynamic> json) => MarketFilter(
         success: json["success"],
         message: json["message"],
-        data: List<MarketFilterdata>.from(
-            json["data"].map((x) => MarketFilterdata.fromJson(x))),
+        data: List<MarketFilterData>.from(
+            json["data"].map((x) => MarketFilterData.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,54 +35,24 @@ class MarketFilter {
       };
 }
 
-class MarketFilterdata {
-  MarketFilterdata({
+class MarketFilterData {
+  MarketFilterData({
     required this.id,
     required this.productName,
-    required this.description,
     required this.price,
-    required this.quantity,
-    required this.colors,
-    required this.sizes,
-    required this.location,
-    required this.productCode,
-    required this.inStock,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.category,
     required this.image,
   });
 
   int id;
   String productName;
-  String description;
   int price;
-  int quantity;
-  dynamic colors;
-  String sizes;
-  String location;
-  String productCode;
-  int inStock;
-  DateTime createdAt;
-  DateTime updatedAt;
-  Category category;
   List<MarketFilterImage> image;
 
-  factory MarketFilterdata.fromJson(Map<String, dynamic> json) =>
-      MarketFilterdata(
+  factory MarketFilterData.fromJson(Map<String, dynamic> json) =>
+      MarketFilterData(
         id: json["id"],
         productName: json["product_name"],
-        description: json["description"],
         price: json["price"],
-        quantity: json["quantity"],
-        colors: json["colors"],
-        sizes: json["sizes"],
-        location: json["location"],
-        productCode: json["product_code"],
-        inStock: json["in_stock"],
-        createdAt: DateTime.parse(json["created_at"]),
-        updatedAt: DateTime.parse(json["updated_at"]),
-        category: Category.fromJson(json["category"]),
         image: List<MarketFilterImage>.from(
             json["image"].map((x) => MarketFilterImage.fromJson(x))),
       );
@@ -90,42 +60,8 @@ class MarketFilterdata {
   Map<String, dynamic> toJson() => {
         "id": id,
         "product_name": productName,
-        "description": description,
         "price": price,
-        "quantity": quantity,
-        "colors": colors,
-        "sizes": sizes,
-        "location": location,
-        "product_code": productCode,
-        "in_stock": inStock,
-        "created_at": createdAt.toIso8601String(),
-        "updated_at": updatedAt.toIso8601String(),
-        "category": category.toJson(),
         "image": List<dynamic>.from(image.map((x) => x.toJson())),
-      };
-}
-
-class Category {
-  Category({
-    required this.id,
-    required this.categoryName,
-    required this.image,
-  });
-
-  int id;
-  String categoryName;
-  String image;
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-        id: json["id"],
-        categoryName: json["category_name"],
-        image: json["image"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "id": id,
-        "category_name": categoryName,
-        "image": image,
       };
 }
 
@@ -161,9 +97,9 @@ class MarketFilterImage {
 
 // class MarketFilter {
 //   MarketFilter({
-//    required this.success,
-//    required this.message,
-//    required this.data,
+//   required this.success,
+//   required this.message,
+//   required this.data,
 //   });
 
 //   bool success;
@@ -186,20 +122,20 @@ class MarketFilterImage {
 
 // class MarketFilterdata {
 //   MarketFilterdata({
-//    required this.id,
-//    required this.productName,
-//    required this.description,
-//    required this.price,
-//    required this.quantity,
-//    required this.colors,
-//    required this.sizes,
-//    required this.location,
-//    required this.productCode,
-//    required this.inStock,
-//    required this.createdAt,
-//    required this.updatedAt,
-//    required this.category,
-//    required this.image,
+//   required this.id,
+//   required this.productName,
+//   required this.description,
+//   required this.price,
+//   required this.quantity,
+//   required this.colors,
+//   required this.sizes,
+//   required this.location,
+//   required this.productCode,
+//   required this.inStock,
+//   required this.createdAt,
+//   required this.updatedAt,
+//   required this.category,
+//   required this.image,
 //   });
 
 //   int id;
@@ -215,7 +151,7 @@ class MarketFilterImage {
 //   DateTime createdAt;
 //   DateTime updatedAt;
 //   Category category;
-//   List<MarketFilterMarketFilterImage> image;
+//   List<MarketFilterMarketFilterMarketFilterImage> image;
 
 //   factory MarketFilterdata.fromJson(Map<String, dynamic> json) =>
 //       MarketFilterdata(
@@ -232,8 +168,8 @@ class MarketFilterImage {
 //         createdAt: DateTime.parse(json["created_at"]),
 //         updatedAt: DateTime.parse(json["updated_at"]),
 //         category: Category.fromJson(json["category"]),
-//         image: List<MarketFilterMarketFilterImage>.from(
-//             json["image"].map((x) => MarketFilterMarketFilterImage.fromJson(x))),
+//         image: List<MarketFilterMarketFilterMarketFilterImage>.from(
+//             json["image"].map((x) => MarketFilterMarketFilterMarketFilterImage.fromJson(x))),
 //       );
 
 //   Map<String, dynamic> toJson() => {
@@ -261,7 +197,7 @@ class MarketFilterImage {
 
 // class Category {
 //   Category({
-//    required this.categoryName,
+//   required this.categoryName,
 //   });
 
 //   String categoryName;
@@ -275,15 +211,15 @@ class MarketFilterImage {
 //       };
 // }
 
-// class MarketFilterMarketFilterImage {
-//   MarketFilterMarketFilterImage({
-//    required this.filePath,
+// class MarketFilterMarketFilterMarketFilterImage {
+//   MarketFilterMarketFilterMarketFilterImage({
+//   required this.filePath,
 //   });
 
 //   String filePath;
 
-//   factory MarketFilterMarketFilterImage.fromJson(Map<String, dynamic> json) =>
-//       MarketFilterMarketFilterImage(
+//   factory MarketFilterMarketFilterMarketFilterImage.fromJson(Map<String, dynamic> json) =>
+//       MarketFilterMarketFilterMarketFilterImage(
 //         filePath: json["file_path"],
 //       );
 

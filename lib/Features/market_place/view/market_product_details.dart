@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -28,7 +31,6 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
 
   @override
   Widget build(BuildContext context) {
-    print('idddddddddddddddddddddddddd ${widget.id}');
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
@@ -53,9 +55,28 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                   )));
                 } else {
                   final data = snapshot.data;
+                  // List<File> images ='${Appurl.baseURL}${data!.image[0].filePath}';
+
                   return SingleChildScrollView(
                     child: Column(
                       children: [
+                        //   CarouselSlider(
+                        //   items: images.map(
+                        //     (i) {
+                        //       return Builder(
+                        //         builder: (BuildContext context) => Image.file(
+                        //           i,
+                        //           fit: BoxFit.cover,
+                        //           height: 200,
+                        //         ),
+                        //       );
+                        //     },
+                        //   ).toList(),
+                        //   options: CarouselOptions(
+                        //     viewportFraction: 1,
+                        //     height: 200,
+                        //   ),
+                        // ),
                         Image.network(
                           '${Appurl.baseURL}${data!.image[0].filePath}',
                           fit: BoxFit.cover,
@@ -112,7 +133,8 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  SellerProfile()));
+                                                  SellerProfile(
+                                                      sellerId: data.userId)));
                                     },
                                     child: Container(
                                       alignment: Alignment.center,
