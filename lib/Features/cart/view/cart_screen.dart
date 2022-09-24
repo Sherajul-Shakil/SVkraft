@@ -1265,10 +1265,24 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         width: size.width,
                         height: 50,
-                        child: Text(
-                          cartData.user.name,
-                          style: TextStyle(color: Colors.black, fontSize: 18),
-                          textAlign: TextAlign.center,
+                        child: InkWell(
+                          onTap: () {
+                            // print(cartData.grocery.toString());
+                            // for (int i = 0; i < cartData.grocery.length; i++) {
+                            //   print(cartData.grocery[i].toJson());
+                            // }
+                            // final mybody = {
+                            //   "grocery": cartData.grocery.toJson(),
+                            //   "special_day": cartData.special_day.toJson(),
+                            //   "total_price": totalPrice,
+                            // };
+                            // http.post('dasdasf', body: mybody);
+                          },
+                          child: Text(
+                            cartData.user.name,
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                       SizedBox(height: 15),

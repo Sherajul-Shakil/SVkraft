@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 class AddProductController extends GetxController {
   String? selectedCategory;
+  int? selectedCardId;
   String? selectedCity;
   String? selectedBrand;
   String? condition;
@@ -31,15 +32,17 @@ class AddProductController extends GetxController {
     return images;
   }
 
-  void uploadProduct({name, description, price, quantity}) async {
+  uploadProduct({name, description, price, quantity}) async {
     if (images.isNotEmpty) {
       var request = http.MultipartRequest(
           'POST', Uri.parse('http://mamun.click/api/product/create'));
       request.headers.addAll({
         'Authorization': 'Bearer 31|CSTDHfyWAJyATK3QJNafQEDHDElHZgTpOrjwtKQg'
       });
-      request.fields['category_id'] = '27';
+      request.fields['category_id'] = '$selectedCardId';
       request.fields['location'] = "$selectedCity";
+      request.fields['brand'] = "$selectedBrand";
+      request.fields['condition'] = "$condition";
       request.fields['product_name'] = '$name';
       request.fields['price'] = '$price';
       request.fields['description'] = '$description';
@@ -51,10 +54,19 @@ class AddProductController extends GetxController {
       }
 
       var response = await request.send();
+      if (response.statusCode == 200) {
+        print('success');
+
+        return response.statusCode;
+      } else {
+        print('failed');
+      }
       print(response.statusCode);
-      response.stream.transform(utf8.decoder).listen((value) {
-        print(value);
-      });
+      response.stream.transform(utf8.decoder).listen(
+        (value) {
+          print(value);
+        },
+      );
     }
   }
 }

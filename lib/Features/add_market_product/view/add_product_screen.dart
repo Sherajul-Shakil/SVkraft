@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/add_market_product/controller/add_product_con.dart';
 import 'package:sv_craft/Features/add_market_product/view/widgets/custom_textfield.dart';
+import 'package:sv_craft/Features/market_place/view/market_place.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({Key? key}) : super(key: key);
@@ -23,6 +24,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   List<File> images = [];
   final _addProductFormKey = GlobalKey<FormState>();
+  bool _isloading = false;
 
   @override
   void dispose() {
@@ -150,35 +152,59 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    print('iaiugfa');
-                  },
-                  child: const Text('Add Product'),
-                ),
-                ElevatedButton(
-                  child: const Text(
-                    'Posttt',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20,
-                    ),
-                  ),
-                  onPressed: () {
-                    // _addProductController.uploadImage(images);
-                    print('sdasdhkahafkj');
-                    _addProductController.uploadProduct(
-                      name: productNameController.text,
-                      description: descriptionController.text,
-                      price: double.parse(priceController.text),
-                      quantity: double.parse(quantityController.text),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size(150, 50),
-                    primary: Colors.yellow,
-                  ),
-                )
+                !_isloading
+                    ? ElevatedButton(
+                        child: const Text(
+                          'Post',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 20,
+                          ),
+                        ),
+                        onPressed: () async {
+                          // _addProductController.uploadImage(images);
+                          setState(() {
+                            _isloading = true;
+                          });
+
+                          int statusCode =
+                              await _addProductController.uploadProduct(
+                            name: productNameController.text,
+                            description: descriptionController.text,
+                            price: double.parse(priceController.text),
+                            quantity: double.parse(quantityController.text),
+                          );
+
+                          if (statusCode == 200) {
+                            setState(() {
+                              _isloading = false;
+                            });
+                            Get.offAll(() => const MarketPlace());
+                            Get.snackbar(
+                              'Success',
+                              'Product Added Successfully',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.green,
+                              colorText: Colors.white,
+                            );
+                          } else {
+                            Get.snackbar(
+                              'Error',
+                              'Something went wrong',
+                              snackPosition: SnackPosition.BOTTOM,
+                              backgroundColor: Colors.red,
+                              colorText: Colors.white,
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(150, 50),
+                          primary: Colors.yellow,
+                        ),
+                      )
+                    : Center(
+                        child: CircularProgressIndicator(),
+                      ),
               ],
             ),
           ),

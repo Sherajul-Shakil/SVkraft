@@ -167,6 +167,8 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                             onTap: () {
                               setState(() {
                                 selectedCard = index;
+                                _addProductController.selectedCardId =
+                                    _categoryData[index].id;
                               });
                               // _isPressed[index] = true;
                               // Navigator.push(
@@ -216,98 +218,6 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                         height: 10,
                       ),
 
-                      // Container(
-                      //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                      //   margin:
-                      //       const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                      //   width: double.infinity,
-                      //   decoration: BoxDecoration(
-                      //       color: Appcolor.primaryColor,
-                      //       borderRadius: BorderRadius.circular(10)),
-                      //   child: DropdownButton<String>(
-                      //     onChanged: (value2) {
-                      //       setState(() {
-                      //         _addProductController.selectedCategory = value2!;
-
-                      //         //showToast();
-                      //       });
-                      //     },
-                      //     value: _addProductController.selectedCategory,
-
-                      //     hint: Center(
-                      //         child: Text(
-                      //       _addProductController.selectedCategory ??
-                      //           'Select Category',
-                      //       style: TextStyle(color: Colors.white),
-                      //     )),
-
-                      //     // Hide the default underline
-                      //     underline: Container(),
-                      //     // set the color of the dropdown menu
-                      //     dropdownColor: Colors.white,
-                      //     icon: const Icon(
-                      //       Icons.arrow_downward,
-                      //       color: Colors.white,
-                      //     ),
-                      //     isExpanded: true,
-
-                      //     items: _categoryList.map((item) {
-                      //       if (item.categoryName ==
-                      //           _addProductController.selectedCategory) {
-                      //         return DropdownMenuItem(
-                      //           value: item.categoryName,
-                      //           child: Container(
-                      //               padding: EdgeInsets.symmetric(horizontal: 20),
-                      //               decoration: BoxDecoration(
-                      //                   color: Colors.blue,
-                      //                   borderRadius: BorderRadius.circular(10)),
-                      //               height: 48.0,
-                      //               width: double.infinity,
-                      //               child: Align(
-                      //                 alignment: Alignment.centerLeft,
-                      //                 child: ListTile(
-                      //                   leading: Image.network(
-                      //                     item.image!,
-                      //                     height: 20,
-                      //                     width: 20,
-                      //                     fit: BoxFit.cover,
-                      //                   ),
-                      //                   title: Text(item.categoryName),
-                      //                 ),
-                      //               )),
-                      //         );
-                      //       } else {
-                      //         return DropdownMenuItem(
-                      //           value: item.categoryName,
-                      //           child: ListTile(
-                      //             leading: Image.network(
-                      //               item.image!,
-                      //               height: 20,
-                      //               width: 20,
-                      //               fit: BoxFit.cover,
-                      //             ),
-                      //             title: Text(item.categoryName),
-                      //           ),
-                      //         );
-                      //       }
-                      //     }).toList(),
-
-                      //     // Customize the selected item
-                      //     selectedItemBuilder: (BuildContext context) =>
-                      //         _categoryList.map((e) {
-                      //       return Center(
-                      //         child: Text(
-                      //           e.categoryName,
-                      //           style: const TextStyle(
-                      //               fontSize: 18,
-                      //               color: Colors.white,
-                      //               fontStyle: FontStyle.italic,
-                      //               fontWeight: FontWeight.bold),
-                      //         ),
-                      //       );
-                      //     }).toList(),
-                      //   ),
-                      // ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -584,7 +494,9 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                         null &&
                                     _addProductController.selectedBrand !=
                                         null &&
-                                    _addProductController.condition != null) {
+                                    _addProductController.condition != null &&
+                                    _addProductController.selectedCardId !=
+                                        null) {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

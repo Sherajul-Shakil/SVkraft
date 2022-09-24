@@ -93,6 +93,11 @@ class Grocery {
         "price": price,
         "quantity": quantity,
       };
+
+  @override
+  String toString() {
+    return 'Grocery{id: $id, name: $name, image: $image, price: $price, quantity: $quantity}';
+  }
 }
 
 class SpecialDay {
