@@ -89,7 +89,7 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
 
                           child: Column(
                             children: [
-                              // SizedBox(height: size.height * .01),
+                              SizedBox(height: size.height * .01),
                               Row(
                                 children: [
                                   SizedBox(width: size.width * .01),
@@ -129,8 +129,8 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
                                       '${Appurl.baseURL}${data[index].groceryItem.image}',
                                       // AppImage.carouselImages[index],
                                       fit: BoxFit.cover,
-                                      width: 120,
-                                      height: 150,
+                                      width: size.width * .35,
+                                      height: size.height * .17,
                                     ),
                                   ),
                                   Positioned(
@@ -201,8 +201,7 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
                                         height: 50,
                                         width: size.width * .4,
                                         child: Text(
-                                          data[index].groceryItem.description ??
-                                              "",
+                                          data[index].groceryItem.description,
                                           style: const TextStyle(
                                             fontSize: 12,
                                             fontWeight: FontWeight.w500,
