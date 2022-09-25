@@ -428,7 +428,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
                                                     right: 15,
                                                     top: 20,
                                                     bottom: 10),
-                                                itemCount: data!.length,
+                                                itemCount: data.length,
                                                 scrollDirection:
                                                     Axis.horizontal,
                                                 gridDelegate:

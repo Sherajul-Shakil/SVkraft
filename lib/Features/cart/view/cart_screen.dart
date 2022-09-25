@@ -1241,13 +1241,12 @@ class _CartScreenState extends State<CartScreen> {
                         height: 50,
                         child: InkWell(
                           onTap: () {
-                            // print(cartData.grocery[0].toJson());
-                            // print(cartData.grocery.toString());
                             List groceryList = [];
                             for (int i = 0; i < cartData.grocery.length; i++) {
                               groceryList.add(cartData.grocery[i].toJson());
                               //print(groceryList);
                             }
+
                             // var groceryMap = groceryList.map((e) {
                             //   return {
                             //     "id": e.id,

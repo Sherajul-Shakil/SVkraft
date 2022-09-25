@@ -9,14 +9,18 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/bookmarks/controller/add_to_bookmarks_con.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/grocery/controllar/all_product_controller.dart';
+import 'package:sv_craft/Features/grocery/controllar/bookmark_add_product.dart';
+import 'package:sv_craft/Features/grocery/controllar/bookmark_category_con.dart';
 import 'package:sv_craft/Features/grocery/controllar/category_controller.dart';
 import 'package:sv_craft/Features/grocery/controllar/searched_product_con.dart';
 import 'package:sv_craft/Features/grocery/model/all_product_model.dart';
+import 'package:sv_craft/Features/grocery/model/bookmark_category_model.dart';
 import 'package:sv_craft/Features/grocery/view/bookmarks_screen.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/filter_category.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_drawer.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
 import 'package:sv_craft/Features/home/bottom_bar.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/grocery_nav.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
@@ -42,7 +46,11 @@ class _GroceryProductState extends State<GroceryProduct> {
       Get.put(GrocerySearchController());
   final AddtoBookmarksController _addtoBookmarksController =
       Get.put(AddtoBookmarksController());
-
+  BookmarkCategoryController _bookmarkCategoryController =
+      Get.put(BookmarkCategoryController());
+  HomeController _homeController = Get.put(HomeController());
+  BookmarkProductAddController _bookmarkProductAddController =
+      Get.put(BookmarkProductAddController());
   // Variable
   var tokenp;
   late int userId;
@@ -50,6 +58,8 @@ class _GroceryProductState extends State<GroceryProduct> {
   var searchedData;
   var _selectedIndex = 2;
   PageController? _pageController;
+  var BookmarkCategory;
+  int? _productIndex;
 
   final TextEditingController _searchController = TextEditingController();
 
@@ -71,6 +81,19 @@ class _GroceryProductState extends State<GroceryProduct> {
     setState(() {
       userId = userid;
     });
+
+    // Get bookmarks category name
+    var bookmarkCategory = await _bookmarkCategoryController
+        .getBookmarkCategory(_homeController.tokenGlobal);
+    if (bookmarkCategory != null) {
+      setState(() {
+        BookmarkCategory = bookmarkCategory;
+      });
+    }
+    // setState(() {
+    //   BookmarkCategory = bookmarkCategory;
+    //   print("Print from ui ${BookmarkCategory[0].length}");
+    // });
   }
 
   bool _searchBoolean = false;
@@ -162,7 +185,9 @@ class _GroceryProductState extends State<GroceryProduct> {
 
   @override
   Widget build(BuildContext context) {
-    print('tokenp = ' + tokenp.toString());
+    print("*********************************************");
+    print(" BBBBBBBBBBook ${BookmarkCategory.length}");
+    // print("bbbbbbbbbbbbbbbbbbbOk $bookmarkCategory");
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
@@ -171,26 +196,26 @@ class _GroceryProductState extends State<GroceryProduct> {
         drawer: buildDrawer(),
         //drawer: Drawer(backgroundColor: Colors.blue.withOpacity(0)),
 
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed('/cart');
-          },
-          child: Badge(
-            elevation: 0,
-            badgeContent: const Text(
-              '',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 15,
-              ),
-            ),
-            badgeColor: Colors.transparent,
-            child: const Icon(
-              Icons.shopping_cart_outlined,
-            ),
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     Get.toNamed('/cart');
+        //   },
+        //   child: Badge(
+        //     elevation: 0,
+        //     badgeContent: const Text(
+        //       '',
+        //       style: TextStyle(
+        //         color: Colors.white,
+        //         fontSize: 15,
+        //       ),
+        //     ),
+        //     badgeColor: Colors.transparent,
+        //     child: const Icon(
+        //       Icons.shopping_cart_outlined,
+        //     ),
+        //   ),
+        // ),
+        // floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
 
         //AppBar code
         appBar: AppBar(
@@ -620,21 +645,125 @@ class _GroceryProductState extends State<GroceryProduct> {
                                         SizedBox(width: size.width * .01),
                                         IconButton(
                                             onPressed: () async {
-                                              var message =
-                                                  await _addtoBookmarksController
-                                                      .addToBookmarks(
-                                                          userId,
-                                                          data[index].id,
-                                                          "grocery",
-                                                          tokenp);
+                                              Get.dialog(
+                                                AlertDialog(
+                                                  title: const Text(
+                                                      'Add To Bookmarks'),
+                                                  content: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Container(
+                                                        height:
+                                                            size.height * .3,
+                                                        width: size.width * .6,
+                                                        child: ListView.builder(
+                                                            shrinkWrap: true,
+                                                            itemCount:
+                                                                BookmarkCategory
+                                                                    .length,
+                                                            itemBuilder:
+                                                                (context,
+                                                                    index) {
+                                                              return Container(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        20),
+                                                                // margin: const EdgeInsets.symmetric(horizontal: 20),
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              0),
+                                                                  boxShadow: const [
+                                                                    BoxShadow(
+                                                                      color: Colors
+                                                                          .black12, //color of shadow
+                                                                      spreadRadius:
+                                                                          1, //spread radius
+                                                                      blurRadius:
+                                                                          0, // blur radius
+                                                                      offset: Offset(
+                                                                          0,
+                                                                          0), // changes position of shadow
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                                width:
+                                                                    size.width *
+                                                                        .4,
+                                                                height: 40,
+                                                                child: InkWell(
+                                                                  onTap:
+                                                                      () async {
+                                                                    var status = await _bookmarkProductAddController.addBookmarkProduct(
+                                                                        _homeController
+                                                                            .tokenGlobal,
+                                                                        BookmarkCategory[index]
+                                                                            .id,
+                                                                        data[index]
+                                                                            .id);
+                                                                    if (status ==
+                                                                        200) {
+                                                                      Get.back();
+                                                                      Get.snackbar(
+                                                                          'Success',
+                                                                          'Product Added To Bookmark');
+                                                                    }
+                                                                  },
+                                                                  child: Row(
+                                                                    children: [
+                                                                      Icon(Icons
+                                                                          .list),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            20,
+                                                                      ),
+                                                                      Text(
+                                                                        BookmarkCategory[index]
+                                                                            .name,
+                                                                        style: TextStyle(
+                                                                            color:
+                                                                                Colors.black,
+                                                                            fontSize: 15),
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                      ),
+                                                                      Spacer(),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              );
+                                                            }),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  actions: [],
+                                                ),
+                                                barrierDismissible: false,
+                                              );
+                                              // var message =
+                                              //     await _addtoBookmarksController
+                                              //         .addToBookmarks(
+                                              //             userId,
+                                              //             data[index].id,
+                                              //             "grocery",
+                                              //             tokenp);
 
-                                              if (message != null) {
-                                                Get.snackbar(
-                                                    "Product Added to Bookmarks",
-                                                    message);
-                                              } else {
-                                                print("Not Added");
-                                              }
+                                              // if (message != null) {
+                                              //   Get.snackbar(
+                                              //       "Product Added to Bookmarks",
+                                              //       message);
+                                              // } else {
+                                              //   print("Not Added");
+                                              // }
                                             },
                                             icon: const Icon(
                                               FontAwesome.bookmark,

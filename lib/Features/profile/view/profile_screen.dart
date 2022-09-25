@@ -119,6 +119,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             // Navigator.pop(context);
                           },
                         ),
+                        Divider(
+                          color: Colors.black,
+                        ),
                         ListTile(
                           leading: const Icon(
                             Icons.list_alt_outlined,

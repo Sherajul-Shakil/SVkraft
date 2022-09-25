@@ -119,7 +119,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   Widget _searchTextField() {
     return TextField(
       controller: _searchController,
-      onChanged: (String s) async {
+      onSubmitted: (String s) async {
         Future.delayed(Duration(seconds: 1), () async {
           final searchProduct =
               await _maeketSearchController.getmarketSearchProduct(tokenp, s);
@@ -277,15 +277,14 @@ class _MarketPlaceState extends State<MarketPlace> {
                           child: IconButton(
                             icon: const Icon(
                               Icons.clear,
-                              color: Appcolor.iconColor,
+                              color: Colors.blue,
                               size: 20,
                             ),
                             onPressed: () {
                               setState(() {
-                                Future.delayed(Duration(microseconds: 500),
+                                Future.delayed(Duration(microseconds: 200),
                                     () async {
                                   _showfilter = false;
-                                  _searchController.clear();
                                 });
                               });
                             },
@@ -307,7 +306,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                       ),
                       onPressed: () {
                         setState(() {
-                          Future.delayed(Duration(microseconds: 500), () async {
+                          Future.delayed(Duration(microseconds: 200), () async {
                             searchedData = null;
                             _searchBoolean = false;
                             _isSearched = false;
@@ -351,7 +350,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                         ),
                       ),
                     ),
-                    searchedData != null && _searchController.text.isNotEmpty
+                    searchedData != null && _searchBoolean == true
                         ? Container(
                             color: Color.fromARGB(255, 143, 211, 231),
                             height: size.height - 120,
@@ -478,7 +477,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                     Text('No Product Found'));
                                           } else {
                                             final data = snapshot.data;
-                                            print(data);
+
                                             return Column(
                                               children: [
                                                 Container(

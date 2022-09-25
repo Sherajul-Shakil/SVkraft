@@ -5,6 +5,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/addtocart_con.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_details_pro_con.dart';
 import 'package:sv_craft/Features/special_day/model/special_pro_detals_m.dart';
@@ -30,10 +31,11 @@ class _ProductDetailsState extends State<ProductDetails> {
       Get.put(AllProductController());
   final AddtocartController _addToCartController =
       Get.put(AddtocartController());
+  HomeController _homeController = Get.put(HomeController());
   var details;
   var count = 0;
   var totalPrice = 0;
-  late int userId;
+  // late int userId;
 
   @override
   void initState() {
@@ -45,11 +47,11 @@ class _ProductDetailsState extends State<ProductDetails> {
   }
 
   Future<void> setTokenToVariable() async {
-    final userid = await _allProductController.getUserId();
-    // print('token = ' + token);
-    setState(() {
-      userId = userid;
-    });
+    // final userid = await _allProductController.getUserId();
+    // // print('token = ' + token);
+    // setState(() {
+    //   userId = userid;
+    // });
   }
 
   @override
@@ -112,25 +114,34 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   Positioned(
                                     top: size.height * .02,
                                     left: 20,
-                                    child: Column(
+                                    child: Row(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Container(
-                                          padding: EdgeInsets.all(10),
-                                          // width: size.width * .6,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: Colors.black38,
-                                          ),
-                                          child: Text(
-                                            data.name,
-                                            style: const TextStyle(
-                                                color: Appcolor.uperTextColor,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.normal),
-                                            // textAlign: TextAlign.center,
+                                        ConstrainedBox(
+                                          constraints: BoxConstraints(
+                                              // maxHeight: 300,
+                                              // minHeight: 200,
+                                              maxWidth: size.width * .6,
+                                              minWidth: size.width * .2),
+                                          child: Container(
+                                            padding: EdgeInsets.all(10),
+                                            // width: size.width * .6,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              color: Colors.black38,
+                                            ),
+                                            child: Text(
+                                              data.name,
+                                              style: const TextStyle(
+                                                  color: Appcolor.uperTextColor,
+                                                  fontSize: 20,
+                                                  fontWeight:
+                                                      FontWeight.normal),
+                                              // textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ),
                                       ],
@@ -147,7 +158,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   Text('Price : ${data.price}',
                                       style: TextStyle(
                                           color: Colors.black87,
-                                          fontSize: 25,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.normal)),
                                   SizedBox(
                                     height: size.height * .01,
@@ -155,7 +166,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   const Text("Description",
                                       style: TextStyle(
                                           color: Colors.black87,
-                                          fontSize: 30,
+                                          fontSize: 20,
                                           fontWeight: FontWeight.normal)),
                                   Html(
                                     data: data.description,
@@ -165,9 +176,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                         color: Colors.black87,
                                       ),
                                     },
-                                  ),
-                                  SizedBox(
-                                    height: size.height * .05,
                                   ),
                                   const Text('Quantity',
                                       style: TextStyle(
@@ -318,7 +326,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             var addResponce =
                                                 await _addToCartController
                                                     .addTocart(
-                                              userId,
+                                              _homeController.userId,
                                               data.id,
                                               "special_day",
                                               count,
