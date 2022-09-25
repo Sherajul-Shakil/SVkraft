@@ -155,19 +155,65 @@ class _GroceryBookmarksState extends State<GroceryBookmarks> {
                                 Spacer(),
                                 IconButton(
                                     onPressed: () async {
-                                      var statusCode =
-                                          await _deleteBookmarkCategoryController
-                                              .bookmarCategoryItemDelete(
-                                                  _homeController.tokenGlobal,
-                                                  data[index].id);
-                                      if (statusCode == 200) {
-                                        setState(() {});
-                                        Get.snackbar(
-                                            'Success', 'Category Deleted');
-                                      } else {
-                                        Get.snackbar(
-                                            'Error', 'Category Not Deleted');
-                                      }
+                                      Get.dialog(
+                                        AlertDialog(
+                                          title: const Text(
+                                              'Delete Bookmarks Category'),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [],
+                                          ),
+                                          actions: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    Get.back();
+                                                  },
+                                                  child: const Text('Cancel'),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () async {
+                                                    var statusCode =
+                                                        await _deleteBookmarkCategoryController
+                                                            .bookmarCategoryItemDelete(
+                                                                _homeController
+                                                                    .tokenGlobal,
+                                                                data[index].id);
+                                                    if (statusCode == 200) {
+                                                      setState(() {});
+                                                      Get.back();
+                                                      Get.snackbar('Success',
+                                                          'Category Deleted');
+                                                    } else {
+                                                      Get.snackbar('Error',
+                                                          'Category Not Deleted');
+                                                    }
+                                                  },
+                                                  child: const Text('Confirm'),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        barrierDismissible: false,
+                                      );
+                                      // var statusCode =
+                                      //     await _deleteBookmarkCategoryController
+                                      //         .bookmarCategoryItemDelete(
+                                      //             _homeController.tokenGlobal,
+                                      //             data[index].id);
+                                      // if (statusCode == 200) {
+                                      //   setState(() {});
+                                      //   Get.snackbar(
+                                      //       'Success', 'Category Deleted');
+                                      // } else {
+                                      //   Get.snackbar(
+                                      //       'Error', 'Category Not Deleted');
+                                      // }
                                     },
                                     icon: Icon(
                                       Icons.delete,

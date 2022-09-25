@@ -18,7 +18,7 @@ class MarketCategoryController extends GetxController {
         final marketCategory = marketCategoryFromJson(response.body);
         return marketCategory.data;
       } else {
-        print('User not found');
+        print('Category not found');
       }
     } catch (e) {
       print(e.toString());

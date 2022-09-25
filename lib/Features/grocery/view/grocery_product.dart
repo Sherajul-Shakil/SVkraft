@@ -185,9 +185,6 @@ class _GroceryProductState extends State<GroceryProduct> {
 
   @override
   Widget build(BuildContext context) {
-    print("*********************************************");
-    print(" BBBBBBBBBBook ${BookmarkCategory.length}");
-    // print("bbbbbbbbbbbbbbbbbbbOk $bookmarkCategory");
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(

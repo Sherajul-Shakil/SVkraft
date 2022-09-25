@@ -34,7 +34,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color.fromARGB(255, 32, 32, 32),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: FutureBuilder<ProductDetailsData?>(
             future: _productDetailsController.getProductDetails(
@@ -77,11 +77,76 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                         //     height: 200,
                         //   ),
                         // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            IconButton(
+                                onPressed: () {
+                                  Get.back();
+                                },
+                                icon: const Icon(Icons.arrow_back_ios)),
+                          ],
+                        ),
+
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: size.width * 0.05,
+                            ),
+                            Text(
+                              data!.productName,
+                              style: const TextStyle(
+                                  fontSize: 26, fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: size.height * 0.06,
+                        ),
                         Image.network(
-                          '${Appurl.baseURL}${data!.image[0].filePath}',
+                          '${Appurl.baseURL}${data.image[0].filePath}',
                           fit: BoxFit.cover,
-                          height: size.height * 0.5,
-                          width: size.width,
+                          height: size.height * 0.4,
+                          width: size.width * 0.8,
+                        ),
+                        SizedBox(
+                          height: size.height * 0.05,
+                        ),
+                        Container(
+                          width: size.width * 0.8,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Image.network(
+                                '${Appurl.baseURL}${data.image[0].filePath}',
+                                fit: BoxFit.cover,
+                                height: size.height * 0.08,
+                                width: size.width * 0.2,
+                              ),
+                              SizedBox(
+                                width: size.width * 0.05,
+                              ),
+                              Image.network(
+                                '${Appurl.baseURL}${data.image[0].filePath}',
+                                fit: BoxFit.cover,
+                                height: size.height * 0.1,
+                                width: size.width * 0.2,
+                              ),
+                              SizedBox(
+                                width: size.width * 0.05,
+                              ),
+                              Image.network(
+                                '${Appurl.baseURL}${data.image[0].filePath}',
+                                fit: BoxFit.cover,
+                                height: size.height * 0.08,
+                                width: size.width * 0.2,
+                              ),
+                              SizedBox(
+                                width: size.width * 0.05,
+                              ),
+                            ],
+                          ),
                         ),
                         Container(
                           padding: const EdgeInsets.all(20),
@@ -91,24 +156,25 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text(data.productName,
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.normal)),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              // Text(data.description,
+                              // Text(data.productName,
                               //     style: const TextStyle(
-                              //         color: Colors.white60,
-                              //         fontSize: 18,
+                              //         color: Colors.black,
+                              //         fontSize: 30,
                               //         fontWeight: FontWeight.normal)),
+                              // const SizedBox(
+                              //   height: 10,
+                              // ),
+
+                              Text('Description',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.normal)),
                               Html(
                                 data: data.description,
                                 style: {
                                   "html": Style(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                   ),
                                 },
                               ),
@@ -117,15 +183,86 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                               ),
                               Text('Price : ${data.price} kr',
                                   style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
+                                      color: Colors.black,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.normal)),
                               const SizedBox(
-                                height: 70,
+                                height: 5,
                               ),
+                              Text('Qunatity : ${data.quantity}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text('Condition : ${data.condition}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal)),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Text('Brand : ${data.brand}',
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.normal)),
+                              const SizedBox(
+                                height: 20,
+                              ),
+
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
+                                  InkWell(
+                                    onTap: () {
+                                      //Navigate to SellerProfile with material route
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             SellerProfile(
+                                      //                 sellerId: data.userId)));
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: Appcolor.primaryColor,
+                                        borderRadius: BorderRadius.circular(8),
+                                        boxShadow: const [
+                                          BoxShadow(
+                                            color: Colors
+                                                .black12, //color of shadow
+                                            spreadRadius: 2, //spread radius
+                                            blurRadius: 5, // blur radius
+                                            offset: Offset(0,
+                                                2), // changes position of shadow
+                                            //first paramerter of offset is left-right
+                                            //second parameter is top to down
+                                          )
+                                        ],
+                                      ),
+                                      width: 180,
+                                      height: 45,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Text(
+                                            'Call Seller',
+                                            style: TextStyle(
+                                                color: Appcolor.uperTextColor,
+                                                fontSize: 18),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
                                   InkWell(
                                     onTap: () {
                                       //Navigate to SellerProfile with material route

@@ -19,7 +19,7 @@ class MarketCityController extends GetxController {
         final marketCategory = marketCitiesFromJson(response.body);
         return marketCategory.data;
       } else {
-        print('User not found');
+        print('City not found');
       }
     } catch (e) {
       print(e.toString());

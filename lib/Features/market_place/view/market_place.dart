@@ -2,12 +2,9 @@ import 'dart:async';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/add_market_product/view/category_city.dart';
-import 'package:sv_craft/Features/auth/controllar/signin_controllar.dart';
-import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
@@ -46,7 +43,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   String? selectedPrice;
 
   var tokenp;
-  bool _isSearched = false;
+  // bool _isSearched = false;
   bool _searchBoolean = false;
   var searchedData;
   bool _showfilter = false;
@@ -76,7 +73,7 @@ class _MarketPlaceState extends State<MarketPlace> {
     super.initState();
 
     Future.delayed(Duration.zero, () async {
-      setTokenToVariable();
+      await setTokenToVariable();
     }); //.then((value) => _allProductController.GetAllProduct(tokenp))
   }
 
@@ -109,7 +106,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   }
 
   @override
-  ondispose() {
+  dispose() {
     _cityNameController.dispose();
     _categoryController.dispose();
     _searchController.dispose();
@@ -119,19 +116,19 @@ class _MarketPlaceState extends State<MarketPlace> {
   Widget _searchTextField() {
     return TextField(
       controller: _searchController,
-      onSubmitted: (String s) async {
-        Future.delayed(Duration(seconds: 1), () async {
-          final searchProduct =
-              await _maeketSearchController.getmarketSearchProduct(tokenp, s);
+      onSubmitted: (_) async {
+        // Future.delayed(Duration(seconds: 1), () async {
+        final searchProduct = await _maeketSearchController
+            .getmarketSearchProduct(tokenp, _searchController.text);
 
-          if (searchProduct != null) {
-            setState(() {
-              _isSearched = true;
-              searchedData = searchProduct;
-              // print('searchProduct = ${searchProduct[0].productName}');
-            });
-          }
-        });
+        if (searchProduct != null) {
+          setState(() {
+            //_isSearched = true;
+            searchedData = searchProduct;
+            // print('searchProduct = ${searchProduct[0].productName}');
+          });
+        }
+
         // final searchProduct =
         //     await _maeketSearchController.getmarketSearchProduct(tokenp, s);
 
@@ -306,12 +303,13 @@ class _MarketPlaceState extends State<MarketPlace> {
                       ),
                       onPressed: () {
                         setState(() {
-                          Future.delayed(Duration(microseconds: 200), () async {
-                            searchedData = null;
-                            _searchBoolean = false;
-                            _isSearched = false;
-                            _searchController.clear();
-                          });
+                          // Future.delayed(
+                          //     Duration(microseconds: 200), () async {});
+                          //searchedData = null;
+                          _searchBoolean = false;
+                          //       _isSearched = false;
+                          _searchController.text = "";
+                          // _searchController.clear();
                         });
                       },
                     ),
@@ -1154,7 +1152,10 @@ class _MarketPlaceState extends State<MarketPlace> {
                 activeColor: Colors.white),
             BottomNavyBarItem(
                 icon: Icon(Icons.favorite),
-                title: Text('Market Pace'),
+                title: Text(
+                  'M. Place',
+                  overflow: TextOverflow.ellipsis,
+                ),
                 activeColor: Colors.white),
             BottomNavyBarItem(
                 icon: Icon(Icons.bookmark_border),

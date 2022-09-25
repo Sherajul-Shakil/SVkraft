@@ -32,12 +32,12 @@ class AddProductController extends GetxController {
     return images;
   }
 
-  uploadProduct({name, description, price, quantity}) async {
+  uploadProduct({name, description, price, quantity, token}) async {
     if (images.isNotEmpty) {
       var request = http.MultipartRequest(
           'POST', Uri.parse('http://mamun.click/api/product/create'));
       request.headers.addAll({
-        'Authorization': 'Bearer 31|CSTDHfyWAJyATK3QJNafQEDHDElHZgTpOrjwtKQg'
+        'Authorization': 'Bearer $token',
       });
       request.fields['category_id'] = '$selectedCardId';
       request.fields['location'] = "$selectedCity";

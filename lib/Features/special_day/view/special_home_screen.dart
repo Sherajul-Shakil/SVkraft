@@ -124,7 +124,7 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
     final size = MediaQuery.of(context).size;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 235, 102, 179),
+        backgroundColor: Color.fromARGB(255, 240, 130, 194),
         key: _scaffoldKey,
         drawer: buildDrawer(),
         appBar: AppBar(

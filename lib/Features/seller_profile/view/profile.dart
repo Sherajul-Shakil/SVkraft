@@ -90,7 +90,7 @@ class _SellerProfileState extends State<SellerProfile> {
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
                                   image: NetworkImage(
-                                      "https://scontent.fdac8-1.fna.fbcdn.net/v/t39.30808-6/251820896_1143322412741186_1065801067419300564_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=174925&_nc_ohc=ikjGP6Ij3GgAX85HQzu&tn=aIpka5cxd_2TbP7r&_nc_ht=scontent.fdac8-1.fna&oh=00_AT-nzaxoir4eZFTE3SPGHl5HhEQwwGt4RYkdk2251QGl8g&oe=63302807"),
+                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQo5X1qxa__quYvEMWsc-qDiEB_L9tEdFUlKJicLc&s"),
                                   fit: BoxFit.cover)),
                         ),
                         SizedBox(

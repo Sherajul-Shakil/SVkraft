@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/add_market_product/controller/add_product_con.dart';
 import 'package:sv_craft/Features/add_market_product/view/widgets/custom_textfield.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/market_place/view/market_place.dart';
 
 class AddProductScreen extends StatefulWidget {
@@ -16,6 +17,7 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
   AddProductController _addProductController = Get.put(AddProductController());
+  HomeController _homeController = Get.put(HomeController());
   final TextEditingController productNameController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
@@ -28,11 +30,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     productNameController.dispose();
     descriptionController.dispose();
     priceController.dispose();
     quantityController.dispose();
+    images.clear();
+    super.dispose();
   }
 
   void selectImages() async {
@@ -149,34 +152,49 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         ),
                         onPressed: () async {
                           // _addProductController.uploadImage(images);
-                          setState(() {
-                            _isloading = true;
-                          });
 
-                          int statusCode =
-                              await _addProductController.uploadProduct(
-                            name: productNameController.text,
-                            description: descriptionController.text,
-                            price: double.parse(priceController.text),
-                            quantity: double.parse(quantityController.text),
-                          );
-
-                          if (statusCode == 200) {
+                          if (productNameController.text != '' &&
+                              descriptionController.text != '' &&
+                              priceController.text != '' &&
+                              quantityController.text != '' &&
+                              images.isNotEmpty) {
                             setState(() {
-                              _isloading = false;
+                              _isloading = true;
                             });
-                            Get.offAll(() => const MarketPlace());
-                            Get.snackbar(
-                              'Success',
-                              'Product Added Successfully',
-                              snackPosition: SnackPosition.BOTTOM,
-                              backgroundColor: Colors.green,
-                              colorText: Colors.white,
-                            );
+                            int statusCode =
+                                await _addProductController.uploadProduct(
+                                    name: productNameController.text,
+                                    description: descriptionController.text,
+                                    price: double.parse(priceController.text),
+                                    quantity:
+                                        double.parse(quantityController.text),
+                                    token: _homeController.tokenGlobal);
+
+                            if (statusCode == 200) {
+                              setState(() {
+                                _isloading = false;
+                              });
+                              Get.offAll(() => const MarketPlace());
+                              Get.snackbar(
+                                'Success',
+                                'Product Added Successfully',
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white,
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Error',
+                                'Something went wrong',
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                              );
+                            }
                           } else {
                             Get.snackbar(
-                              'Error',
-                              'Something went wrong',
+                              'Select all fields',
+                              '',
                               snackPosition: SnackPosition.BOTTOM,
                               backgroundColor: Colors.red,
                               colorText: Colors.white,

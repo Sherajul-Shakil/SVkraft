@@ -20,7 +20,7 @@ class ProductDetailsController extends GetxController {
 
         return productDetails.data;
       } else {
-        print('Product Not Found');
+        print('Product details Not Found');
         return null;
       }
     } catch (e) {

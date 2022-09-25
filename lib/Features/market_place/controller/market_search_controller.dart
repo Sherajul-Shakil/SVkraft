@@ -20,7 +20,7 @@ class MarketSearchController extends GetxController {
 
         return marketSearch.data;
       } else {
-        print('User not found');
+        print('Search not found');
       }
     } catch (e) {
       print(e.toString());

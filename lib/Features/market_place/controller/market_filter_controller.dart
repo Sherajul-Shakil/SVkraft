@@ -25,7 +25,7 @@ class MarketFilterController extends GetxController {
 
         return allProduct.data;
       } else {
-        print('User not found');
+        print('Filter not found');
       }
     } catch (e) {
       print(e.toString());
