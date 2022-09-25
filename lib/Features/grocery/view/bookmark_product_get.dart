@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/grocery/controllar/bookmarked_product_get_con.dart';
+import 'package:sv_craft/Features/grocery/controllar/delete_bookmark_proudct.dart';
 import 'package:sv_craft/Features/grocery/model/bookmarked_product_get.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
@@ -23,6 +24,8 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
   BookmarkedProductGetController bookmarkedProductGetController =
       Get.put(BookmarkedProductGetController());
   HomeController _homeController = Get.put(HomeController());
+  DeleteBookmarkProductController _deleteBookmarkProductController =
+      Get.put(DeleteBookmarkProductController());
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -89,26 +92,30 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
 
                           child: Column(
                             children: [
-                              SizedBox(height: size.height * .01),
+                              // SizedBox(height: size.height * .01),
                               Row(
                                 children: [
-                                  SizedBox(width: size.width * .01),
-                                  // IconButton(
-                                  //     onPressed: () {
-                                  //       print("object");
-                                  //       Navigator.pushReplacement(
-                                  //         context,
-                                  //         MaterialPageRoute(
-                                  //             builder: (context) =>
-                                  //                 GroceryBookmarks()),
-                                  //       );
-                                  //       //var message = _addtoBookmarksController.addToBookmarks(userid : userId, pro , token: tokenp,);
-                                  //     },
-                                  //     icon: const Icon(
-                                  //       FontAwesome.bookmark,
-                                  //       color: Colors.black,
-                                  //       size: 18,
-                                  //     )),
+                                  // SizedBox(width: size.width * .01),
+                                  IconButton(
+                                      onPressed: () async {
+                                        var statusCode =
+                                            await _deleteBookmarkProductController
+                                                .bookmarkProductDelete(
+                                                    _homeController.tokenGlobal,
+                                                    data[index].bookmarkId);
+                                        if (statusCode == 200) {
+                                          setState(() {});
+                                          Get.snackbar(
+                                              'Success', 'Category Deleted');
+                                        } else {
+                                          Get.snackbar(
+                                              'Error', 'Category Not Deleted');
+                                        }
+                                      },
+                                      icon: Icon(
+                                        Icons.delete,
+                                        color: Colors.red,
+                                      )),
                                   const Spacer(),
                                   Text(
                                     data[index].groceryItem.marketPrice,
@@ -152,7 +159,7 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
                                 ],
                               ),
                               SizedBox(
-                                height: size.height * .02,
+                                height: size.height * .01,
                               ),
                               Row(
                                 children: [
