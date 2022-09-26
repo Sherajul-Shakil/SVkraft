@@ -167,7 +167,6 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('${searchedData[index].price} Kr',
-                                      maxLines: 3,
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontSize: 16,
@@ -176,7 +175,7 @@ class _SearchProductScreenState extends State<SearchProductScreen> {
                                     width: 5,
                                   ),
                                   SizedBox(
-                                    width: 110.0,
+                                    width: _size.width * .2,
                                     child: Text(
                                       searchedData[index].productName,
                                       overflow: TextOverflow.ellipsis,

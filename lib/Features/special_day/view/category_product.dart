@@ -1,10 +1,13 @@
+import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
+import 'package:sv_craft/Features/special_day/view/special_home_screen.dart';
 import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/color.dart';
 import '../model/special_all_product_model.dart';
@@ -25,7 +28,8 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
   final SpecialAllProductController _specialAllProductController =
       Get.put(SpecialAllProductController());
   var id;
-  var _selectedIndex = 1;
+  var _selectedIndex = 2;
+  PageController? _pageController;
 
   @override
   Widget build(BuildContext context) {
@@ -176,43 +180,67 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
             ],
           ),
         ),
-        bottomNavigationBar: BottomNavigationBar(
+        bottomNavigationBar: BottomNavyBar(
           backgroundColor: Appcolor.primaryColor,
-          selectedItemColor: Appcolor.iconColor,
-          unselectedItemColor: Colors.grey,
-          currentIndex: _selectedIndex,
-          onTap: (int index) {
-            setState(() {
-              _selectedIndex = index;
-              print(_selectedIndex);
-              if (_selectedIndex == 0) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                );
-              } else if (_selectedIndex == 1) {
-                print("This is Special day");
-              } else if (_selectedIndex == 2) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
-                );
-              }
-            });
-          },
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
+          selectedIndex: _selectedIndex,
+          showElevation: true,
+          onItemSelected: (index) => setState(() {
+            _selectedIndex = index;
+            _pageController?.animateToPage(index,
+                duration: Duration(milliseconds: 300), curve: Curves.ease);
+
+            if (_selectedIndex == 0) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            } else if (_selectedIndex == 1) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const CartScreen()),
+              );
+            } else if (_selectedIndex == 2) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => SpecialHomeScreen()),
+              );
+            } else if (_selectedIndex == 3) {
+              // Navigator.pushReplacement(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
+              // );
+            } else if (_selectedIndex == 4) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                          from: "special",
+                        )),
+              );
+            }
+          }),
+          items: [
+            BottomNavyBarItem(
               icon: Icon(Icons.home),
-              label: 'Home',
+              title: Text('Home'),
+              activeColor: Colors.white,
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label: 'Special Day',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
+            BottomNavyBarItem(
+                icon: Icon(Icons.shopping_cart),
+                title: Text('Cart'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.favorite),
+                title: Text('Special Day'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.bookmark_border),
+                title: Text('Bookmarks'),
+                activeColor: Colors.white),
+            BottomNavyBarItem(
+                icon: Icon(Icons.person),
+                title: Text('Profile'),
+                activeColor: Colors.white),
           ],
         ),
       ),

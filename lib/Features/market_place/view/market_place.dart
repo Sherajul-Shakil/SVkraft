@@ -281,7 +281,6 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                   children: [
                                                     Text(
                                                         '${data[index].price} Kr',
-                                                        maxLines: 3,
                                                         style: const TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 16,
@@ -292,7 +291,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                       width: 5,
                                                     ),
                                                     SizedBox(
-                                                      width: 100.0,
+                                                      width: size.width * .2,
                                                       child: Text(
                                                         data[index].productName,
                                                         softWrap: false,

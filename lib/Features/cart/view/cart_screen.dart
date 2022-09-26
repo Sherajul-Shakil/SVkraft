@@ -260,6 +260,10 @@ class _CartScreenState extends State<CartScreen> {
                                                                           .w500,
                                                                   color: Colors
                                                                       .black54),
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                             Text(
                                                               'Price : ${singleGroceryPrice.toString()} kr',
@@ -658,6 +662,10 @@ class _CartScreenState extends State<CartScreen> {
                                                                           .w500,
                                                                   color: Colors
                                                                       .black54),
+                                                              maxLines: 2,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                             ),
                                                             Text(
                                                               'Price : ${singlespecial_dayPrice.toString()} kr',
@@ -1408,11 +1416,13 @@ class _CartScreenState extends State<CartScreen> {
                                 ],
                               ),
                               SizedBox(width: size.width * .15),
-                              IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.arrow_forward),
-                                color: Colors.white,
-                              ),
+                              Icon(Icons.arrow_forward,
+                                  color: Colors.white, size: 30),
+                              // IconButton(
+                              //   onPressed: () {},
+                              //   icon: Icon(Icons.arrow_forward),
+                              //   color: Colors.white,
+                              // ),
                               // SizedBox(width: 1),
                             ],
                           ),
