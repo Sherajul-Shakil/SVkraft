@@ -56,9 +56,10 @@ class AddProductController extends GetxController {
       var response = await request.send();
       if (response.statusCode == 200) {
         print('success');
-
+        Get.snackbar('Success', response.statusCode.toString());
         return response.statusCode;
       } else {
+        Get.snackbar('failed', response.statusCode.toString());
         print('failed');
       }
       print(response.statusCode);

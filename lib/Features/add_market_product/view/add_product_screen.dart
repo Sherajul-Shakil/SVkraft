@@ -174,7 +174,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               setState(() {
                                 _isloading = false;
                               });
-                              Get.offAll(() => const MarketPlace());
                               Get.snackbar(
                                 'Success',
                                 'Product Added Successfully',
@@ -182,6 +181,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 backgroundColor: Colors.green,
                                 colorText: Colors.white,
                               );
+                              Get.offAll(() => const MarketPlace());
                             } else {
                               Get.snackbar(
                                 'Error',
