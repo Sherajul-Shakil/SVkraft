@@ -1,11 +1,7 @@
-import 'dart:io';
-
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/market_place/controller/dproduct_details_controller.dart';
 import 'package:sv_craft/Features/market_place/model/product_details.dart';
 import 'package:sv_craft/Features/seller_profile/view/profile.dart';
@@ -32,6 +28,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("Market derails page build");
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -41,21 +38,26 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                 widget.token, widget.id),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return const Center(
-                    child: Center(
-                        child: const SpinKitFadingCircle(
-                  color: Colors.black,
-                )));
+                return Column(
+                  children: [
+                    SizedBox(
+                      height: size.height * .4,
+                    ),
+                    const Center(
+                        child: SpinKitFadingCircle(
+                      color: Colors.black,
+                    )),
+                  ],
+                );
               } else {
                 if (snapshot.data == null) {
                   return const Center(
                       child: Center(
-                          child: const SpinKitFadingCircle(
+                          child: SpinKitFadingCircle(
                     color: Colors.black,
                   )));
                 } else {
                   final data = snapshot.data;
-                  // List<File> images ='${Appurl.baseURL}${data!.image[0].filePath}';
 
                   return SingleChildScrollView(
                     child: Column(

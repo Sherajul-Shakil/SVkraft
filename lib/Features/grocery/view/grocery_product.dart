@@ -508,8 +508,8 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 Text(
                                   "${searchedData[index].price} kr",
                                   style: const TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.black,
                                   ),
                                 ),
@@ -833,8 +833,8 @@ class _GroceryProductState extends State<GroceryProduct> {
                                             Text(
                                               "${data[index].price} kr",
                                               style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
                                                 color: Colors.black,
                                               ),
                                             ),

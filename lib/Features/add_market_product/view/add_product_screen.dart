@@ -47,7 +47,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // print('images = ' + images.toString());
+    print("Add product page build");
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(50),
@@ -133,11 +133,13 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 CustomTextField(
                   controller: priceController,
                   hintText: 'Price',
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
                   controller: quantityController,
                   hintText: 'Quantity',
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),

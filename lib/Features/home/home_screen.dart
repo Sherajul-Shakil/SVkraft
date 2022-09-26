@@ -59,35 +59,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [
-                      // CircleAvatar(
-                      //   radius: 20,
-                      //   backgroundColor: Colors.white, //<-- SEE HERE
-                      //   child: IconButton(
-                      //     icon: const Icon(
-                      //       Icons.menu,
-                      //       color: Colors.black,
-                      //     ),
-                      //     onPressed: () {},
-                      //   ),
-                      // ),
-                      Text(
-                        'SV Kraft',
-                        style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
-                            color: Appcolor.uperTextColor),
+                    children: [
+                      Image(
+                        image: AssetImage('images/svkraft.png'),
+                        height: size.height * .06,
+                        width: size.width * .8,
                       ),
-                      // CircleAvatar(
-                      //   radius: 20,
-                      //   backgroundColor: Colors.white, //<-- SEE HERE
-                      //   child: IconButton(
-                      //     icon: const Icon(
-                      //       Icons.favorite_border,
-                      //       color: Colors.black,
-                      //     ),
-                      //     onPressed: () {},
-                      //   ),
+
+                      // Text(
+                      //   'SV Kraft',
+                      //   style: TextStyle(
+                      //       fontSize: 30,
+                      //       fontWeight: FontWeight.w500,
+                      //       color: Appcolor.uperTextColor),
                       // ),
                     ],
                   ),

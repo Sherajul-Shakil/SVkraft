@@ -83,6 +83,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("Category city page build");
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(

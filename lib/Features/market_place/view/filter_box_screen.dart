@@ -96,6 +96,7 @@ class _FilterBoxScreenState extends State<FilterBoxScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("Market filter box page build");
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(

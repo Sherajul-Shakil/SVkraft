@@ -155,8 +155,8 @@ class _FilterProductShowState extends State<FilterProductShow> {
                                   Text(
                                     "${data[index].price} kr",
                                     style: TextStyle(
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
                                       color: Colors.black,
                                     ),
                                   ),
