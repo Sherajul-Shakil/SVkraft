@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/sockets/src/sockets_io.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/add_market_product/view/category_city.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
@@ -325,7 +326,7 @@ class _MarketPlaceState extends State<MarketPlace> {
                         height: size.height * 0.4,
                       ),
                       const Center(
-                        child: Text('No Product Found'),
+                        child: CircularProgressIndicator(),
                       ),
                     ],
                   )

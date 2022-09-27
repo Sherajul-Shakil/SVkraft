@@ -1,12 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/cart_controller.dart';
 import 'package:sv_craft/Features/cart/controllar/delete_item_con.dart';
 import 'package:sv_craft/Features/cart/view/checkout_screen.dart';
-import 'package:sv_craft/Features/cart/view/widgets/grocery_cart_count.dart';
-import 'package:sv_craft/Features/home/bottom_bar.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/profile/controller/get_address_con.dart';
@@ -49,7 +49,7 @@ class _CartScreenState extends State<CartScreen> {
       setTokenToVariable();
     });
 
-    Future.delayed(Duration(microseconds: 500), () async {
+    Future.delayed(const Duration(microseconds: 500), () async {
       setState(() {
         _isLoading = false;
       });
@@ -100,8 +100,8 @@ class _CartScreenState extends State<CartScreen> {
 
     return WillPopScope(
       onWillPop: () {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomeScreen()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
         return Future.value(false);
       },
       child: SafeArea(
@@ -128,7 +128,7 @@ class _CartScreenState extends State<CartScreen> {
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 30,
                               ),
                               const Text(
@@ -138,7 +138,7 @@ class _CartScreenState extends State<CartScreen> {
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black54),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: 15,
                               ),
                               InkWell(
@@ -180,7 +180,8 @@ class _CartScreenState extends State<CartScreen> {
                           ? Column(
                               children: [
                                 Container(
-                                  color: Color.fromARGB(31, 134, 129, 129),
+                                  color:
+                                      const Color.fromARGB(31, 134, 129, 129),
                                   height: 40,
                                   child: Row(
                                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -203,7 +204,8 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: cartData.grocery.length,
                                     itemBuilder: (context, index) {
@@ -253,7 +255,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .grocery[
                                                                       index]
                                                                   .name,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
@@ -267,7 +269,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             ),
                                                             Text(
                                                               'Price : ${singleGroceryPrice.toString()} kr',
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
@@ -289,11 +291,9 @@ class _CartScreenState extends State<CartScreen> {
                                                     Container(
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
-                                                          color: Color.fromARGB(
-                                                              31,
-                                                              145,
-                                                              140,
-                                                              140),
+                                                          color: const Color
+                                                                  .fromARGB(31,
+                                                              145, 140, 140),
                                                           width: 1,
                                                         ),
                                                       ),
@@ -325,7 +325,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               textAlign:
                                                                   TextAlign
                                                                       .center),
-                                                          Spacer(),
+                                                          const Spacer(),
 
                                                           //////deeeeeeffffff
                                                           /////frfff
@@ -366,7 +366,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                             Alignment.center,
                                                                         decoration:
                                                                             BoxDecoration(
-                                                                          color: Color.fromARGB(
+                                                                          color: const Color.fromARGB(
                                                                               220,
                                                                               245,
                                                                               243,
@@ -400,7 +400,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       ),
                                                                     )
                                                                   : Container(),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 2,
                                                               ),
                                                               InkWell(
@@ -447,12 +447,12 @@ class _CartScreenState extends State<CartScreen> {
                                                                           .center,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            220,
-                                                                            245,
-                                                                            243,
-                                                                            243),
+                                                                    color: const Color
+                                                                            .fromARGB(
+                                                                        220,
+                                                                        245,
+                                                                        243,
+                                                                        243),
                                                                     borderRadius:
                                                                         BorderRadius
                                                                             .circular(0),
@@ -531,7 +531,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   MaterialPageRoute(
                                                                       builder:
                                                                           (context) =>
-                                                                              CartScreen()),
+                                                                              const CartScreen()),
                                                                 );
 
                                                                 print(
@@ -542,13 +542,13 @@ class _CartScreenState extends State<CartScreen> {
                                                                     "Item not deleted");
                                                               }
                                                             },
-                                                            icon: Icon(
+                                                            icon: const Icon(
                                                                 Icons.delete),
                                                             color: Colors.red,
                                                           ),
                                                           Text(
                                                             "${cartData.grocery[index].price.toString()} kr",
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 fontSize: 18,
                                                                 fontWeight:
                                                                     FontWeight
@@ -575,7 +575,8 @@ class _CartScreenState extends State<CartScreen> {
                           ? Column(
                               children: [
                                 Container(
-                                  color: Color.fromARGB(31, 134, 129, 129),
+                                  color:
+                                      const Color.fromARGB(31, 134, 129, 129),
                                   height: 40,
                                   child: Row(
                                     //mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -605,7 +606,8 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ),
                                 ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     itemCount: cartData.special_day.length,
                                     itemBuilder: (context, index) {
@@ -655,7 +657,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   .special_day[
                                                                       index]
                                                                   .name,
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 18,
                                                                   fontWeight:
                                                                       FontWeight
@@ -669,7 +671,7 @@ class _CartScreenState extends State<CartScreen> {
                                                             ),
                                                             Text(
                                                               'Price : ${singlespecial_dayPrice.toString()} kr',
-                                                              style: TextStyle(
+                                                              style: const TextStyle(
                                                                   fontSize: 16,
                                                                   fontWeight:
                                                                       FontWeight
@@ -691,11 +693,9 @@ class _CartScreenState extends State<CartScreen> {
                                                     Container(
                                                       decoration: BoxDecoration(
                                                         border: Border.all(
-                                                          color: Color.fromARGB(
-                                                              31,
-                                                              145,
-                                                              140,
-                                                              140),
+                                                          color: const Color
+                                                                  .fromARGB(31,
+                                                              145, 140, 140),
                                                           width: 1,
                                                         ),
                                                       ),
@@ -727,7 +727,7 @@ class _CartScreenState extends State<CartScreen> {
                                                               textAlign:
                                                                   TextAlign
                                                                       .center),
-                                                          Spacer(),
+                                                          const Spacer(),
 
                                                           //////deeeeeeffffff
                                                           /////frfff
@@ -768,7 +768,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                             Alignment.center,
                                                                         decoration:
                                                                             BoxDecoration(
-                                                                          color: Color.fromARGB(
+                                                                          color: const Color.fromARGB(
                                                                               220,
                                                                               245,
                                                                               243,
@@ -802,7 +802,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                       ),
                                                                     )
                                                                   : Container(),
-                                                              SizedBox(
+                                                              const SizedBox(
                                                                 height: 2,
                                                               ),
                                                               InkWell(
@@ -849,12 +849,12 @@ class _CartScreenState extends State<CartScreen> {
                                                                           .center,
                                                                   decoration:
                                                                       BoxDecoration(
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            220,
-                                                                            245,
-                                                                            243,
-                                                                            243),
+                                                                    color: const Color
+                                                                            .fromARGB(
+                                                                        220,
+                                                                        245,
+                                                                        243,
+                                                                        243),
                                                                     borderRadius:
                                                                         BorderRadius
                                                                             .circular(0),
@@ -933,7 +933,7 @@ class _CartScreenState extends State<CartScreen> {
                                                                   MaterialPageRoute(
                                                                       builder:
                                                                           (context) =>
-                                                                              CartScreen()),
+                                                                              const CartScreen()),
                                                                 );
 
                                                                 print(
@@ -944,13 +944,13 @@ class _CartScreenState extends State<CartScreen> {
                                                                     "Item not deleted");
                                                               }
                                                             },
-                                                            icon: Icon(
+                                                            icon: const Icon(
                                                                 Icons.delete),
                                                             color: Colors.red,
                                                           ),
                                                           Text(
                                                             "${cartData.special_day[index].price.toString()} kr",
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                                 fontSize: 18,
                                                                 fontWeight:
                                                                     FontWeight
@@ -1223,7 +1223,7 @@ class _CartScreenState extends State<CartScreen> {
                       //         ],
                       //       )
                       //     : Container(),
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       Container(
@@ -1249,44 +1249,36 @@ class _CartScreenState extends State<CartScreen> {
                         height: 50,
                         child: InkWell(
                           onTap: () {
-                            List groceryList = [];
-                            for (int i = 0; i < cartData.grocery.length; i++) {
-                              groceryList.add(cartData.grocery[i].toJson());
-                              //print(groceryList);
-                            }
+                            log('groceryList: ${json.encode(cartData.grocery)}');
 
-                            // var groceryMap = groceryList.map((e) {
-                            //   return {
-                            //     "id": e.id,
-                            //     "quantity": e.quantity,
-                            //     "name": e.name,
-                            //   };
-                            // }).toList();
-                            // print(groceryMap);
-                            for (int i = 0;
-                                i < cartData.special_day.length;
-                                i++) {
-                              List specialList = [];
-                              specialList.add(cartData.special_day[i].toJson());
-                              //print(specialList);
-                            }
-                            print(totalPrice);
-
-                            // final mybody = {
-                            //   "grocery": cartData.grocery.toJson(),
-                            //   "special_day": cartData.special_day.toJson(),
-                            //   "total_price": totalPrice,
-                            // };
+                            final mybody = {
+                              "data": {
+                                "grocery": json.encode(cartData.grocery ?? []),
+                                "special_day":
+                                    json.encode(cartData.special_day ?? []),
+                                "xxxx": json.encode([]),
+                                "total_price": totalPrice,
+                              }
+                            };
                             // http.post('dasdasf', body: mybody);
+                            Get.dialog(Scaffold(
+                              body: Column(
+                                children: [
+                                  Text(mybody.runtimeType.toString()),
+                                  Text(mybody.toString()),
+                                ],
+                              ),
+                            ));
                           },
                           child: Text(
                             cartData.user.name,
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: const TextStyle(
+                                color: Colors.black, fontSize: 18),
                             textAlign: TextAlign.center,
                           ),
                         ),
                       ),
-                      SizedBox(height: 15),
+                      const SizedBox(height: 15),
                       Container(
                         // padding: const EdgeInsets.symmetric(horizontal: 20),
                         margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -1352,16 +1344,16 @@ class _CartScreenState extends State<CartScreen> {
                         height: 50,
                         child: Row(
                           children: [
-                            Text(
+                            const Text(
                               'Totalbelopp',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.black54, fontSize: 15),
                               textAlign: TextAlign.center,
                             ),
-                            Spacer(),
+                            const Spacer(),
                             Text(
                               '${cartData.totalPrice.toString()} kr',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   color: Colors.black87, fontSize: 20),
                               textAlign: TextAlign.center,
                             ),
@@ -1401,7 +1393,7 @@ class _CartScreenState extends State<CartScreen> {
                               Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Ga till kassan',
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 22),
@@ -1409,14 +1401,14 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                   Text(
                                     'Total: ${cartData.totalPrice.toString()} kr',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         color: Colors.white, fontSize: 15),
                                     textAlign: TextAlign.center,
                                   ),
                                 ],
                               ),
                               SizedBox(width: size.width * .15),
-                              Icon(Icons.arrow_forward,
+                              const Icon(Icons.arrow_forward,
                                   color: Colors.white, size: 30),
                               // IconButton(
                               //   onPressed: () {},
@@ -1432,7 +1424,7 @@ class _CartScreenState extends State<CartScreen> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Address.name != null
-                                      ? CheckoutScreen()
+                                      ? const CheckoutScreen()
                                       : AddressScreen()));
                         },
                       ),
@@ -1448,7 +1440,7 @@ class _CartScreenState extends State<CartScreen> {
                       Center(
                         child: Column(
                           children: [
-                            Text('No items in cart',
+                            const Text('No items in cart',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20,
@@ -1466,7 +1458,8 @@ class _CartScreenState extends State<CartScreen> {
             onItemSelected: (index) => setState(() {
               _selectedIndex = index;
               _pageController?.animateToPage(index,
-                  duration: Duration(milliseconds: 300), curve: Curves.ease);
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.ease);
 
               if (_selectedIndex == 0) {
                 Navigator.pushReplacement(
@@ -1486,27 +1479,28 @@ class _CartScreenState extends State<CartScreen> {
               } else if (_selectedIndex == 3) {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
                 );
               }
             }),
             items: [
               BottomNavyBarItem(
-                icon: Icon(Icons.home),
-                title: Text('Home'),
+                icon: const Icon(Icons.home),
+                title: const Text('Home'),
                 activeColor: Colors.white,
               ),
               BottomNavyBarItem(
-                  icon: Icon(Icons.shopping_cart),
-                  title: Text('Cart'),
+                  icon: const Icon(Icons.shopping_cart),
+                  title: const Text('Cart'),
                   activeColor: Colors.white),
               BottomNavyBarItem(
-                  icon: Icon(Icons.bookmark_border),
-                  title: Text('Bookmarks'),
+                  icon: const Icon(Icons.bookmark_border),
+                  title: const Text('Bookmarks'),
                   activeColor: Colors.white),
               BottomNavyBarItem(
-                  icon: Icon(Icons.person),
-                  title: Text('Profile'),
+                  icon: const Icon(Icons.person),
+                  title: const Text('Profile'),
                   activeColor: Colors.white),
             ],
           ),

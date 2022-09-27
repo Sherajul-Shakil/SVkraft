@@ -4,11 +4,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
+import 'package:sv_craft/Features/grocery/controllar/bookmark_add_product.dart';
+import 'package:sv_craft/Features/grocery/controllar/bookmark_category_con.dart';
 import 'package:sv_craft/Features/grocery/controllar/filter_product_con.dart';
 import 'package:sv_craft/Features/grocery/model/filter_product_model.dart';
 import 'package:sv_craft/Features/grocery/view/bookmarks_screen.dart';
 import 'package:sv_craft/Features/grocery/view/grocery_product.dart';
 import 'package:sv_craft/Features/grocery/view/widgets/grocery_count.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
 import 'package:sv_craft/constant/color.dart';
@@ -28,6 +31,12 @@ class FilterProductShow extends StatefulWidget {
 class _FilterProductShowState extends State<FilterProductShow> {
   final GroceryFilterController _groceryFilterController =
       Get.put(GroceryFilterController());
+  BookmarkCategoryController _bookmarkCategoryController =
+      Get.put(BookmarkCategoryController());
+  HomeController _homeController = Get.put(HomeController());
+  BookmarkProductAddController _bookmarkProductAddController =
+      Get.put(BookmarkProductAddController());
+  final TextEditingController _categoryController = TextEditingController();
   var _selectedIndex = 2;
   PageController? _pageController;
   @override
@@ -106,7 +115,190 @@ class _FilterProductShowState extends State<FilterProductShow> {
                               children: [
                                 SizedBox(width: size.width * .01),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      _bookmarkCategoryController
+                                                  .BookmarkCategory.length >
+                                              0
+                                          ? Get.dialog(
+                                              AlertDialog(
+                                                title: const Text(
+                                                    'Add To Bookmarks'),
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    Container(
+                                                      height: size.height * .3,
+                                                      width: size.width * .6,
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          itemCount:
+                                                              _bookmarkCategoryController
+                                                                  .BookmarkCategory
+                                                                  .length,
+                                                          itemBuilder:
+                                                              (context, ind) {
+                                                            return Container(
+                                                              padding: const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
+                                                              // margin: const EdgeInsets.symmetric(horizontal: 20),
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Colors
+                                                                    .white,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            0),
+                                                                boxShadow: const [
+                                                                  BoxShadow(
+                                                                    color: Colors
+                                                                        .black12, //color of shadow
+                                                                    spreadRadius:
+                                                                        1, //spread radius
+                                                                    blurRadius:
+                                                                        0, // blur radius
+                                                                    offset: Offset(
+                                                                        0,
+                                                                        0), // changes position of shadow
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              width:
+                                                                  size.width *
+                                                                      .4,
+                                                              height: 40,
+                                                              child: InkWell(
+                                                                onTap:
+                                                                    () async {
+                                                                  var status = await _bookmarkProductAddController.addBookmarkProduct(
+                                                                      _homeController
+                                                                          .tokenGlobal,
+                                                                      _bookmarkCategoryController
+                                                                          .BookmarkCategory[
+                                                                              ind]
+                                                                          .id,
+                                                                      data[index]
+                                                                          .id);
+
+                                                                  if (status ==
+                                                                      200) {
+                                                                    Get.back();
+                                                                    Get.snackbar(
+                                                                        'Success',
+                                                                        'Product Added To Bookmark');
+                                                                  }
+                                                                },
+                                                                child: Row(
+                                                                  children: [
+                                                                    const Icon(
+                                                                        Icons
+                                                                            .list),
+                                                                    const SizedBox(
+                                                                      width: 20,
+                                                                    ),
+                                                                    Text(
+                                                                      _bookmarkCategoryController
+                                                                          .BookmarkCategory[
+                                                                              ind]
+                                                                          .name,
+                                                                      style: const TextStyle(
+                                                                          color: Colors
+                                                                              .black,
+                                                                          fontSize:
+                                                                              15),
+                                                                      textAlign:
+                                                                          TextAlign
+                                                                              .center,
+                                                                    ),
+                                                                    const Spacer(),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }),
+                                                    )
+                                                  ],
+                                                ),
+                                                // actions: [],
+                                              ),
+                                              barrierDismissible: false,
+                                            )
+                                          : Get.dialog(
+                                              AlertDialog(
+                                                title: const Text(
+                                                    'Add Bookmarks Category'),
+                                                content: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    TextFormField(
+                                                      controller:
+                                                          _categoryController,
+                                                      decoration:
+                                                          const InputDecoration(
+                                                        hintText:
+                                                            'Category Name',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                actions: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Get.back();
+                                                        },
+                                                        child: const Text(
+                                                            'Cancel'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () async {
+                                                          var statusCode =
+                                                              await _bookmarkCategoryController
+                                                                  .addBookmarkCategory(
+                                                                      _homeController
+                                                                          .tokenGlobal,
+                                                                      _categoryController
+                                                                          .text);
+
+                                                          if (statusCode ==
+                                                              200) {
+                                                            _categoryController
+                                                                .clear();
+                                                            // Get.back();
+                                                            setState(() {});
+                                                            Get.off(
+                                                                GroceryProduct());
+                                                            Get.snackbar(
+                                                                'Success',
+                                                                'Category Added');
+                                                          } else {
+                                                            Get.back();
+                                                            Get.snackbar(
+                                                                'Error',
+                                                                'Category Not Added');
+                                                          }
+                                                        },
+                                                        child:
+                                                            const Text('Add'),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              barrierDismissible: false,
+                                            );
+                                    },
                                     icon: const Icon(
                                       FontAwesome.bookmark,
                                       color: Colors.black,

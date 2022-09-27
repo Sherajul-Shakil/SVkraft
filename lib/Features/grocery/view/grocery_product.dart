@@ -25,6 +25,7 @@ import 'package:sv_craft/Features/home/grocery_nav.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
+import 'package:sv_craft/common/log_x.dart';
 import 'package:sv_craft/constant/api_link.dart';
 import 'package:sv_craft/constant/constant.dart';
 
@@ -46,11 +47,12 @@ class _GroceryProductState extends State<GroceryProduct> {
       Get.put(GrocerySearchController());
   final AddtoBookmarksController _addtoBookmarksController =
       Get.put(AddtoBookmarksController());
-  BookmarkCategoryController _bookmarkCategoryController =
+  final BookmarkCategoryController _bookmarkCategoryController =
       Get.put(BookmarkCategoryController());
-  HomeController _homeController = Get.put(HomeController());
-  BookmarkProductAddController _bookmarkProductAddController =
+  final HomeController _homeController = Get.put(HomeController());
+  final BookmarkProductAddController _bookmarkProductAddController =
       Get.put(BookmarkProductAddController());
+  final TextEditingController _categoryController = TextEditingController();
   // Variable
   var tokenp;
   late int userId;
@@ -58,7 +60,7 @@ class _GroceryProductState extends State<GroceryProduct> {
   var searchedData;
   var _selectedIndex = 2;
   PageController? _pageController;
-  var BookmarkCategory;
+
   int? _productIndex;
 
   final TextEditingController _searchController = TextEditingController();
@@ -69,35 +71,8 @@ class _GroceryProductState extends State<GroceryProduct> {
   //   super.dispose();
   // }
 
-  Future<void> setTokenToVariable() async {
-    final token = await _allProductController.getToken();
-
-    setState(() {
-      tokenp = token;
-    });
-
-    final userid = await _allProductController.getUserId();
-
-    setState(() {
-      userId = userid;
-    });
-
-    // Get bookmarks category name
-    var bookmarkCategory = await _bookmarkCategoryController
-        .getBookmarkCategory(_homeController.tokenGlobal);
-    if (bookmarkCategory != null) {
-      setState(() {
-        BookmarkCategory = bookmarkCategory;
-      });
-    }
-    // setState(() {
-    //   BookmarkCategory = bookmarkCategory;
-    //   print("Print from ui ${BookmarkCategory[0].length}");
-    // });
-  }
-
   bool _searchBoolean = false;
-  List<int> _searchIndexList = [];
+  final List<int> _searchIndexList = [];
   var product = 0;
 
   Widget _searchTextField() {
@@ -183,9 +158,37 @@ class _GroceryProductState extends State<GroceryProduct> {
     });
   }
 
+  Future<void> setTokenToVariable() async {
+    final token = await _allProductController.getToken();
+
+    setState(() {
+      tokenp = token;
+    });
+
+    final userid = await _allProductController.getUserId();
+
+    setState(() {
+      userId = userid;
+    });
+
+    // Get bookmarks category name
+    var bookmarkCategory = await _bookmarkCategoryController
+        .getBookmarkCategory(_homeController.tokenGlobal);
+    if (bookmarkCategory != null) {
+      setState(() {
+        _bookmarkCategoryController.BookmarkCategory = bookmarkCategory;
+      });
+    }
+    // setState(() {
+    //   BookmarkCategory = bookmarkCategory;
+    //   print("Print from ui ${BookmarkCategory[0].length}");
+    // });
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    print("Grocery product build");
     return SafeArea(
       child: Scaffold(
         backgroundColor: Color.fromARGB(255, 135, 235, 157),
@@ -426,22 +429,189 @@ class _GroceryProductState extends State<GroceryProduct> {
                         Row(
                           children: [
                             SizedBox(width: size.width * .01),
-                            // IconButton(
-                            //     onPressed: () {
-                            //       print("object");
-                            //       Navigator.pushReplacement(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //             builder: (context) =>
-                            //                 GroceryBookmarks()),
-                            //       );
-                            //       //var message = _addtoBookmarksController.addToBookmarks(userid : userId, pro , token: tokenp,);
-                            //     },
-                            //     icon: const Icon(
-                            //       FontAwesome.bookmark,
-                            //       color: Colors.black,
-                            //       size: 18,
-                            //     )),
+                            IconButton(
+                                onPressed: () async {
+                                  _bookmarkCategoryController
+                                              .BookmarkCategory.length >
+                                          0
+                                      ? Get.dialog(
+                                          AlertDialog(
+                                            title:
+                                                const Text('Add To Bookmarks'),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Container(
+                                                  height: size.height * .3,
+                                                  width: size.width * .6,
+                                                  child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount:
+                                                          _bookmarkCategoryController
+                                                              .BookmarkCategory
+                                                              .length,
+                                                      itemBuilder:
+                                                          (context, ind) {
+                                                        log(_bookmarkCategoryController
+                                                            .BookmarkCategory
+                                                            .length
+                                                            .toString());
+                                                        return Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  horizontal:
+                                                                      20),
+                                                          // margin: const EdgeInsets.symmetric(horizontal: 20),
+                                                          alignment:
+                                                              Alignment.center,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        0),
+                                                            boxShadow: const [
+                                                              BoxShadow(
+                                                                color: Colors
+                                                                    .black12, //color of shadow
+                                                                spreadRadius:
+                                                                    1, //spread radius
+                                                                blurRadius:
+                                                                    0, // blur radius
+                                                                offset: Offset(
+                                                                    0,
+                                                                    0), // changes position of shadow
+                                                              )
+                                                            ],
+                                                          ),
+                                                          width:
+                                                              size.width * .4,
+                                                          height: 40,
+                                                          child: InkWell(
+                                                            onTap: () async {
+                                                              var status = await _bookmarkProductAddController.addBookmarkProduct(
+                                                                  _homeController
+                                                                      .tokenGlobal,
+                                                                  _bookmarkCategoryController
+                                                                      .BookmarkCategory[
+                                                                          ind]
+                                                                      .id,
+                                                                  searchedData[
+                                                                          index]
+                                                                      .id);
+                                                              print(
+                                                                  "ddddddddddddddddddddddddd ${_bookmarkCategoryController.BookmarkCategory[ind].id} ${searchedData[index].id}");
+                                                              if (status ==
+                                                                  200) {
+                                                                Get.back();
+                                                                Get.snackbar(
+                                                                    'Success',
+                                                                    'Product Added To Bookmark');
+                                                              }
+                                                            },
+                                                            child: Row(
+                                                              children: [
+                                                                const Icon(
+                                                                    Icons.list),
+                                                                const SizedBox(
+                                                                  width: 20,
+                                                                ),
+                                                                Text(
+                                                                  _bookmarkCategoryController
+                                                                      .BookmarkCategory[
+                                                                          ind]
+                                                                      .name,
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          15),
+                                                                  textAlign:
+                                                                      TextAlign
+                                                                          .center,
+                                                                ),
+                                                                const Spacer(),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }),
+                                                )
+                                              ],
+                                            ),
+                                            // actions: [],
+                                          ),
+                                          barrierDismissible: false,
+                                        )
+                                      : Get.dialog(
+                                          AlertDialog(
+                                            title: const Text(
+                                                'Add Bookmarks Category'),
+                                            content: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                TextFormField(
+                                                  controller:
+                                                      _categoryController,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    hintText: 'Category Name',
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            actions: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Get.back();
+                                                    },
+                                                    child: const Text('Cancel'),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () async {
+                                                      var statusCode = await _bookmarkCategoryController
+                                                          .addBookmarkCategory(
+                                                              _homeController
+                                                                  .tokenGlobal,
+                                                              _categoryController
+                                                                  .text);
+
+                                                      if (statusCode == 200) {
+                                                        _categoryController
+                                                            .clear();
+                                                        // Get.back();
+                                                        setState(() {});
+                                                        Get.off(
+                                                            GroceryProduct());
+                                                        Get.snackbar('Success',
+                                                            'Category Added');
+                                                      } else {
+                                                        Get.back();
+                                                        Get.snackbar('Error',
+                                                            'Category Not Added');
+                                                      }
+                                                    },
+                                                    child: const Text('Add'),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
+                                          barrierDismissible: false,
+                                        );
+                                },
+                                icon: const Icon(
+                                  FontAwesome.bookmark,
+                                  color: Colors.black,
+                                  size: 18,
+                                )),
                             const Spacer(),
                             Text(
                               searchedData[index].marketPrice.toString(),
@@ -599,6 +769,8 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 child: Text('No Product Found'));
                           } else {
                             final data = snapshot.data;
+                            // log('total data counts = ' +
+                            //     data!.length.toString());
                             return GridView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
@@ -614,290 +786,350 @@ class _GroceryProductState extends State<GroceryProduct> {
                                 mainAxisSpacing: 10,
                                 crossAxisSpacing: 10,
                               ),
-                              itemBuilder: (BuildContext context, int index) =>
-                                  Container(
-                                //color: Colors.green,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12, //color of shadow
-                                      spreadRadius: 2, //spread radius
-                                      blurRadius: 5, // blur radius
-                                      offset: Offset(
-                                          0, 2), // changes position of shadow
-                                      //first paramerter of offset is left-right
-                                      //second parameter is top to down
-                                    )
-                                  ],
-                                ),
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  //color: Colors.green,
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black12, //color of shadow
+                                        spreadRadius: 2, //spread radius
+                                        blurRadius: 5, // blur radius
+                                        offset: Offset(
+                                            0, 2), // changes position of shadow
+                                        //first paramerter of offset is left-right
+                                        //second parameter is top to down
+                                      )
+                                    ],
+                                  ),
 
-                                child: Column(
-                                  children: [
-                                    // SizedBox(height: size.height * .01),
-                                    Row(
-                                      children: [
-                                        SizedBox(width: size.width * .01),
-                                        IconButton(
-                                            onPressed: () async {
-                                              Get.dialog(
-                                                AlertDialog(
-                                                  title: const Text(
-                                                      'Add To Bookmarks'),
-                                                  content: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    children: [
-                                                      Container(
-                                                        height:
-                                                            size.height * .3,
-                                                        width: size.width * .6,
-                                                        child: ListView.builder(
-                                                            shrinkWrap: true,
-                                                            itemCount:
-                                                                BookmarkCategory
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index) {
-                                                              return Container(
-                                                                padding: const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        20),
-                                                                // margin: const EdgeInsets.symmetric(horizontal: 20),
-                                                                alignment:
-                                                                    Alignment
-                                                                        .center,
-                                                                decoration:
-                                                                    BoxDecoration(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  borderRadius:
-                                                                      BorderRadius
-                                                                          .circular(
-                                                                              0),
-                                                                  boxShadow: const [
-                                                                    BoxShadow(
-                                                                      color: Colors
-                                                                          .black12, //color of shadow
-                                                                      spreadRadius:
-                                                                          1, //spread radius
-                                                                      blurRadius:
-                                                                          0, // blur radius
-                                                                      offset: Offset(
-                                                                          0,
-                                                                          0), // changes position of shadow
-                                                                    )
-                                                                  ],
-                                                                ),
+                                  child: Column(
+                                    children: [
+                                      // SizedBox(height: size.height * .01),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: size.width * .01),
+                                          IconButton(
+                                              onPressed: () async {
+                                                _bookmarkCategoryController
+                                                            .BookmarkCategory
+                                                            .length >
+                                                        0
+                                                    ? Get.dialog(
+                                                        AlertDialog(
+                                                          title: const Text(
+                                                              'Add To Bookmarks'),
+                                                          content: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              Container(
+                                                                height:
+                                                                    size.height *
+                                                                        .3,
                                                                 width:
                                                                     size.width *
-                                                                        .4,
-                                                                height: 40,
-                                                                child: InkWell(
-                                                                  onTap:
+                                                                        .6,
+                                                                child: ListView
+                                                                    .builder(
+                                                                        shrinkWrap:
+                                                                            true,
+                                                                        itemCount: _bookmarkCategoryController
+                                                                            .BookmarkCategory
+                                                                            .length,
+                                                                        itemBuilder:
+                                                                            (context,
+                                                                                ind) {
+                                                                          return Container(
+                                                                            padding:
+                                                                                const EdgeInsets.symmetric(horizontal: 20),
+                                                                            // margin: const EdgeInsets.symmetric(horizontal: 20),
+                                                                            alignment:
+                                                                                Alignment.center,
+                                                                            decoration:
+                                                                                BoxDecoration(
+                                                                              color: Colors.white,
+                                                                              borderRadius: BorderRadius.circular(0),
+                                                                              boxShadow: const [
+                                                                                BoxShadow(
+                                                                                  color: Colors.black12, //color of shadow
+                                                                                  spreadRadius: 1, //spread radius
+                                                                                  blurRadius: 0, // blur radius
+                                                                                  offset: Offset(0, 0), // changes position of shadow
+                                                                                )
+                                                                              ],
+                                                                            ),
+                                                                            width:
+                                                                                size.width * .4,
+                                                                            height:
+                                                                                40,
+                                                                            child:
+                                                                                InkWell(
+                                                                              onTap: () async {
+                                                                                var status = await _bookmarkProductAddController.addBookmarkProduct(_homeController.tokenGlobal, _bookmarkCategoryController.BookmarkCategory[ind].id, data[index].id);
+                                                                                if (status == 200) {
+                                                                                  Get.back();
+                                                                                  Get.snackbar('Success', 'Product Added To Bookmark');
+                                                                                }
+                                                                              },
+                                                                              child: Row(
+                                                                                children: [
+                                                                                  const Icon(Icons.list),
+                                                                                  const SizedBox(
+                                                                                    width: 20,
+                                                                                  ),
+                                                                                  Text(
+                                                                                    _bookmarkCategoryController.BookmarkCategory[ind].name,
+                                                                                    style: const TextStyle(color: Colors.black, fontSize: 15),
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                  const Spacer(),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          // actions: [],
+                                                        ),
+                                                        barrierDismissible:
+                                                            false,
+                                                      )
+                                                    : Get.dialog(
+                                                        AlertDialog(
+                                                          title: const Text(
+                                                              'Add Bookmarks Category'),
+                                                          content: Column(
+                                                            mainAxisSize:
+                                                                MainAxisSize
+                                                                    .min,
+                                                            children: [
+                                                              TextFormField(
+                                                                controller:
+                                                                    _categoryController,
+                                                                decoration:
+                                                                    const InputDecoration(
+                                                                  hintText:
+                                                                      'Category Name',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          actions: [
+                                                            Row(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .spaceBetween,
+                                                              children: [
+                                                                TextButton(
+                                                                  onPressed:
+                                                                      () {
+                                                                    Get.back();
+                                                                  },
+                                                                  child: const Text(
+                                                                      'Cancel'),
+                                                                ),
+                                                                TextButton(
+                                                                  onPressed:
                                                                       () async {
-                                                                    var status = await _bookmarkProductAddController.addBookmarkProduct(
+                                                                    var statusCode = await _bookmarkCategoryController.addBookmarkCategory(
                                                                         _homeController
                                                                             .tokenGlobal,
-                                                                        BookmarkCategory[index]
-                                                                            .id,
-                                                                        data[index]
-                                                                            .id);
-                                                                    if (status ==
+                                                                        _categoryController
+                                                                            .text);
+
+                                                                    if (statusCode ==
                                                                         200) {
-                                                                      Get.back();
+                                                                      _categoryController
+                                                                          .clear();
+                                                                      // Get.back();
+                                                                      setState(
+                                                                          () {});
+                                                                      Get.off(
+                                                                          GroceryProduct());
                                                                       Get.snackbar(
                                                                           'Success',
-                                                                          'Product Added To Bookmark');
+                                                                          'Category Added');
+                                                                    } else {
+                                                                      Get.back();
+                                                                      Get.snackbar(
+                                                                          'Error',
+                                                                          'Category Not Added');
                                                                     }
                                                                   },
-                                                                  child: Row(
-                                                                    children: [
-                                                                      Icon(Icons
-                                                                          .list),
-                                                                      SizedBox(
-                                                                        width:
-                                                                            20,
-                                                                      ),
-                                                                      Text(
-                                                                        BookmarkCategory[index]
-                                                                            .name,
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                Colors.black,
-                                                                            fontSize: 15),
-                                                                        textAlign:
-                                                                            TextAlign.center,
-                                                                      ),
-                                                                      Spacer(),
-                                                                    ],
-                                                                  ),
+                                                                  child:
+                                                                      const Text(
+                                                                          'Add'),
                                                                 ),
-                                                              );
-                                                            }),
-                                                      )
-                                                    ],
-                                                  ),
-                                                  actions: [],
-                                                ),
-                                                barrierDismissible: false,
-                                              );
-                                              // var message =
-                                              //     await _addtoBookmarksController
-                                              //         .addToBookmarks(
-                                              //             userId,
-                                              //             data[index].id,
-                                              //             "grocery",
-                                              //             tokenp);
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        barrierDismissible:
+                                                            false,
+                                                      );
+                                                ;
+                                                // var message =
+                                                //     await _addtoBookmarksController
+                                                //         .addToBookmarks(
+                                                //             userId,
+                                                //             data[index].id,
+                                                //             "grocery",
+                                                //             tokenp);
 
-                                              // if (message != null) {
-                                              //   Get.snackbar(
-                                              //       "Product Added to Bookmarks",
-                                              //       message);
-                                              // } else {
-                                              //   print("Not Added");
-                                              // }
-                                            },
-                                            icon: const Icon(
-                                              FontAwesome.bookmark,
-                                              color: Colors.black,
-                                              size: 18,
-                                            )),
-                                        const Spacer(),
-                                        Text(
-                                          data[index].marketPrice.toString(),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
-                                        SizedBox(width: size.width * .01),
-                                      ],
-                                    ),
-                                    Stack(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 10),
-                                          child: Image.network(
-                                            // 'http://mamun.click/${data[index].image}' ??
-                                            'http://mamun.click/${data[index].image}',
-                                            fit: BoxFit.cover,
-                                            width: 140,
-                                            height: 160,
+                                                // if (message != null) {
+                                                //   Get.snackbar(
+                                                //       "Product Added to Bookmarks",
+                                                //       message);
+                                                // } else {
+                                                //   print("Not Added");
+                                                // }
+                                              },
+                                              icon: const Icon(
+                                                FontAwesome.bookmark,
+                                                color: Colors.black,
+                                                size: 18,
+                                              )),
+                                          const Spacer(),
+                                          Text(
+                                            data[index].marketPrice.toString(),
+                                            textAlign: TextAlign.center,
                                           ),
-                                        ),
-                                        Positioned(
-                                            top: 20,
-                                            right: 0,
-                                            child: Container(
-                                              height: 50,
-                                              width: 50,
-                                              color: Colors.yellow,
-                                              child: Text(
-                                                "${data[index].offPrice.toString()}% off",
-                                                textAlign: TextAlign.center,
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight: FontWeight.w500,
-                                                    color: Colors.red),
-                                              ),
-                                            ))
-                                      ],
-                                    ),
-                                    // SizedBox(
-                                    //   height: size.height * .02,
-                                    // ),
-                                    Row(
-                                      children: [
-                                        SizedBox(width: size.width * .03),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Text(
-                                              data[index].name,
-                                              style: const TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.black,
-                                              ),
-                                              textAlign: TextAlign.start,
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          SizedBox(width: size.width * .01),
+                                        ],
+                                      ),
+                                      Stack(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10, vertical: 10),
+                                            child: Image.network(
+                                              // 'http://mamun.click/${data[index].image}' ??
+                                              'http://mamun.click/${data[index].image}',
+                                              fit: BoxFit.cover,
+                                              width: 140,
+                                              height: 160,
                                             ),
-                                            Text(
-                                              "${data[index].price} kr",
-                                              style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * .01,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(width: size.width * .03),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              height: size.height * .06,
-                                              width: size.width * .4,
-                                              child: Text(
-                                                data[index].description,
+                                          ),
+                                          Positioned(
+                                              top: 20,
+                                              right: 0,
+                                              child: Container(
+                                                height: 50,
+                                                width: 50,
+                                                color: Colors.yellow,
+                                                child: Text(
+                                                  "${data[index].offPrice.toString()}% off",
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.red),
+                                                ),
+                                              ))
+                                        ],
+                                      ),
+                                      // SizedBox(
+                                      //   height: size.height * .02,
+                                      // ),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: size.width * .03),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                data[index].name,
                                                 style: const TextStyle(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
                                                 ),
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 3,
+                                                textAlign: TextAlign.start,
                                               ),
-                                            ),
-                                            // Text(
-                                            //   "also the leap into electronic",
-                                            //   style: TextStyle(
-                                            //     fontSize: 12,
-                                            //     fontWeight: FontWeight.w500,
-                                            //     color: Colors.black,
-                                            //   ),
-                                            // ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * .01,
-                                    ),
-                                    data != null
-                                        ? GroceryCount(
-                                            index: index,
-                                            // userId: userId,
-                                            productId: data[index].id,
-                                            price: data[index].price,
-                                          )
-                                        : const Center(
-                                            child: Center(
-                                                child: SpinKitFadingCircle(
-                                            color: Colors.black,
-                                          ))),
-                                  ],
-                                ),
-                                // height: 147,
-                                // width: ,
-                              ),
+                                              Text(
+                                                "${data[index].price} kr",
+                                                style: const TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * .01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(width: size.width * .03),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                height: size.height * .06,
+                                                width: size.width * .4,
+                                                child: Text(
+                                                  data[index].description,
+                                                  style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.black,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 3,
+                                                ),
+                                              ),
+                                              // Text(
+                                              //   "also the leap into electronic",
+                                              //   style: TextStyle(
+                                              //     fontSize: 12,
+                                              //     fontWeight: FontWeight.w500,
+                                              //     color: Colors.black,
+                                              //   ),
+                                              // ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * .01,
+                                      ),
+                                      data != null
+                                          ? GroceryCount(
+                                              index: index,
+                                              // userId: userId,
+                                              productId: data[index].id,
+                                              price: data[index].price,
+                                            )
+                                          : const Center(
+                                              child: Center(
+                                                  child: SpinKitFadingCircle(
+                                              color: Colors.black,
+                                            ))),
+                                    ],
+                                  ),
+                                  // height: 147,
+                                  // width: ,
+                                );
+                              },
                             );
                           }
                         }

@@ -76,4 +76,8 @@ class GrocerySearchedProductData {
         "off_price": offPrice,
         "market_price": marketPrice,
       };
+  @override
+  String toString() {
+    return 'GrocerySearchedProductData{id: $id, image: $image, name: $name, description: $description, price: $price, offPrice: $offPrice, marketPrice: $marketPrice}';
+  }
 }

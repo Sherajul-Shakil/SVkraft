@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:sv_craft/Features/grocery/model/bookmark_category_model.dart';
 
 class BookmarkCategoryController extends GetxController {
+  var BookmarkCategory;
   //Get category list
   Future<List<BookmarkCategoryData>?> getBookmarkCategory(
       String textToken) async {
@@ -15,13 +16,17 @@ class BookmarkCategoryController extends GetxController {
         'Authorization': 'Bearer $textToken',
       });
 
-      if (response.statusCode == 200) {
-        final bookmarkCategory = bookmarkCategoryFromJson(response.body);
-        print('Bookmark Category: ${bookmarkCategory.data}');
-        return bookmarkCategory.data;
-      } else {
-        print('Category not found');
-      }
+      final bookmarkCategory = bookmarkCategoryFromJson(response.body);
+      print('Bookmark Category: ${bookmarkCategory.data}');
+      return bookmarkCategory.data;
+
+      // if (response.statusCode == 200) {
+      //   final bookmarkCategory = bookmarkCategoryFromJson(response.body);
+      //   print('Bookmark Category: ${bookmarkCategory.data}');
+      //   return bookmarkCategory.data;
+      // } else {
+      //   print('Category not found');
+      // }
     } catch (e) {
       print(e.toString());
       return null;
