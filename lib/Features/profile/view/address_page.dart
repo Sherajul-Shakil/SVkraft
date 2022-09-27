@@ -16,14 +16,15 @@ class AddressScreen extends StatefulWidget {
 }
 
 class _AddressScreenState extends State<AddressScreen> {
-  AddressController _saveAddressController = Get.put(AddressController());
-  HomeController _homeController = Get.put(HomeController());
-  GetAddressController _getAddressController = Get.put(GetAddressController());
+  final AddressController _saveAddressController = Get.put(AddressController());
+  final HomeController _homeController = Get.put(HomeController());
+  final GetAddressController _getAddressController =
+      Get.put(GetAddressController());
   final _formKey = GlobalKey<FormState>();
   String initialCountry = 'BD';
   PhoneNumber number = PhoneNumber(isoCode: 'BD');
   var phone;
-  TextEditingController _fullNameController = TextEditingController();
+  final TextEditingController _fullNameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _houseController = TextEditingController();
   final TextEditingController _colonyController = TextEditingController();

@@ -17,9 +17,6 @@ class GetCartSummaryController extends GetxController {
       // print(response.body);
       if (response.statusCode == 200) {
         final allProduct = getCartSummaryFromJson(response.body);
-
-        print('Summaryyyyyyyyyyyyyyyyyyyyy ${allProduct.data.toString()}');
-
         return allProduct.data;
       } else {
         print('User not found');

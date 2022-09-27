@@ -17,9 +17,6 @@ class GetAddressController extends GetxController {
       // print(response.body);
       if (response.statusCode == 200) {
         final allProduct = getAddressFromJson(response.body);
-
-        print('Adresssssssssss ${allProduct.data.name}');
-
         return allProduct.data;
       } else {
         print('User not found');

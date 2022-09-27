@@ -5,6 +5,7 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sv_craft/Features/cart/controllar/cart_controller.dart';
+import 'package:sv_craft/Features/cart/controllar/check_out_con.dart';
 import 'package:sv_craft/Features/cart/controllar/delete_item_con.dart';
 import 'package:sv_craft/Features/cart/view/checkout_screen.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
@@ -30,6 +31,7 @@ class _CartScreenState extends State<CartScreen> {
   final CartItemDeleteController _cartItemDeleteController =
       Get.put(CartItemDeleteController());
   GetAddressController _getAddressController = Get.put(GetAddressController());
+  CheckoutController _checkoutController = Get.put(CheckoutController());
   bool _isLoading = true;
   var cartData;
   // var totalPrice = 0.0;
@@ -1248,27 +1250,43 @@ class _CartScreenState extends State<CartScreen> {
                         width: size.width,
                         height: 50,
                         child: InkWell(
-                          onTap: () {
-                            log('groceryList: ${json.encode(cartData.grocery)}');
+                          onTap: () async {
+                            //"xxxx": json.encode([]),
+                            // final bodyData = {
+                            //   {
+                            //     "grocery": json.encode(cartData.grocery ?? []),
+                            //     "special_day":
+                            //         json.encode(cartData.special_day ?? []),
+                            //     // "total_price": totalPrice,
+                            //   }
+                            // };
 
-                            final mybody = {
-                              "data": {
-                                "grocery": json.encode(cartData.grocery ?? []),
-                                "special_day":
-                                    json.encode(cartData.special_day ?? []),
-                                "xxxx": json.encode([]),
-                                "total_price": totalPrice,
-                              }
-                            };
+                            // log('$bodyData $totalPrice');
+
+                            // var statusCode = await _checkoutController.checkout(
+                            //     bodyData,
+                            //     totalPrice,
+                            //     _homeController.tokenGlobal);
+
+                            // if (statusCode == 200) {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => CheckoutScreen()),
+                            //   );
+                            // } else {
+                            //   print('error');
+                            // }
+
                             // http.post('dasdasf', body: mybody);
-                            Get.dialog(Scaffold(
-                              body: Column(
-                                children: [
-                                  Text(mybody.runtimeType.toString()),
-                                  Text(mybody.toString()),
-                                ],
-                              ),
-                            ));
+                            // Get.dialog(Scaffold(
+                            //   body: Column(
+                            //     children: [
+                            //       Text(mybody.runtimeType.toString()),
+                            //       Text(mybody.toString()),
+                            //     ],
+                            //   ),
+                            // ));
                           },
                           child: Text(
                             cartData.user.name,
@@ -1419,13 +1437,31 @@ class _CartScreenState extends State<CartScreen> {
                             ],
                           ),
                         ),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Address.name != null
-                                      ? const CheckoutScreen()
-                                      : AddressScreen()));
+                        onTap: () async {
+                          final bodyData = {
+                            "grocery": json.encode(cartData.grocery ?? []),
+                            "special_day":
+                                json.encode(cartData.special_day ?? []),
+                            // "total_price": totalPrice,
+                          };
+
+                          log('$bodyData $totalPrice');
+
+                          var statusCode = await _checkoutController.checkout(
+                              bodyData,
+                              totalPrice,
+                              _homeController.tokenGlobal);
+
+                          if (statusCode == 200) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Address != null
+                                        ? const CheckoutScreen()
+                                        : AddressScreen()));
+                          } else {
+                            Get.snackbar('Error', 'Something went wrong');
+                          }
                         },
                       ),
                     ],

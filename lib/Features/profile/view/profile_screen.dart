@@ -60,300 +60,302 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          child: Profile != null
-              ? Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          height: 50.0,
-                          width: 50.0,
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage('images/child.png'),
-                                fit: BoxFit.fill,
-                              ),
-                              shape: BoxShape.circle,
-                              color: Colors.white),
-                        ),
-                        Spacer(),
-                        IconButton(
-                            onPressed: () async {
-                              // var message = await _logoutController.logout(tokenp);
-                              // print(message);
-                              SharedPreferences prefs =
-                                  await SharedPreferences.getInstance();
-
-                              await prefs.remove('auth-token');
-                              await prefs.remove('user-id');
-
-                              Get.offAll(() => SigninScreen());
-                            },
-                            icon: const Icon(
-                              FontAwesome.power_off,
-                              color: Colors.black54,
-                              size: 30,
-                            )),
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: size.height * .02,
-                        ),
-                        Card(
-                          child: ListTile(
-                            tileColor: Colors.grey[200],
-                            leading: const Icon(
-                              Icons.person,
-                              size: 25,
-                            ),
-                            title: Text(
-                              Profile.name,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () {
-                              // Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                        // Divider(
-                        //   color: Colors.black,
-                        // ),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.list_alt_outlined,
-                              size: 25,
-                            ),
-                            title: const Text(
-                              'My ads',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () async {
-                              // Navigator.pop(context);
-                              // _logoutController.logout();
-                            },
-                          ),
-                        ),
-
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.person,
-                              size: 25,
-                            ),
-                            title: const Text(
-                              'My Profile',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () async {
-                              // Navigator.pop(context);
-                              // _logoutController.logout();
-                            },
-                          ),
-                        ),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.card_membership,
-                              size: 25,
-                            ),
-                            title: const Text(
-                              'My Membership',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () async {
-                              // Navigator.pop(context);
-                              // _logoutController.logout();
-                            },
-                          ),
-                        ),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.calendar_month,
-                              size: 25,
-                            ),
-                            title: const Text(
-                              'Birthday',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () async {
-                              // Navigator.pop(context);
-                              // _logoutController.logout();
-                            },
-                          ),
-                        ),
-
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.transgender,
-                              size: 25,
-                            ),
-                            title: const Text(
-                              'Gender',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () async {
-                              // Navigator.pop(context);
-                              // _logoutController.logout();
-                            },
-                          ),
-                        ),
-
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.phone_android,
-                              size: 25,
-                            ),
-                            title: Text(
-                              Profile.phone,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () {
-                              // Navigator.pop(context);
-                            },
-                          ),
-                        ),
-
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.email_rounded,
-                              size: 25,
-                            ),
-                            title: Text(
-                              Profile.email,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () {
-                              // Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                        // Divider(
-                        //   color: Colors.black12,
-                        //   thickness: 2,
-                        // ),
-                        Card(
-                          child: ListTile(
-                            leading: const Icon(
-                              Icons.location_city_sharp,
-                              size: 25,
-                            ),
-                            title: const Text(
-                              'Address',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black54,
-                              ),
-                            ),
-                            onTap: () {
-                              // Navigator.pop(context);
-                            },
-                          ),
-                        ),
-                        // const Divider(
-                        //   color: Colors.black12,
-                        //   thickness: 2,
-                        // ),
-                        // const SizedBox(
-                        //   height: 30,
-                        // ),
-                      ],
-                    ),
-                    // SizedBox(
-                    //   height: size.height * .1,
-                    // ),
-                    // TextButton(
-                    //     onPressed: () {
-                    //       Get.to(() => EditProfile());
-                    //     },
-                    //     child: Text("EDIT")),
-                    // Container(
-                    //   alignment: Alignment.center,
-                    //   decoration: BoxDecoration(
-                    //     gradient: const LinearGradient(
-                    //       begin: Alignment.topCenter,
-                    //       end: Alignment.bottomCenter,
-                    //       colors: [
-                    //         Appcolor.circleColor,
-                    //         Color.fromARGB(255, 128, 118, 175),
-                    //       ],
-                    //     ),
-                    //     borderRadius: BorderRadius.circular(30),
-                    //   ),
-                    //   width: 200,
-                    //   height: 50,
-                    //   child: InkWell(
-                    //     child: Row(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       children: const [
-                    //         Text(
-                    //           'Edit Profile',
-                    //           style: TextStyle(
-                    //               color: Appcolor.uperTextColor, fontSize: 25),
-                    //           textAlign: TextAlign.center,
-                    //         ),
-                    //         SizedBox(
-                    //           width: 10,
-                    //         ),
-                    //         Icon(
-                    //           FontAwesome.pen_to_square,
-                    //           color: Appcolor.uperTextColor,
-                    //           size: 22,
-                    //         )
-                    //       ],
-                    //     ),
-                    //     onTap: () {
-                    //       // Get.toNamed("/editprofile");
-                    //     },
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: size.height * .08,
-                    ),
-                  ],
-                )
-              : Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: size.height * .45,
-                    ),
-                    Center(child: CircularProgressIndicator()),
-                  ],
+            child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  height: 50.0,
+                  width: 50.0,
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('images/child.png'),
+                        fit: BoxFit.fill,
+                      ),
+                      shape: BoxShape.circle,
+                      color: Colors.white),
                 ),
-        ),
+                Spacer(),
+                IconButton(
+                    onPressed: () async {
+                      // var message = await _logoutController.logout(tokenp);
+                      // print(message);
+                      SharedPreferences prefs =
+                          await SharedPreferences.getInstance();
+
+                      await prefs.remove('auth-token');
+                      await prefs.remove('user-id');
+
+                      Get.offAll(() => SigninScreen());
+                    },
+                    icon: const Icon(
+                      FontAwesome.power_off,
+                      color: Colors.black54,
+                      size: 30,
+                    )),
+              ],
+            ),
+            Profile != null
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: size.height * .02,
+                      ),
+                      Card(
+                        child: ListTile(
+                          tileColor: Colors.grey[200],
+                          leading: const Icon(
+                            Icons.person,
+                            size: 25,
+                          ),
+                          title: Text(
+                            Profile.name,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () {
+                            // Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      // Divider(
+                      //   color: Colors.black,
+                      // ),
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.list_alt_outlined,
+                            size: 25,
+                          ),
+                          title: const Text(
+                            'My ads',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () async {
+                            // Navigator.pop(context);
+                            // _logoutController.logout();
+                          },
+                        ),
+                      ),
+
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.person,
+                            size: 25,
+                          ),
+                          title: const Text(
+                            'My Profile',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () async {
+                            // Navigator.pop(context);
+                            // _logoutController.logout();
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.card_membership,
+                            size: 25,
+                          ),
+                          title: const Text(
+                            'My Membership',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () async {
+                            // Navigator.pop(context);
+                            // _logoutController.logout();
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.calendar_month,
+                            size: 25,
+                          ),
+                          title: const Text(
+                            'Birthday',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () async {
+                            // Navigator.pop(context);
+                            // _logoutController.logout();
+                          },
+                        ),
+                      ),
+
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.transgender,
+                            size: 25,
+                          ),
+                          title: const Text(
+                            'Gender',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () async {
+                            // Navigator.pop(context);
+                            // _logoutController.logout();
+                          },
+                        ),
+                      ),
+
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.phone_android,
+                            size: 25,
+                          ),
+                          title: Text(
+                            Profile.phone,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () {
+                            // Navigator.pop(context);
+                          },
+                        ),
+                      ),
+
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.email_rounded,
+                            size: 25,
+                          ),
+                          title: Text(
+                            Profile.email,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () {
+                            // Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      // Divider(
+                      //   color: Colors.black12,
+                      //   thickness: 2,
+                      // ),
+                      Card(
+                        child: ListTile(
+                          leading: const Icon(
+                            Icons.location_city_sharp,
+                            size: 25,
+                          ),
+                          title: const Text(
+                            'Address',
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.black54,
+                            ),
+                          ),
+                          onTap: () {
+                            // Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      // const Divider(
+                      //   color: Colors.black12,
+                      //   thickness: 2,
+                      // ),
+                      // const SizedBox(
+                      //   height: 30,
+                      // ),
+                    ],
+                  )
+                : Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: size.height * .45,
+                      ),
+                      Center(
+                          child: Text("No User Found",
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold))),
+                    ],
+                  ),
+            // SizedBox(
+            //   height: size.height * .1,
+            // ),
+            // TextButton(
+            //     onPressed: () {
+            //       Get.to(() => EditProfile());
+            //     },
+            //     child: Text("EDIT")),
+            // Container(
+            //   alignment: Alignment.center,
+            //   decoration: BoxDecoration(
+            //     gradient: const LinearGradient(
+            //       begin: Alignment.topCenter,
+            //       end: Alignment.bottomCenter,
+            //       colors: [
+            //         Appcolor.circleColor,
+            //         Color.fromARGB(255, 128, 118, 175),
+            //       ],
+            //     ),
+            //     borderRadius: BorderRadius.circular(30),
+            //   ),
+            //   width: 200,
+            //   height: 50,
+            //   child: InkWell(
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: const [
+            //         Text(
+            //           'Edit Profile',
+            //           style: TextStyle(
+            //               color: Appcolor.uperTextColor, fontSize: 25),
+            //           textAlign: TextAlign.center,
+            //         ),
+            //         SizedBox(
+            //           width: 10,
+            //         ),
+            //         Icon(
+            //           FontAwesome.pen_to_square,
+            //           color: Appcolor.uperTextColor,
+            //           size: 22,
+            //         )
+            //       ],
+            //     ),
+            //     onTap: () {
+            //       // Get.toNamed("/editprofile");
+            //     },
+            //   ),
+            // ),
+            SizedBox(
+              height: size.height * .08,
+            ),
+          ],
+        )),
         bottomNavigationBar: BottomNavyBar(
           backgroundColor: Appcolor.primaryColor,
           selectedIndex: _selectedIndex,
