@@ -12,6 +12,7 @@ import 'package:sv_craft/Features/market_place/controller/bookmark_con.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 import 'package:sv_craft/Features/market_place/model/market_category.dart';
+import 'package:sv_craft/Features/market_place/view/bookmarked_product.dart';
 import 'package:sv_craft/Features/market_place/view/filter_box_screen.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/Features/market_place/view/search_product_screen.dart';
@@ -396,10 +397,11 @@ class _MarketPlaceState extends State<MarketPlace> {
               // );
 
             } else if (_selectedIndex == 3) {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BookmarkedProductScreen()),
+              );
             } else if (_selectedIndex == 4) {
               Navigator.pushReplacement(
                 context,
