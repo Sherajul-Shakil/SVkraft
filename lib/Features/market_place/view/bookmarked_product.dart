@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
+import 'package:sv_craft/Features/grocery/controllar/delete_bookmark_proudct.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/bookmark_con.dart';
 import 'package:sv_craft/Features/market_place/model/get_bookamrk_model.dart';
@@ -19,6 +21,8 @@ class BookmarkedProductScreen extends StatefulWidget {
 class _BookmarkedProductScreenState extends State<BookmarkedProductScreen> {
   final BookmarkController _bookmarkController = Get.put(BookmarkController());
   final HomeController _homeController = Get.put(HomeController());
+  DeleteBookmarkProductController _deleteBookmarkProductController =
+      Get.put(DeleteBookmarkProductController());
   // var Product;
 
   // @override
@@ -70,6 +74,7 @@ class _BookmarkedProductScreenState extends State<BookmarkedProductScreen> {
                     return const Center(child: Text('No Product Found'));
                   } else {
                     var data = snapshot.data;
+
                     return GridView.builder(
                       padding: const EdgeInsets.only(
                           left: 10, right: 10, top: 20, bottom: 10),
@@ -78,7 +83,7 @@ class _BookmarkedProductScreenState extends State<BookmarkedProductScreen> {
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 200,
-                        childAspectRatio: .79,
+                        childAspectRatio: .78,
                         mainAxisSpacing: 5,
                         crossAxisSpacing: 5,
                       ),
@@ -115,15 +120,47 @@ class _BookmarkedProductScreenState extends State<BookmarkedProductScreen> {
                           },
                           child: Column(
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 5, vertical: 5),
-                                child: Image.network(
-                                  '${Appurl.baseURL}${data[index].image}',
-                                  fit: BoxFit.contain,
-                                  height: 200,
-                                  width: 180,
-                                ),
+                              Stack(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 5, vertical: 5),
+                                    child: Image.network(
+                                      '${Appurl.baseURL}${data[index].image}',
+                                      fit: BoxFit.cover,
+                                      height: size.height * 0.22,
+                                      width: size.width * 0.45,
+                                    ),
+                                  ),
+                                  Positioned(
+                                      top: 10,
+                                      left: 10,
+                                      child: Container(
+                                          height: 35,
+                                          width: 35,
+                                          color: Colors.white,
+                                          child: IconButton(
+                                              onPressed: () async {
+                                                var statusCode =
+                                                    await _deleteBookmarkProductController
+                                                        .bookmarkProductDelete(
+                                                            _homeController
+                                                                .tokenGlobal,
+                                                            data[index]
+                                                                .bookmarkId);
+                                                if (statusCode == 200) {
+                                                  setState(() {});
+                                                } else {
+                                                  Get.snackbar('Error',
+                                                      'Category Not Deleted');
+                                                }
+                                              },
+                                              icon: const Icon(
+                                                Icons.delete,
+                                                color: Colors.red,
+                                                size: 18,
+                                              ))))
+                                ],
                               ),
                               Padding(
                                 padding:

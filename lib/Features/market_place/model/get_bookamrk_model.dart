@@ -48,12 +48,14 @@ class GetMarketBoomarkData {
     required this.productName,
     required this.price,
     required this.image,
+    required this.bookmarkId,
   });
 
   int id;
   String productName;
   int price;
   String image;
+  int bookmarkId;
 
   factory GetMarketBoomarkData.fromJson(Map<String, dynamic> json) =>
       GetMarketBoomarkData(
@@ -61,6 +63,7 @@ class GetMarketBoomarkData {
         productName: json["product_name"],
         price: json["price"],
         image: json["image"],
+        bookmarkId: json["bookmark_id"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,10 +71,11 @@ class GetMarketBoomarkData {
         "product_name": productName,
         "price": price,
         "image": image,
+        "bookmark_id": bookmarkId,
       };
 
   @override
   String toString() {
-    return 'GetMarketBoomarkData{id: $id, productName: $productName, price: $price, image: $image}';
+    return 'GetMarketBoomarkData{id: $id, productName: $productName, price: $price, image: $image, bookmarkId: $bookmarkId}';
   }
 }

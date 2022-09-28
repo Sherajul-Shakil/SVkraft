@@ -105,8 +105,6 @@ class _BookmarkProductGetScreenState extends State<BookmarkProductGetScreen> {
                                                     data[index].bookmarkId);
                                         if (statusCode == 200) {
                                           setState(() {});
-                                          Get.snackbar(
-                                              'Success', 'Category Deleted');
                                         } else {
                                           Get.snackbar(
                                               'Error', 'Category Not Deleted');
