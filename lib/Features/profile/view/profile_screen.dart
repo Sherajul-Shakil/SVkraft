@@ -10,6 +10,7 @@ import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/view/market_place.dart';
 import 'package:sv_craft/Features/profile/controller/get_profile_con.dart';
 import 'package:sv_craft/Features/profile/view/edit_profile.dart';
+import 'package:sv_craft/Features/profile/view/my_address_screen.dart';
 import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
 import 'package:sv_craft/Features/special_day/view/special_home_screen.dart';
 import 'package:sv_craft/constant/color.dart';
@@ -157,10 +158,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               color: Colors.black54,
                             ),
                           ),
-                          onTap: () async {
-                            // Navigator.pop(context);
-                            // _logoutController.logout();
-                          },
+                          onTap: () async {},
                         ),
                       ),
                       Card(
@@ -277,7 +275,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           onTap: () {
-                            // Navigator.pop(context);
+                            print("hhhhhhhhhhhhhh");
+                            Get.to(MyAddressScreen());
+                            // Get.to(MyAddressScreen);
                           },
                         ),
                       ),
@@ -303,54 +303,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   fontSize: 20, fontWeight: FontWeight.bold))),
                     ],
                   ),
-            // SizedBox(
-            //   height: size.height * .1,
-            // ),
-            // TextButton(
-            //     onPressed: () {
-            //       Get.to(() => EditProfile());
-            //     },
-            //     child: Text("EDIT")),
-            // Container(
-            //   alignment: Alignment.center,
-            //   decoration: BoxDecoration(
-            //     gradient: const LinearGradient(
-            //       begin: Alignment.topCenter,
-            //       end: Alignment.bottomCenter,
-            //       colors: [
-            //         Appcolor.circleColor,
-            //         Color.fromARGB(255, 128, 118, 175),
-            //       ],
-            //     ),
-            //     borderRadius: BorderRadius.circular(30),
-            //   ),
-            //   width: 200,
-            //   height: 50,
-            //   child: InkWell(
-            //     child: Row(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: const [
-            //         Text(
-            //           'Edit Profile',
-            //           style: TextStyle(
-            //               color: Appcolor.uperTextColor, fontSize: 25),
-            //           textAlign: TextAlign.center,
-            //         ),
-            //         SizedBox(
-            //           width: 10,
-            //         ),
-            //         Icon(
-            //           FontAwesome.pen_to_square,
-            //           color: Appcolor.uperTextColor,
-            //           size: 22,
-            //         )
-            //       ],
-            //     ),
-            //     onTap: () {
-            //       // Get.toNamed("/editprofile");
-            //     },
-            //   ),
-            // ),
             SizedBox(
               height: size.height * .08,
             ),

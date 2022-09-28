@@ -125,7 +125,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
-                                                            AddressScreen()));
+                                                            AddressScreen(
+                                                              from: "checkout",
+                                                            )));
                                               },
                                               child: Text(
                                                 'Edit',

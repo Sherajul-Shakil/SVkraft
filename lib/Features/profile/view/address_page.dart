@@ -4,12 +4,14 @@ import 'package:sv_craft/Features/cart/view/checkout_screen.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/profile/controller/address_controller.dart';
 import 'package:sv_craft/Features/profile/controller/get_address_con.dart';
+import 'package:sv_craft/Features/profile/view/my_address_screen.dart';
 import 'package:sv_craft/common/bottom_button_column.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 import 'package:sv_craft/constant/color.dart';
 
 class AddressScreen extends StatefulWidget {
-  AddressScreen({Key? key}) : super(key: key);
+  AddressScreen({Key? key, this.from}) : super(key: key);
+  final String? from;
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -503,7 +505,11 @@ class _AddressScreenState extends State<AddressScreen> {
                           if (statusCode == 200) {
                             Get.snackbar("Address saved", "");
                             //Navigate to checkout page
-                            Get.offAll(() => CheckoutScreen());
+                            if (widget.from == "address") {
+                              Get.offAll(() => MyAddressScreen());
+                            } else if (widget.from == "checkout") {
+                              Get.offAll(() => CheckoutScreen());
+                            }
                           } else {
                             Get.snackbar("Address not saved", "");
                           }
@@ -524,13 +530,6 @@ class _AddressScreenState extends State<AddressScreen> {
                     ),
                   ),
 
-                  // BottomButtonColumn(
-                  //   onTap: () async {
-                  //     if (_formKey.currentState!.validate()) {}
-                  //   },
-                  //   buttonText: "SAVE",
-                  //   buttonIcon: Icons.login_outlined,
-                  // ),
                   SizedBox(
                     height: size.height * .02,
                   ),

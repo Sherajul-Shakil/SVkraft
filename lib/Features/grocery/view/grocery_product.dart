@@ -92,17 +92,6 @@ class _GroceryProductState extends State<GroceryProduct> {
             });
           }
         });
-        // final searchProduct = await _grocerySearchController
-        //     .getGrocerySearchProduct(tokenp, name);
-        // print(name);
-
-        // if (searchProduct != null) {
-        //   setState(() {
-        //     _isSearched = true;
-        //     searchedData = searchProduct;
-        //     // print('searchProduct = ${searchedData[0].name}');
-        //   });
-        // }
       },
       autofocus: true,
       cursorColor: Colors.black,
@@ -501,8 +490,7 @@ class _GroceryProductState extends State<GroceryProduct> {
                                                                   searchedData[
                                                                           index]
                                                                       .id);
-                                                              print(
-                                                                  "ddddddddddddddddddddddddd ${_bookmarkCategoryController.BookmarkCategory[ind].id} ${searchedData[index].id}");
+
                                                               if (status ==
                                                                   200) {
                                                                 Get.back();

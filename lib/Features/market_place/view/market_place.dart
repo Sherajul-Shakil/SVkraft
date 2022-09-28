@@ -8,6 +8,7 @@ import 'package:sv_craft/Features/add_market_product/view/category_city.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
+import 'package:sv_craft/Features/market_place/controller/bookmark_con.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 import 'package:sv_craft/Features/market_place/model/market_category.dart';
@@ -30,6 +31,7 @@ class _MarketPlaceState extends State<MarketPlace> {
   final AllProductController _allProductController =
       Get.put(AllProductController());
   final HomeController _homeController = Get.put(HomeController());
+  BookmarkController _bookmarkController = Get.put(BookmarkController());
 
   var _selectedIndex = 2;
   PageController? _pageController;
@@ -244,6 +246,7 @@ class _MarketPlaceState extends State<MarketPlace> {
 
                                         child: InkWell(
                                           onTap: () {
+                                            print("${data[index].id}");
                                             Navigator.push(
                                               context,
                                               MaterialPageRoute(
@@ -257,22 +260,56 @@ class _MarketPlaceState extends State<MarketPlace> {
                                           },
                                           child: Column(
                                             children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
+                                              Stack(
+                                                children: [
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
                                                         horizontal: 5,
                                                         vertical: 5),
-                                                child: Image.network(
-                                                  data[index]
-                                                              .image[0]
-                                                              .filePath !=
-                                                          null
-                                                      ? 'http://mamun.click/${data[index].image[0].filePath}'
-                                                      : "",
-                                                  fit: BoxFit.cover,
-                                                  height: 180,
-                                                  width: 170,
-                                                ),
+                                                    child: Image.network(
+                                                      data[index]
+                                                                  .image[0]
+                                                                  .filePath !=
+                                                              null
+                                                          ? 'http://mamun.click/${data[index].image[0].filePath}'
+                                                          : "",
+                                                      fit: BoxFit.cover,
+                                                      height: 180,
+                                                      width: 170,
+                                                    ),
+                                                  ),
+                                                  Positioned(
+                                                      top: 10,
+                                                      left: 10,
+                                                      child: Container(
+                                                          height: 30,
+                                                          width: 30,
+                                                          color: Colors.grey,
+                                                          child: IconButton(
+                                                              onPressed:
+                                                                  () async {
+                                                                var status = await _bookmarkController.addBookmarkProduct(
+                                                                    _homeController
+                                                                        .tokenGlobal,
+                                                                    data[index]
+                                                                        .id);
+
+                                                                if (status ==
+                                                                    200) {
+                                                                  Get.snackbar(
+                                                                      'Success',
+                                                                      'Product Added To Bookmark');
+                                                                }
+                                                              },
+                                                              icon: const Icon(
+                                                                FontAwesome
+                                                                    .bookmark,
+                                                                color: Colors
+                                                                    .black,
+                                                                size: 18,
+                                                              ))))
+                                                ],
                                               ),
                                               Padding(
                                                 padding:
