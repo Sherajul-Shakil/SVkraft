@@ -1,6 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
           body: Column(
             children: <Widget>[
               Container(
-                height: size.height * .08,
+                height: size.height * .09,
                 width: size.width,
                 color: Appcolor.primaryColor,
                 child: Padding(
@@ -60,11 +61,24 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image(
-                        image: AssetImage('images/svkraft.png'),
-                        height: size.height * .06,
-                        width: size.width * .8,
+                      Shimmer.fromColors(
+                        baseColor: Color.fromARGB(232, 255, 217, 2),
+                        highlightColor: Color.fromARGB(255, 153, 138, 3),
+                        child: const Text(
+                          'SV KRAFT',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontFamily: "RobotoSlab",
+                            fontSize: 34.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
+                      // Image(
+                      //   image: AssetImage('images/svkraft.png'),
+                      //   height: size.height * .06,
+                      //   width: size.width * .8,
+                      // ),
 
                       // Text(
                       //   'SV Kraft',
@@ -238,11 +252,21 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(
                           width: 30,
                         ),
-                        const Text("Restaurant",
-                            style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.w500,
-                                color: Color.fromARGB(255, 255, 255, 255))),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Restaurant",
+                                style: TextStyle(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(255, 255, 255, 255))),
+                            const Text("(Comming soon)",
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(255, 255, 255, 255))),
+                          ],
+                        ),
                         Spacer(),
                         Image.asset(
                           'images/restaurant.png',

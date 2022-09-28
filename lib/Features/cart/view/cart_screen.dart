@@ -30,16 +30,15 @@ class _CartScreenState extends State<CartScreen> {
   final CartController _cartController = Get.put(CartController());
   final CartItemDeleteController _cartItemDeleteController =
       Get.put(CartItemDeleteController());
-  GetAddressController _getAddressController = Get.put(GetAddressController());
-  CheckoutController _checkoutController = Get.put(CheckoutController());
-  bool _isLoading = true;
+  final GetAddressController _getAddressController =
+      Get.put(GetAddressController());
+  final CheckoutController _checkoutController = Get.put(CheckoutController());
   var cartData;
   // var totalPrice = 0.0;
   var _selectedIndex = 1;
   PageController? _pageController;
 
   var itemCount = 0;
-
   var Address;
   var totalPrice = 0;
 
@@ -52,9 +51,7 @@ class _CartScreenState extends State<CartScreen> {
     });
 
     Future.delayed(const Duration(microseconds: 500), () async {
-      setState(() {
-        _isLoading = false;
-      });
+      setState(() {});
     });
   }
 
@@ -65,18 +62,6 @@ class _CartScreenState extends State<CartScreen> {
       setState(() {
         cartData = data;
       });
-
-      // if (cartData.grocery.length > 0) {
-      //   for (int i = 0; i < cartData.grocery.length; i++) {
-      //     totalPrice += cartData.grocery[i].price;
-      //   }
-      // }
-
-      // if (cartData.special_day.length > 0) {
-      //   for (int i = 0; i < cartData.special_day.length; i++) {
-      //     totalPrice += cartData.special_day[i].price;
-      //   }
-      // }
     }
 
     var address =
@@ -113,7 +98,7 @@ class _CartScreenState extends State<CartScreen> {
                 ? Column(
                     children: [
                       Container(
-                        height: size.height * .27,
+                        height: size.height * .18,
                         width: size.width,
                         // color: Colors.red,
                         child: Padding(
@@ -123,15 +108,15 @@ class _CartScreenState extends State<CartScreen> {
                             // mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text(
-                                "Varukorg (37)",
+                              Text(
+                                cartData.user.name,
                                 style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black),
                               ),
                               const SizedBox(
-                                height: 30,
+                                height: 10,
                               ),
                               const Text(
                                 "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet.",
@@ -140,39 +125,67 @@ class _CartScreenState extends State<CartScreen> {
                                     fontWeight: FontWeight.w500,
                                     color: Colors.black54),
                               ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.all(5),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(0),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black12, //color of shadow
-                                        spreadRadius: 1, //spread radius
-                                        blurRadius: 0, // blur radius
-                                        offset: Offset(
-                                            0, 0), // changes position of shadow
-                                        //first paramerter of offset is left-right
-                                        //second parameter is top to down
-                                      )
-                                    ],
-                                  ),
-                                  width: size.width,
-                                  height: 50,
-                                  child: const Text(
-                                    'Hantera ersattnongsvaror',
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 18),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              ),
+                              // const SizedBox(
+                              //   height: 15,
+                              // ),
+
+                              // Container(
+                              //   padding: const EdgeInsets.all(5),
+                              //   alignment: Alignment.center,
+                              //   decoration: BoxDecoration(
+                              //     color: Colors.white,
+                              //     borderRadius: BorderRadius.circular(0),
+                              //     boxShadow: const [
+                              //       BoxShadow(
+                              //         color: Colors.black12, //color of shadow
+                              //         spreadRadius: 1, //spread radius
+                              //         blurRadius: 0, // blur radius
+                              //         offset: Offset(
+                              //             0, 0), // changes position of shadow
+                              //         //first paramerter of offset is left-right
+                              //         //second parameter is top to down
+                              //       )
+                              //     ],
+                              //   ),
+                              //   width: size.width * .8,
+                              //   height: 50,
+                              //   child: const Text(
+                              //     'Hantera ersattnongsvaror',
+                              //     style: TextStyle(
+                              //         color: Colors.black, fontSize: 18),
+                              //     textAlign: TextAlign.center,
+                              //   ),
+                              // ),
+                              // InkWell(
+                              //   onTap: () {},
+                              //   child: Container(
+                              //     padding: const EdgeInsets.all(5),
+                              //     alignment: Alignment.center,
+                              //     decoration: BoxDecoration(
+                              //       color: Colors.white,
+                              //       borderRadius: BorderRadius.circular(0),
+                              //       boxShadow: const [
+                              //         BoxShadow(
+                              //           color: Colors.black12, //color of shadow
+                              //           spreadRadius: 1, //spread radius
+                              //           blurRadius: 0, // blur radius
+                              //           offset: Offset(
+                              //               0, 0), // changes position of shadow
+                              //           //first paramerter of offset is left-right
+                              //           //second parameter is top to down
+                              //         )
+                              //       ],
+                              //     ),
+                              //     width: size.width,
+                              //     height: 60,
+                              //     child: const Text(
+                              //       'Hantera ersattnongsvaror',
+                              //       style: TextStyle(
+                              //           color: Colors.black, fontSize: 18),
+                              //       textAlign: TextAlign.center,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -587,7 +600,7 @@ class _CartScreenState extends State<CartScreen> {
                                         width: 10,
                                       ),
                                       Text(
-                                        "special_day Products",
+                                        "Special Day Products",
                                         style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w500,
@@ -975,328 +988,10 @@ class _CartScreenState extends State<CartScreen> {
                             )
                           : Container(),
 
-                      // //cartData.special_day != null
-                      // cartData.special_day.length > 0
-                      //     ? Column(
-                      //         children: [
-                      //           Container(
-                      //             color: Color.fromARGB(31, 134, 129, 129),
-                      //             height: 40,
-                      //             child: Row(
-                      //               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //               children: const [
-                      //                 SizedBox(
-                      //                   width: 10,
-                      //                 ),
-                      //                 Text(
-                      //                   "Special Day Products",
-                      //                   style: TextStyle(
-                      //                       fontSize: 20,
-                      //                       fontWeight: FontWeight.w500,
-                      //                       color: Colors.black87),
-                      //                 ),
-                      //                 Spacer(),
-                      //                 // Text(
-                      //                 //   "SUMMA",
-                      //                 //   style: TextStyle(
-                      //                 //       fontSize: 20,
-                      //                 //       fontWeight: FontWeight.w500,
-                      //                 //       color: Colors.black87),
-                      //                 // ),
-                      //                 SizedBox(
-                      //                   width: 10,
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //           ListView.builder(
-                      //               physics: NeverScrollableScrollPhysics(),
-                      //               shrinkWrap: true,
-                      //               itemCount: cartData.special_day.length,
-                      //               itemBuilder: (context, index) {
-                      //                 var singleSpecialPrice =
-                      //                     cartData.special_day[index].price /
-                      //                         int.parse(cartData
-                      //                             .special_day[index].quantity);
-                      //                 return Padding(
-                      //                   padding: const EdgeInsets.symmetric(
-                      //                       horizontal: 5),
-                      //                   child: Container(
-                      //                     // key: ValueKey(myProducts[index]),
-                      //                     margin: const EdgeInsets.symmetric(
-                      //                         vertical: 5, horizontal: 0),
-                      //                     child: Column(
-                      //                       children: [
-                      //                         Container(
-                      //                           child: Row(
-                      //                             children: [
-                      //                               Container(
-                      //                                 height: 100,
-                      //                                 width: size.width / 6,
-                      //                                 // color: Colors.redAccent,
-                      //                                 child: Image.network(
-                      //                                   '${Appurl.baseURL}${cartData.special_day[index].image}',
-                      //                                   fit: BoxFit.cover,
-                      //                                 ),
-                      //                               ),
-                      //                               Container(
-                      //                                 height: 100,
-                      //                                 width: size.width / 2.8,
-                      //                                 //color: Colors.black87,
-                      //                                 child: Padding(
-                      //                                   padding:
-                      //                                       const EdgeInsets
-                      //                                           .all(10.0),
-                      //                                   child: Column(
-                      //                                     crossAxisAlignment:
-                      //                                         CrossAxisAlignment
-                      //                                             .start,
-                      //                                     children: [
-                      //                                       Text(
-                      //                                         cartData
-                      //                                             .special_day[
-                      //                                                 index]
-                      //                                             .name,
-                      //                                         style: TextStyle(
-                      //                                             fontSize: 18,
-                      //                                             fontWeight:
-                      //                                                 FontWeight
-                      //                                                     .w500,
-                      //                                             color: Colors
-                      //                                                 .black54),
-                      //                                         overflow:
-                      //                                             TextOverflow
-                      //                                                 .ellipsis,
-                      //                                         maxLines: 2,
-                      //                                       ),
-                      //                                       Text(
-                      //                                         'Price : ${singleSpecialPrice.toString()} kr',
-                      //                                         style: TextStyle(
-                      //                                             fontSize: 16,
-                      //                                             fontWeight:
-                      //                                                 FontWeight
-                      //                                                     .w300,
-                      //                                             color: Colors
-                      //                                                 .black54),
-                      //                                       ),
-                      //                                       // Text(
-                      //                                       //   "Price in kr",
-                      //                                       //   style: TextStyle(
-                      //                                       //       fontSize: 16,
-                      //                                       //       fontWeight: FontWeight.w300,
-                      //                                       //       color: Colors.black54),
-                      //                                       // ),
-                      //                                     ],
-                      //                                   ),
-                      //                                 ),
-                      //                               ),
-                      //                               Container(
-                      //                                 decoration: BoxDecoration(
-                      //                                   border: Border.all(
-                      //                                     color: Color.fromARGB(
-                      //                                         31,
-                      //                                         145,
-                      //                                         140,
-                      //                                         140),
-                      //                                     width: 1,
-                      //                                   ),
-                      //                                 ),
-                      //                                 height: 74,
-                      //                                 width: size.width / 5,
-                      //                                 //color: Colors.redAccent,
-                      //                                 child: Row(
-                      //                                   mainAxisAlignment:
-                      //                                       MainAxisAlignment
-                      //                                           .center,
-                      //                                   children: [
-                      //                                     Text(
-                      //                                         '${cartData.special_day[index].quantity.toString()} st',
-                      //                                         style: TextStyle(
-                      //                                           fontSize: 18,
-                      //                                           fontWeight:
-                      //                                               FontWeight
-                      //                                                   .w500,
-                      //                                           color: Colors
-                      //                                               .black54,
-                      //                                         ),
-                      //                                         textAlign:
-                      //                                             TextAlign
-                      //                                                 .center),
-                      //                                     Spacer(),
-                      //                                     cartData != null
-                      //                                         ? GroceryCartCount(
-                      //                                             index: index,
-                      //                                             productId: cartData
-                      //                                                 .special_day[
-                      //                                                     index]
-                      //                                                 .id,
-                      //                                             price: cartData
-                      //                                                     .special_day[
-                      //                                                         index]
-                      //                                                     .price /
-                      //                                                 int.parse(cartData
-                      //                                                     .special_day[
-                      //                                                         index]
-                      //                                                     .quantity),
-                      //                                             category:
-                      //                                                 'special_day',
-                      //                                             count: int.parse(cartData
-                      //                                                 .special_day[
-                      //                                                     index]
-                      //                                                 .quantity))
-                      //                                         : CircularProgressIndicator(),
-                      //                                   ],
-                      //                                 ),
-                      //                               ),
-                      //                               Container(
-                      //                                 height: 100,
-                      //                                 width: size.width / 4,
-                      //                                 // color: Colors.blue,
-                      //                                 child: Column(
-                      //                                   mainAxisAlignment:
-                      //                                       MainAxisAlignment
-                      //                                           .center,
-                      //                                   crossAxisAlignment:
-                      //                                       CrossAxisAlignment
-                      //                                           .end,
-                      //                                   children: [
-                      //                                     IconButton(
-                      //                                       onPressed:
-                      //                                           () async {
-                      //                                         var responce =
-                      //                                             await _cartItemDeleteController
-                      //                                                 .cartItemDelete(
-                      //                                           _homeController
-                      //                                               .tokenGlobal,
-                      //                                           _homeController
-                      //                                               .userId,
-                      //                                           cartData
-                      //                                               .special_day[
-                      //                                                   index]
-                      //                                               .id,
-                      //                                           'special_day',
-                      //                                         );
-                      //                                         setState(() {});
-
-                      //                                         if (responce !=
-                      //                                             null) {
-                      //                                           setState(() {});
-                      //                                           Navigator.push(
-                      //                                             context,
-                      //                                             MaterialPageRoute(
-                      //                                                 builder:
-                      //                                                     (context) =>
-                      //                                                         CartScreen()),
-                      //                                           );
-
-                      //                                           print(
-                      //                                               "Item deleted");
-                      //                                         } else {
-                      //                                           setState(() {});
-                      //                                           print(
-                      //                                               "Item not deleted");
-                      //                                         }
-                      //                                       },
-                      //                                       icon: Icon(
-                      //                                           Icons.delete),
-                      //                                       color: Colors.red,
-                      //                                     ),
-                      //                                     Text(
-                      //                                       "${cartData.special_day[index].price.toString()} kr",
-                      //                                       style: TextStyle(
-                      //                                           fontSize: 18,
-                      //                                           fontWeight:
-                      //                                               FontWeight
-                      //                                                   .w500,
-                      //                                           color: Colors
-                      //                                               .black54),
-                      //                                     ),
-                      //                                   ],
-                      //                                 ),
-                      //                               ),
-                      //                             ],
-                      //                           ),
-                      //                         ),
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //                 );
-                      //               }),
-                      //         ],
-                      //       )
-                      //     : Container(),
                       const SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
-                      Container(
-                        // padding: const EdgeInsets.symmetric(horizontal: 20),
-                        margin: const EdgeInsets.symmetric(horizontal: 20),
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(0),
-                          boxShadow: const [
-                            BoxShadow(
-                              color: Colors.black12, //color of shadow
-                              spreadRadius: 1, //spread radius
-                              blurRadius: 0, // blur radius
-                              offset:
-                                  Offset(0, 0), // changes position of shadow
-                              //first paramerter of offset is left-right
-                              //second parameter is top to down
-                            )
-                          ],
-                        ),
-                        width: size.width,
-                        height: 50,
-                        child: InkWell(
-                          onTap: () async {
-                            //"xxxx": json.encode([]),
-                            // final bodyData = {
-                            //   {
-                            //     "grocery": json.encode(cartData.grocery ?? []),
-                            //     "special_day":
-                            //         json.encode(cartData.special_day ?? []),
-                            //     // "total_price": totalPrice,
-                            //   }
-                            // };
 
-                            // log('$bodyData $totalPrice');
-
-                            // var statusCode = await _checkoutController.checkout(
-                            //     bodyData,
-                            //     totalPrice,
-                            //     _homeController.tokenGlobal);
-
-                            // if (statusCode == 200) {
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => CheckoutScreen()),
-                            //   );
-                            // } else {
-                            //   print('error');
-                            // }
-
-                            // http.post('dasdasf', body: mybody);
-                            // Get.dialog(Scaffold(
-                            //   body: Column(
-                            //     children: [
-                            //       Text(mybody.runtimeType.toString()),
-                            //       Text(mybody.toString()),
-                            //     ],
-                            //   ),
-                            // ));
-                          },
-                          child: Text(
-                            cartData.user.name,
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 18),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 15),
                       Container(
                         // padding: const EdgeInsets.symmetric(horizontal: 20),
                         margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -1445,7 +1140,7 @@ class _CartScreenState extends State<CartScreen> {
                             // "total_price": totalPrice,
                           };
 
-                          log('$bodyData $totalPrice');
+                          // log('$bodyData $totalPrice');
 
                           var statusCode = await _checkoutController.checkout(
                               bodyData,

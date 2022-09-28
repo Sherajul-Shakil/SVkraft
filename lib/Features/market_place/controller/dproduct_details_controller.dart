@@ -6,7 +6,6 @@ class ProductDetailsController extends GetxController {
   Future<ProductDetailsData?> getProductDetails(
       String textToken, int id) async {
     try {
-      print('tokennnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn $id   $textToken');
       const url = "http://mamun.click/api/product/find/";
 
       http.Response response = await http.get(Uri.parse('$url$id'), headers: {

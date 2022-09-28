@@ -349,8 +349,6 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                     ),
                                     child: TextButton(
                                       onPressed: () async {
-                                        print("Button Pressed");
-
                                         var status =
                                             await _finalCheckoutController
                                                 .finalCheckout(_homeController

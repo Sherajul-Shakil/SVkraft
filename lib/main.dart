@@ -72,6 +72,8 @@ class _MyAppState extends State<MyApp> {
             primary: Appcolor.primaryColor,
             secondary: Appcolor.primaryColor,
           ),
+          // Add font family
+          // fontFamily: 'AbyssinicaSIL',
         ),
         // initialRoute: "/signup",
         getPages: [

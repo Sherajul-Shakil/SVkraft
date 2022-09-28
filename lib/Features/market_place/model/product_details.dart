@@ -49,6 +49,7 @@ class ProductDetailsData {
     required this.inStock,
     required this.createdAt,
     required this.updatedAt,
+    required this.phone,
     required this.image,
   });
 
@@ -65,6 +66,7 @@ class ProductDetailsData {
   int inStock;
   DateTime createdAt;
   DateTime updatedAt;
+  String phone;
   List<ProductDetailsImage> image;
 
   factory ProductDetailsData.fromJson(Map<String, dynamic> json) =>
@@ -82,6 +84,7 @@ class ProductDetailsData {
         inStock: json["in_stock"],
         createdAt: DateTime.parse(json["created_at"]),
         updatedAt: DateTime.parse(json["updated_at"]),
+        phone: json["phone"],
         image: List<ProductDetailsImage>.from(
             json["image"].map((x) => ProductDetailsImage.fromJson(x))),
       );
@@ -100,12 +103,13 @@ class ProductDetailsData {
         "in_stock": inStock,
         "created_at": createdAt.toIso8601String(),
         "updated_at": updatedAt.toIso8601String(),
+        "phone": phone,
         "image": List<dynamic>.from(image.map((x) => x.toJson())),
       };
 
   @override
   String toString() {
-    return 'ProductDetailsData{id: $id, userId: $userId, productName: $productName, description: $description, price: $price, quantity: $quantity, location: $location, brand: $brand, condition: $condition, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt, image: $image}';
+    return 'ProductDetailsData{id: $id, userId: $userId, productName: $productName, description: $description, price: $price, quantity: $quantity, location: $location, brand: $brand, condition: $condition, productCode: $productCode, inStock: $inStock, createdAt: $createdAt, updatedAt: $updatedAt,phone : $phone , image: $image}';
   }
 }
 

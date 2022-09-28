@@ -34,9 +34,14 @@ class _GroceryCountState extends State<GroceryCount> {
         InkWell(
           onTap: () async {
             setState(() {
-              count > 1 ? count-- : count = 1;
+              // count > 1 && count != 0 ? count-- : count = 1;
+              if (count > 1) {
+                count--;
+              } else if (count == 0) {
+                count = count;
+              }
               price = widget.price * count;
-              print(price);
+              // print(price);
             });
             if (count > 0) {
               var addResponce = await _addToCartController.addTocart(

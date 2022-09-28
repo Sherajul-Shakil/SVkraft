@@ -87,7 +87,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(
-        title: Text('Add Product'),
+        title: const Text('Add Product'),
       ),
       body: _categoryData != null && _city != null
           ? SingleChildScrollView(
@@ -99,7 +99,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       // const Padding(
@@ -128,7 +128,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                         height: 5,
                       ),
                       GridView.builder(
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
                         padding: const EdgeInsets.only(
                             left: 10, right: 10, top: 10, bottom: 10),
@@ -255,7 +255,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                               child: Text(
                             _addProductController.selectedBrand ??
                                 'Select Brand',
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           )),
 
                           // Hide the default underline
@@ -276,7 +276,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                 value: item,
                                 child: Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
+                                        const EdgeInsets.symmetric(horizontal: 20),
                                     decoration: BoxDecoration(
                                         color: Colors.blue,
                                         borderRadius:
@@ -321,7 +321,6 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                 style: const TextStyle(
                                     fontSize: 18,
                                     color: Colors.white,
-                                    fontStyle: FontStyle.italic,
                                     fontWeight: FontWeight.bold),
                               ),
                             );
@@ -340,7 +339,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                 fontWeight: FontWeight.normal)),
                       ),
                       RadioListTile(
-                        title: Text("New"),
+                        title: const Text("New"),
                         value: "new",
                         groupValue: _addProductController.condition,
                         onChanged: (value) {
@@ -351,7 +350,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                       ),
 
                       RadioListTile(
-                        title: Text("Used"),
+                        title: const Text("Used"),
                         value: "used",
                         groupValue: _addProductController.condition,
                         onChanged: (value) {
@@ -395,7 +394,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                           hint: Center(
                               child: Text(
                             _addProductController.selectedCity ?? 'Select City',
-                            style: TextStyle(color: Colors.white),
+                            style: const TextStyle(color: Colors.white),
                           )),
 
                           // Hide the default underline
@@ -416,7 +415,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                 value: item,
                                 child: Container(
                                     padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
+                                        const EdgeInsets.symmetric(horizontal: 20),
                                     decoration: BoxDecoration(
                                         color: Colors.blue,
                                         borderRadius:
@@ -426,7 +425,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                     child: Align(
                                       alignment: Alignment.centerLeft,
                                       child: ListTile(
-                                        leading: Icon(
+                                        leading: const Icon(
                                           Icons.location_on,
                                           color: Appcolor.primaryColor,
                                         ),
@@ -440,7 +439,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                               return DropdownMenuItem(
                                 value: item,
                                 child: ListTile(
-                                  leading: Icon(
+                                  leading: const Icon(
                                     Icons.location_on,
                                     color: Appcolor.primaryColor,
                                   ),
@@ -456,14 +455,34 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                           selectedItemBuilder: (BuildContext context) =>
                               _city.map((e) {
                             return Center(
-                              child: Text(
-                                e,
-                                style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.white,
-                                    fontStyle: FontStyle.italic,
-                                    fontWeight: FontWeight.bold),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.location_on,
+                                    color: Appcolor.uperTextColor,
+                                    size: 22,
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Text(
+                                    e,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
+
+                              // leading: Icon(
+                              //   Icons.location_on,
+                              //   color: Appcolor.uperTextColor,
+                              //   size: 24,
+                              // ),
                             );
                           }).toList(),
                         ),
@@ -472,7 +491,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                         height: 20,
                       ),
 
-                      SizedBox(
+                      const SizedBox(
                         height: 50,
                       ),
 
@@ -502,7 +521,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            AddProductScreen()),
+                                            const AddProductScreen()),
                                   );
                                 } else {
                                   Get.snackbar(
@@ -534,7 +553,7 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                 ),
               ],
             ))
-          : Center(
+          : const Center(
               child: CircularProgressIndicator(),
             ),
     ));
