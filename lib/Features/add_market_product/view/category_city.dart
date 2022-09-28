@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/add_market_product/controller/add_product_con.dart';
+import 'package:sv_craft/Features/add_market_product/controller/brand_controller.dart';
 import 'package:sv_craft/Features/add_market_product/view/add_product_screen.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/market_place/controller/category_controller.dart';
@@ -25,12 +26,13 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
   HomeController _homeController = Get.put(HomeController());
   final MarketCityController _cityController = Get.put(MarketCityController());
   AddProductController _addProductController = Get.put(AddProductController());
+  BradController _bradController = Get.put(BradController());
 
   final TextEditingController _cityNameController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _searchController = TextEditingController();
   final List<mCategory> _categoryList = [];
-  final List<String> _brandName = ["Honda", "Toyota", "Suzuki", "Nissan"];
+  final List<String> _brandName = [];
   final List<String> _city = [];
 
   int? selectedCard;
@@ -47,6 +49,15 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
     Future.delayed(Duration.zero, () async {
       setTokenToVariable();
     });
+  }
+
+  @override
+  void dispose() {
+    _cityNameController.dispose();
+    _categoryController.dispose();
+    _searchController.dispose();
+    _brandName.clear();
+    super.dispose();
   }
 
   Future<void> setTokenToVariable() async {
@@ -158,28 +169,34 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                                 blurRadius: 1, // blur radius
                                 offset:
                                     Offset(1, 1), // changes position of shadow
-                                //first paramerter of offset is left-right
-                                //second parameter is top to down
                               )
                             ],
                           ),
 
                           child: InkWell(
-                            onTap: () {
+                            onTap: () async {
                               setState(() {
                                 selectedCard = index;
                                 _addProductController.selectedCardId =
                                     _categoryData[index].id;
+                                _brandName.clear();
+                                // _brandName = [];
                               });
-                              // _isPressed[index] = true;
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //       builder: (context) => MarketProductDetails(
-                              //             id: searchedData[index].id,
-                              //             token: tokenp,
-                              //           )),
-                              // );
+                              print(_categoryData[index].id);
+
+                              final brand = await _bradController.getBrandName(
+                                  _homeController.tokenGlobal,
+                                  _categoryData[index].id);
+                              setState(() {
+                                _brandName.clear();
+                              });
+                              if (brand != null) {
+                                for (var task in brand) {
+                                  _brandName.add(task);
+                                  setState(() {});
+                                }
+                                setState(() {});
+                              }
                             },
                             child: Column(children: [
                               SizedBox(
@@ -275,8 +292,8 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                               return DropdownMenuItem(
                                 value: item,
                                 child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 20),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
                                     decoration: BoxDecoration(
                                         color: Colors.blue,
                                         borderRadius:
@@ -414,8 +431,8 @@ class _AddCategoryCityState extends State<AddCategoryCity> {
                               return DropdownMenuItem(
                                 value: item,
                                 child: Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(horizontal: 20),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
                                     decoration: BoxDecoration(
                                         color: Colors.blue,
                                         borderRadius:

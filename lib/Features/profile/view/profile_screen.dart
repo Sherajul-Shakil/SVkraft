@@ -63,38 +63,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
         body: SingleChildScrollView(
             child: Column(
           children: [
-            Row(
-              children: [
-                Container(
-                  height: 50.0,
-                  width: 50.0,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                        image: AssetImage('images/child.png'),
-                        fit: BoxFit.fill,
-                      ),
-                      shape: BoxShape.circle,
-                      color: Colors.white),
+            Container(
+              height: size.height * 0.08,
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(.8),
+                borderRadius: BorderRadius.circular(0),
+                image: DecorationImage(
+                  // colorFilter: ColorFilter.mode(
+                  //     Colors.grey.withOpacity(.8), BlendMode.dstATop),
+                  image: AssetImage('images/sellercover.jpeg'),
+                  fit: BoxFit.cover,
+                  //Add color opacity
                 ),
-                Spacer(),
-                IconButton(
-                    onPressed: () async {
-                      // var message = await _logoutController.logout(tokenp);
-                      // print(message);
-                      SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    height: 50.0,
+                    width: 50.0,
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('images/child.png'),
+                          fit: BoxFit.fill,
+                        ),
+                        shape: BoxShape.circle,
+                        color: Colors.white),
+                  ),
+                  Spacer(),
+                  IconButton(
+                      onPressed: () async {
+                        // var message = await _logoutController.logout(tokenp);
+                        // print(message);
+                        SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
 
-                      await prefs.remove('auth-token');
-                      await prefs.remove('user-id');
+                        await prefs.remove('auth-token');
+                        await prefs.remove('user-id');
 
-                      Get.offAll(() => SigninScreen());
-                    },
-                    icon: const Icon(
-                      FontAwesome.power_off,
-                      color: Colors.black54,
-                      size: 30,
-                    )),
-              ],
+                        Get.offAll(() => SigninScreen());
+                      },
+                      icon: const Icon(
+                        FontAwesome.power_off,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                ],
+              ),
             ),
             Profile != null
                 ? Column(
@@ -105,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Card(
                         child: ListTile(
-                          tileColor: Colors.grey[200],
+                          // tileColor: Colors.grey[200],
                           leading: const Icon(
                             Icons.person,
                             size: 25,

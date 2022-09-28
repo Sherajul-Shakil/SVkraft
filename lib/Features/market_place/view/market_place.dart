@@ -281,12 +281,12 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                     ),
                                                   ),
                                                   Positioned(
-                                                      top: 10,
-                                                      left: 10,
+                                                      top: 5,
+                                                      left: 0,
                                                       child: Container(
                                                           height: 30,
                                                           width: 30,
-                                                          color: Colors.grey,
+                                                          color: Colors.white,
                                                           child: IconButton(
                                                               onPressed:
                                                                   () async {
@@ -397,7 +397,7 @@ class _MarketPlaceState extends State<MarketPlace> {
               // );
 
             } else if (_selectedIndex == 3) {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => BookmarkedProductScreen()),

@@ -77,41 +77,60 @@ class _SellerProfileState extends State<SellerProfile> {
                   height: size.height * .02,
                 ),
                 Card(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          width: size.width * .30,
-                          height: size.height * .15,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: NetworkImage(
-                                      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQo5X1qxa__quYvEMWsc-qDiEB_L9tEdFUlKJicLc&s"),
-                                  fit: BoxFit.cover)),
-                        ),
-                        SizedBox(
-                          width: size.width * .05,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: size.height * .02),
-                            Text(
-                              sellerProfile.user.name,
-                              style: TextStyle(fontSize: 24),
-                            ),
-                            Text(
-                              "Phone : " + sellerProfile.user.phone,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        )
-                      ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(.8),
+                      borderRadius: BorderRadius.circular(10),
+                      image: DecorationImage(
+                        // colorFilter: ColorFilter.mode(
+                        //     Colors.grey.withOpacity(.8), BlendMode.dstATop),
+                        image: AssetImage('images/sellercover.jpeg'),
+                        fit: BoxFit.cover,
+                        //Add color opacity
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: size.width * .30,
+                            height: size.height * .15,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQo5X1qxa__quYvEMWsc-qDiEB_L9tEdFUlKJicLc&s"),
+                                    fit: BoxFit.cover)),
+                          ),
+                          SizedBox(
+                            width: size.width * .05,
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(height: size.height * .02),
+                              Text(
+                                sellerProfile.user.name,
+                                style: TextStyle(
+                                    fontSize: 24,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              Text(
+                                "Phone : " + sellerProfile.user.phone,
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -164,7 +183,7 @@ class _SellerProfileState extends State<SellerProfile> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => SellerProductDetails(
+                              builder: (context) => MarketProductDetails(
                                     id: sellerProfile.product[index].id,
                                     token: _homeController.tokenGlobal,
                                   )),

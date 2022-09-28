@@ -67,7 +67,7 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                     )));
                   } else {
                     final data = snapshot.data;
-                    print("dede ${data!.userId}");
+                    print("userId ${data!.userId}");
                     userId.value = data.userId;
                     phone.value = data.phone;
 
@@ -96,10 +96,15 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                               SizedBox(
                                 width: size.width * 0.05,
                               ),
-                              Text(
-                                data.productName,
-                                style: const TextStyle(
-                                    fontSize: 26, fontWeight: FontWeight.bold),
+                              Container(
+                                width: size.width * 0.9,
+                                child: Text(
+                                  data.productName,
+                                  style: const TextStyle(
+                                      fontSize: 26,
+                                      fontWeight: FontWeight.bold),
+                                  // overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ],
                           ),

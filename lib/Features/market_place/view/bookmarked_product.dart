@@ -133,11 +133,11 @@ class _BookmarkedProductScreenState extends State<BookmarkedProductScreen> {
                                     ),
                                   ),
                                   Positioned(
-                                      top: 10,
-                                      left: 10,
+                                      top: 0,
+                                      left: 0,
                                       child: Container(
-                                          height: 35,
-                                          width: 35,
+                                          height: 40,
+                                          width: 40,
                                           color: Colors.white,
                                           child: IconButton(
                                               onPressed: () async {
@@ -158,7 +158,7 @@ class _BookmarkedProductScreenState extends State<BookmarkedProductScreen> {
                                               icon: const Icon(
                                                 Icons.delete,
                                                 color: Colors.red,
-                                                size: 18,
+                                                size: 24,
                                               ))))
                                 ],
                               ),
