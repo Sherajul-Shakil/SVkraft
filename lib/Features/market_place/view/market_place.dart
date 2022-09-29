@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/get_connect/sockets/src/sockets_io.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/add_market_product/view/category_city.dart';
+import 'package:sv_craft/Features/chat/view/recent_chats.dart';
 import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/market_place/controller/all_product_controller.dart';
@@ -405,10 +406,10 @@ class _MarketPlaceState extends State<MarketPlace> {
                 MaterialPageRoute(builder: (context) => const HomeScreen()),
               );
             } else if (_selectedIndex == 1) {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const CartScreen()),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => RecentChats()),
+              );
             } else if (_selectedIndex == 2) {
               // Navigator.pushReplacement(
               //   context,
@@ -439,7 +440,7 @@ class _MarketPlaceState extends State<MarketPlace> {
             ),
             BottomNavyBarItem(
                 icon: const Icon(Icons.search),
-                title: const Text('Search'),
+                title: const Text('Chat'),
                 activeColor: Colors.white),
             BottomNavyBarItem(
                 icon: const Icon(Icons.favorite),

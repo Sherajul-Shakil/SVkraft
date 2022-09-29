@@ -11,6 +11,7 @@ import 'package:sv_craft/Features/market_place/view/market_place.dart';
 import 'package:sv_craft/Features/profile/controller/get_profile_con.dart';
 import 'package:sv_craft/Features/profile/view/edit_profile.dart';
 import 'package:sv_craft/Features/profile/view/my_address_screen.dart';
+import 'package:sv_craft/Features/profile/view/my_adds.dart';
 import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
 import 'package:sv_craft/Features/special_day/view/special_home_screen.dart';
 import 'package:sv_craft/constant/color.dart';
@@ -153,8 +154,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           onTap: () async {
-                            // Navigator.pop(context);
-                            // _logoutController.logout();
+                            Get.to(MyAdds());
                           },
                         ),
                       ),

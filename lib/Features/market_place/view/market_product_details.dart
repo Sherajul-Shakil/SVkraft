@@ -16,9 +16,11 @@ class MarketProductDetails extends StatefulWidget {
     Key? key,
     required this.id,
     required this.token,
+    this.from,
   }) : super(key: key);
   final int id;
   final String token;
+  final String? from;
 
   @override
   State<MarketProductDetails> createState() => _MarketProductDetailsState();
@@ -208,94 +210,102 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                 }
               }),
         ),
-        bottomNavigationBar: BottomAppBar(
-          elevation: 0,
-          child: Container(
-            height: 60,
-            width: double.maxFinite, //set your width here
-            decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(0.0))),
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                InkWell(
-                  onTap: () async {
-                    var url = Uri.parse("tel:$phone");
-                    await launchUrl(url);
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Appcolor.primaryColor,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12, //color of shadow
-                          spreadRadius: 2, //spread radius
-                          blurRadius: 5, // blur radius
-                          offset: Offset(0, 2), // changes position of shadow
-                        )
-                      ],
-                    ),
-                    width: 180,
-                    height: 45,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'Call Seller',
-                          style: TextStyle(
-                              color: Appcolor.uperTextColor, fontSize: 18),
-                          textAlign: TextAlign.center,
+        bottomNavigationBar: widget.from == null
+            ? BottomAppBar(
+                elevation: 0,
+                child: Container(
+                  height: 60,
+                  width: double.maxFinite, //set your width here
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius:
+                          BorderRadius.vertical(top: Radius.circular(0.0))),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () async {
+                          var url = Uri.parse("tel:$phone");
+                          await launchUrl(url);
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Appcolor.primaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12, //color of shadow
+                                spreadRadius: 2, //spread radius
+                                blurRadius: 5, // blur radius
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              )
+                            ],
+                          ),
+                          width: 180,
+                          height: 45,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Call Seller',
+                                style: TextStyle(
+                                    color: Appcolor.uperTextColor,
+                                    fontSize: 18),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                      InkWell(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SellerProfile(
+                                      sellerId: (userId.toInt()))));
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Appcolor.buttonColor,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black12, //color of shadow
+                                spreadRadius: 2, //spread radius
+                                blurRadius: 5, // blur radius
+                                offset:
+                                    Offset(0, 2), // changes position of shadow
+                              )
+                            ],
+                          ),
+                          width: 180,
+                          height: 45,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Text(
+                                'Show Profile',
+                                style: TextStyle(
+                                    color: Appcolor.textColor, fontSize: 18),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      //add as many tabs as you want here
+                    ],
                   ),
                 ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                SellerProfile(sellerId: (userId.toInt()))));
-                  },
-                  child: Container(
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Appcolor.buttonColor,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12, //color of shadow
-                          spreadRadius: 2, //spread radius
-                          blurRadius: 5, // blur radius
-                          offset: Offset(0, 2), // changes position of shadow
-                        )
-                      ],
-                    ),
-                    width: 180,
-                    height: 45,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'Show Profile',
-                          style: TextStyle(
-                              color: Appcolor.textColor, fontSize: 18),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                //add as many tabs as you want here
-              ],
-            ),
-          ),
-        ),
+              )
+            : SizedBox(
+                height: 0,
+              ),
       ),
     );
   }
