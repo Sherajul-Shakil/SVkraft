@@ -40,6 +40,7 @@ class Datum {
     required this.location,
     required this.productName,
     required this.price,
+    this.bookmark,
     required this.image,
     required this.category,
   });
@@ -48,6 +49,7 @@ class Datum {
   String location;
   String productName;
   int price;
+  String? bookmark;
   List<ProductImage> image;
   Category category;
 
@@ -56,6 +58,7 @@ class Datum {
         location: json["location"],
         productName: json["product_name"],
         price: json["price"],
+        bookmark: json["bookmark"],
         image: List<ProductImage>.from(
             json["image"].map((x) => ProductImage.fromJson(x))),
         category: Category.fromJson(json["category"]),
@@ -66,29 +69,53 @@ class Datum {
         "location": location,
         "product_name": productName,
         "price": price,
+        "bookmark": bookmark,
         "image": List<dynamic>.from(image.map((x) => x.toJson())),
         "category": category.toJson(),
       };
-
-  @override
-  String toString() {
-    return 'Datum{id: $id, location: $location, productName: $productName, price: $price, image: $image, category: $category}';
-  }
 }
+
+// class Bookmark {
+//   Bookmark({
+//     this.id,
+//   });
+
+//   int? id;
+
+//   factory Bookmark.fromJson(Map<String, dynamic> json) => Bookmark(
+//         id: json["id"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "id": id,
+//       };
+// }
 
 class Category {
   Category({
+    required this.id,
     required this.categoryName,
+    required this.image,
+    required this.brands,
   });
 
+  int id;
   String categoryName;
+  String image;
+  String brands;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
+        id: json["id"],
         categoryName: json["category_name"],
+        image: json["image"],
+        brands: json["brands"],
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "category_name": categoryName,
+        "image": image,
+        "brands": brands,
       };
 }
 
@@ -112,17 +139,6 @@ class ProductImage {
 
 
 
-
-
-
-
-
-
-
-// // To parse this JSON data, do
-// //
-// //     final allProduct = allProductFromJson(jsonString);
-
 // import 'package:meta/meta.dart';
 // import 'dart:convert';
 
@@ -133,9 +149,9 @@ class ProductImage {
 
 // class AllProduct {
 //   AllProduct({
-//    required this.success,
-//    required this.message,
-//    required this.data,
+//   required this.success,
+//   required this.message,
+//   required this.data,
 //   });
 
 //   bool success;
@@ -157,46 +173,70 @@ class ProductImage {
 
 // class Datum {
 //   Datum({
-//    required this.id,
-//    required this.productName,
-//    required this.price,
-//    required this.image,
+//   required this.id,
+//   required this.location,
+//   required this.productName,
+//   required this.price,
+//   required this.image,
+//   required this.category,
 //   });
 
 //   int id;
+//   String location;
 //   String productName;
 //   int price;
-//   List<ProductProductImage> image;
+//   List<ProductImage> image;
+//   Category category;
 
 //   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
 //         id: json["id"],
+//         location: json["location"],
 //         productName: json["product_name"],
 //         price: json["price"],
-//         image: List<ProductProductImage>.from(
-//             json["image"].map((x) => ProductProductImage.fromJson(x))),
+//         image: List<ProductImage>.from(
+//             json["image"].map((x) => ProductImage.fromJson(x))),
+//         category: Category.fromJson(json["category"]),
 //       );
 
 //   Map<String, dynamic> toJson() => {
 //         "id": id,
+//         "location": location,
 //         "product_name": productName,
 //         "price": price,
 //         "image": List<dynamic>.from(image.map((x) => x.toJson())),
+//         "category": category.toJson(),
 //       };
 
 //   @override
 //   String toString() {
-//     return 'Datum{id: $id, productName: $productName, price: $price, image: $image}';
+//     return 'Datum{id: $id, location: $location, productName: $productName, price: $price, image: $image, category: $category}';
 //   }
 // }
 
-// class ProductProductImage {
-//   ProductProductImage({
-//    required this.filePath,
+// class Category {
+//   Category({
+//   required this.categoryName,
+//   });
+
+//   String categoryName;
+
+//   factory Category.fromJson(Map<String, dynamic> json) => Category(
+//         categoryName: json["category_name"],
+//       );
+
+//   Map<String, dynamic> toJson() => {
+//         "category_name": categoryName,
+//       };
+// }
+
+// class ProductImage {
+//   ProductImage({
+//   required this.filePath,
 //   });
 
 //   String filePath;
 
-//   factory ProductProductImage.fromJson(Map<String, dynamic> json) => ProductProductImage(
+//   factory ProductImage.fromJson(Map<String, dynamic> json) => ProductImage(
 //         filePath: json["file_path"],
 //       );
 
@@ -204,3 +244,12 @@ class ProductImage {
 //         "file_path": filePath,
 //       };
 // }
+
+
+
+
+
+
+
+
+

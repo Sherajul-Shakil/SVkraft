@@ -11,6 +11,7 @@ import 'package:sv_craft/Features/special_day/controllar/category_1_con.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
 import 'package:sv_craft/Features/special_day/model/category_1.dart';
 import 'package:sv_craft/Features/special_day/model/special_all_product_model.dart';
+import 'package:sv_craft/Features/special_day/view/Bookmark_product_show.dart';
 import 'package:sv_craft/Features/special_day/view/category_product.dart';
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
 import 'package:sv_craft/Features/special_day/view/widgets/alarm_system.dart';
@@ -608,10 +609,11 @@ class _SpecialHomeScreenState extends State<SpecialHomeScreen> {
               // );
 
             } else if (_selectedIndex == 3) {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BookmarkedProductShow()),
+              );
             } else if (_selectedIndex == 4) {
               Navigator.pushReplacement(
                 context,

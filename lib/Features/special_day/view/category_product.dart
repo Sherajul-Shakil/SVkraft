@@ -2,10 +2,15 @@ import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
+import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/cart/view/cart_screen.dart';
+import 'package:sv_craft/Features/home/controller/home_controller.dart';
 import 'package:sv_craft/Features/home/home_screen.dart';
 import 'package:sv_craft/Features/profile/view/profile_screen.dart';
+import 'package:sv_craft/Features/special_day/controllar/bookmark_con.dart';
 import 'package:sv_craft/Features/special_day/controllar/special_all_product_con.dart';
+import 'package:sv_craft/Features/special_day/view/Bookmark_product_show.dart';
+
 import 'package:sv_craft/Features/special_day/view/product_details.dart';
 import 'package:sv_craft/Features/special_day/view/special_home_screen.dart';
 import 'package:sv_craft/constant/api_link.dart';
@@ -27,6 +32,8 @@ class CategoryProuctScreen extends StatefulWidget {
 class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
   final SpecialAllProductController _specialAllProductController =
       Get.put(SpecialAllProductController());
+  SpBookmarkController _spBookmarkController = Get.put(SpBookmarkController());
+  HomeController _homeController = Get.put(HomeController());
   var id;
   var _selectedIndex = 2;
   PageController? _pageController;
@@ -100,17 +107,48 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                                 child: Column(
                                   children: [
                                     SizedBox(height: size.height * .01),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 5, vertical: 5),
-                                      child: Image.network(
-                                        data[index].image != null
-                                            ? '${Appurl.baseURL}${data[index].image}'
-                                            : 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Avatar_flower.png',
-                                        fit: BoxFit.cover,
-                                        width: size.width * .4,
-                                        height: size.height * .22,
-                                      ),
+                                    Stack(
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5, vertical: 5),
+                                          child: Image.network(
+                                            data[index].image != null
+                                                ? '${Appurl.baseURL}${data[index].image}'
+                                                : 'https://upload.wikimedia.org/wikipedia/commons/d/dd/Avatar_flower.png',
+                                            fit: BoxFit.cover,
+                                            width: size.width * .4,
+                                            height: size.height * .22,
+                                          ),
+                                        ),
+                                        Positioned(
+                                            top: 5,
+                                            left: 0,
+                                            child: Container(
+                                                height: 30,
+                                                width: 30,
+                                                color: Colors.white,
+                                                child: IconButton(
+                                                    onPressed: () async {
+                                                      var status =
+                                                          await _spBookmarkController
+                                                              .addBookmarkProduct(
+                                                                  _homeController
+                                                                      .tokenGlobal,
+                                                                  data[index]
+                                                                      .id);
+
+                                                      if (status == 200) {
+                                                        Get.snackbar('Success',
+                                                            'Product Added To Bookmark');
+                                                      }
+                                                    },
+                                                    icon: const Icon(
+                                                      FontAwesome.bookmark,
+                                                      color: Colors.black,
+                                                      size: 18,
+                                                    ))))
+                                      ],
                                     ),
                                     SizedBox(
                                       height: size.height * .01,
@@ -205,10 +243,11 @@ class _CategoryProuctScreenState extends State<CategoryProuctScreen> {
                 MaterialPageRoute(builder: (context) => SpecialHomeScreen()),
               );
             } else if (_selectedIndex == 3) {
-              // Navigator.pushReplacement(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => ProfileScreen()),
-              // );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => BookmarkedProductShow()),
+              );
             } else if (_selectedIndex == 4) {
               Navigator.pushReplacement(
                 context,

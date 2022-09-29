@@ -439,7 +439,7 @@ class _MarketPlaceState extends State<MarketPlace> {
               activeColor: Colors.white,
             ),
             BottomNavyBarItem(
-                icon: const Icon(Icons.search),
+                icon: const Icon(Icons.chat),
                 title: const Text('Chat'),
                 activeColor: Colors.white),
             BottomNavyBarItem(
