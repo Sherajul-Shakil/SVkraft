@@ -13,6 +13,7 @@ import 'package:sv_craft/Features/market_place/controller/category_controller.da
 import 'package:sv_craft/Features/market_place/model/all_product_model.dart';
 import 'package:sv_craft/Features/market_place/model/market_category.dart';
 import 'package:sv_craft/Features/market_place/view/bookmarked_product.dart';
+import 'package:sv_craft/Features/market_place/view/category_product.dart';
 import 'package:sv_craft/Features/market_place/view/filter_box_screen.dart';
 import 'package:sv_craft/Features/market_place/view/market_product_details.dart';
 import 'package:sv_craft/Features/market_place/view/search_product_screen.dart';
@@ -192,6 +193,8 @@ class _MarketPlaceState extends State<MarketPlace> {
                                         padding: const EdgeInsets.symmetric(
                                             horizontal: 10),
                                         child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
                                                 _categoryData[index]
@@ -201,6 +204,22 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                     fontSize: 22,
                                                     fontWeight:
                                                         FontWeight.normal)),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Get.to(() => CategoryProduct(
+                                                      categoryId:
+                                                          _categoryData[index]
+                                                              .id,
+                                                      categoryName:
+                                                          _categoryData[index]
+                                                              .categoryName));
+                                                },
+                                                child: Text(
+                                                  "View All",
+                                                  style: TextStyle(
+                                                      color: Appcolor
+                                                          .primaryColor),
+                                                ))
                                           ],
                                         ),
                                       ),

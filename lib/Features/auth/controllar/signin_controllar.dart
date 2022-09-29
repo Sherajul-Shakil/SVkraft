@@ -38,8 +38,8 @@ class SigninController extends GetxController {
         "Access-Control-Allow-Origin": "*"
       },
     );
-    print("#############################");
-    print(response.body);
+    // print("#############################");
+    // print(response.body);
 
     if (response.statusCode == 200) {
       final token = authUserFromJson(response.body);
