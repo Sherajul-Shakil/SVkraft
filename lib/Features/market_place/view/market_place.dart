@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/sockets/src/sockets_io.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:sv_craft/Features/add_market_product/view/category_city.dart';
 import 'package:sv_craft/Features/chat/view/recent_chats.dart';
@@ -304,32 +303,43 @@ class _MarketPlaceState extends State<MarketPlace> {
                                                       top: 5,
                                                       left: 0,
                                                       child: Container(
-                                                          height: 30,
-                                                          width: 30,
-                                                          color: Colors.white,
-                                                          child: IconButton(
-                                                              onPressed:
-                                                                  () async {
-                                                                var status = await _bookmarkController.addBookmarkProduct(
+                                                        height: 30,
+                                                        width: 30,
+                                                        color: Colors.white,
+                                                        child: IconButton(
+                                                          onPressed: () async {
+                                                            var status = await _bookmarkController
+                                                                .addBookmarkProduct(
                                                                     _homeController
                                                                         .tokenGlobal,
                                                                     data[index]
                                                                         .id);
 
-                                                                if (status ==
-                                                                    200) {
-                                                                  Get.snackbar(
-                                                                      'Success',
-                                                                      'Product Added To Bookmark');
-                                                                }
-                                                              },
-                                                              icon: const Icon(
-                                                                FontAwesome
-                                                                    .bookmark,
-                                                                color: Colors
-                                                                    .black,
-                                                                size: 18,
-                                                              ))))
+                                                            if (status == 200) {
+                                                              setState(() {});
+                                                              Get.snackbar(
+                                                                  'Success',
+                                                                  'Product Added To Bookmark');
+                                                            }
+                                                          },
+                                                          icon: data[index]
+                                                                  .bookmark
+                                                              ? const Icon(
+                                                                  FontAwesome
+                                                                      .bookmark_solid,
+                                                                  color: Colors
+                                                                      .blue,
+                                                                  size: 18,
+                                                                )
+                                                              : const Icon(
+                                                                  FontAwesome
+                                                                      .bookmark,
+                                                                  color: Colors
+                                                                      .black,
+                                                                  size: 18,
+                                                                ),
+                                                        ),
+                                                      ))
                                                 ],
                                               ),
                                               Padding(

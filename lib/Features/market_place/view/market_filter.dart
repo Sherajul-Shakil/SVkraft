@@ -31,7 +31,7 @@ class _MarketFilterState extends State<MarketFilter> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-        print("Market filter page build");
+    print("Market filter page build");
     return SafeArea(
         child: Scaffold(
       backgroundColor: Color.fromARGB(255, 143, 211, 231),

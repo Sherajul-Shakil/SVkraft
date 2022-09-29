@@ -6,10 +6,6 @@ class MarketFilterController extends GetxController {
   Future<List<MarketFilterData>?> getFilterProduct(
       String token, selectedCategory, cityName, priceRange) async {
     try {
-      print('tokeneeeeee: $token'
-          'selectedCategoryeeeeee: $selectedCategory'
-          'cityNameeeeeeeeeee: $cityName'
-          'priceRangeeeee: $priceRange');
       String url =
           "http://mamun.click/api/search/$selectedCategory/$cityName/$priceRange";
 

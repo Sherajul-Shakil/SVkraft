@@ -35,6 +35,11 @@ class GroceryAllProduct {
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
+
+  @override
+  String toString() {
+    return 'GroceryAllProduct{success: $success, message: $message, data: $data}';
+  }
 }
 
 class GroceryAllProductData {
@@ -46,6 +51,7 @@ class GroceryAllProductData {
     required this.price,
     required this.offPrice,
     required this.marketPrice,
+    required this.bookmark,
   });
 
   int id;
@@ -55,6 +61,7 @@ class GroceryAllProductData {
   double price;
   int offPrice;
   String marketPrice;
+  bool bookmark;
 
   factory GroceryAllProductData.fromJson(Map<String, dynamic> json) =>
       GroceryAllProductData(
@@ -65,6 +72,7 @@ class GroceryAllProductData {
         price: json["price"].toDouble(),
         offPrice: json["off_price"],
         marketPrice: json["market_price"],
+        bookmark: json["bookmark"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,16 +83,14 @@ class GroceryAllProductData {
         "price": price,
         "off_price": offPrice,
         "market_price": marketPrice,
+        "bookmark": bookmark,
       };
 
   @override
   String toString() {
-    return 'GroceryAllProductData{id: $id, image: $image, name: $name, description: $description, price: $price, offPrice: $offPrice, marketPrice: $marketPrice}';
+    return 'GroceryAllProductData{id: $id, image: $image, name: $name, description: $description, price: $price, offPrice: $offPrice, marketPrice: $marketPrice, bookmark: $bookmark}';
   }
 }
-
-
-
 
 
 
@@ -145,12 +151,12 @@ class GroceryAllProductData {
 //   });
 
 //   int id;
-//   dynamic image;
+//   String image;
 //   String name;
-//   dynamic description;
-//   int price;
+//   String description;
+//   double price;
 //   int offPrice;
-//   int marketPrice;
+//   String marketPrice;
 
 //   factory GroceryAllProductData.fromJson(Map<String, dynamic> json) =>
 //       GroceryAllProductData(
@@ -158,7 +164,7 @@ class GroceryAllProductData {
 //         image: json["image"],
 //         name: json["name"],
 //         description: json["description"],
-//         price: json["price"],
+//         price: json["price"].toDouble(),
 //         offPrice: json["off_price"],
 //         marketPrice: json["market_price"],
 //       );
@@ -178,3 +184,6 @@ class GroceryAllProductData {
 //     return 'GroceryAllProductData{id: $id, image: $image, name: $name, description: $description, price: $price, offPrice: $offPrice, marketPrice: $marketPrice}';
 //   }
 // }
+
+
+

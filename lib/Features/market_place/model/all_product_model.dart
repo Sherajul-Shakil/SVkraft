@@ -32,6 +32,11 @@ class AllProduct {
         "message": message,
         "data": List<dynamic>.from(data.map((x) => x.toJson())),
       };
+
+  @override
+  String toString() {
+    return 'AllProduct{success: $success, message: $message, data: $data}';
+  }
 }
 
 class Datum {
@@ -40,7 +45,7 @@ class Datum {
     required this.location,
     required this.productName,
     required this.price,
-    this.bookmark,
+    required this.bookmark,
     required this.image,
     required this.category,
   });
@@ -49,7 +54,7 @@ class Datum {
   String location;
   String productName;
   int price;
-  String? bookmark;
+  bool bookmark;
   List<ProductImage> image;
   Category category;
 
@@ -73,23 +78,12 @@ class Datum {
         "image": List<dynamic>.from(image.map((x) => x.toJson())),
         "category": category.toJson(),
       };
+
+  @override
+  String toString() {
+    return 'Datum{id: $id, location: $location, productName: $productName, price: $price, bookmark: $bookmark, image: $image, category: $category}';
+  }
 }
-
-// class Bookmark {
-//   Bookmark({
-//     this.id,
-//   });
-
-//   int? id;
-
-//   factory Bookmark.fromJson(Map<String, dynamic> json) => Bookmark(
-//         id: json["id"],
-//       );
-
-//   Map<String, dynamic> toJson() => {
-//         "id": id,
-//       };
-// }
 
 class Category {
   Category({
@@ -117,6 +111,11 @@ class Category {
         "image": image,
         "brands": brands,
       };
+
+  @override
+  String toString() {
+    return 'Category{id: $id, categoryName: $categoryName, image: $image, brands: $brands}';
+  }
 }
 
 class ProductImage {
@@ -138,7 +137,6 @@ class ProductImage {
 
 
 
-
 // import 'package:meta/meta.dart';
 // import 'dart:convert';
 
@@ -149,9 +147,9 @@ class ProductImage {
 
 // class AllProduct {
 //   AllProduct({
-//   required this.success,
-//   required this.message,
-//   required this.data,
+//  required this.success,
+//  required this.message,
+//  required this.data,
 //   });
 
 //   bool success;
@@ -173,12 +171,12 @@ class ProductImage {
 
 // class Datum {
 //   Datum({
-//   required this.id,
-//   required this.location,
-//   required this.productName,
-//   required this.price,
-//   required this.image,
-//   required this.category,
+//  required this.id,
+//  required this.location,
+//  required this.productName,
+//  required this.price,
+//  required this.image,
+//  required this.category,
 //   });
 
 //   int id;
@@ -215,7 +213,7 @@ class ProductImage {
 
 // class Category {
 //   Category({
-//   required this.categoryName,
+//  required this.categoryName,
 //   });
 
 //   String categoryName;
@@ -231,7 +229,7 @@ class ProductImage {
 
 // class ProductImage {
 //   ProductImage({
-//   required this.filePath,
+//  required this.filePath,
 //   });
 
 //   String filePath;
