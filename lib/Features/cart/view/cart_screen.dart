@@ -1134,8 +1134,8 @@ class _CartScreenState extends State<CartScreen> {
                         ),
                         onTap: () async {
                           final bodyData = {
-                            "grocery": json.encode(cartData.grocery ?? []),
-                            "special_day":
+                            '"grocery"': json.encode(cartData.grocery ?? []),
+                            '"special_day"':
                                 json.encode(cartData.special_day ?? []),
                             // "total_price": totalPrice,
                           };

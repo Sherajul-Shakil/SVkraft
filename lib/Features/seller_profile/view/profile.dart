@@ -54,7 +54,6 @@ class _SellerProfileState extends State<SellerProfile> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    print("Seller profile = " + sellerProfile.toString());
 
     return Scaffold(
       backgroundColor: Colors.white,

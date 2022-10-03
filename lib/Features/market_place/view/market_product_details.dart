@@ -263,10 +263,13 @@ class _MarketProductDetailsState extends State<MarketProductDetails> {
                       InkWell(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SellerProfile(
-                                      sellerId: (userId.toInt()))));
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SellerProfile(
+                                sellerId: (userId.toInt()),
+                              ),
+                            ),
+                          );
                         },
                         child: Container(
                           alignment: Alignment.center,

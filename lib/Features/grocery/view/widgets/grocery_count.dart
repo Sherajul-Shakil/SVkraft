@@ -34,16 +34,15 @@ class _GroceryCountState extends State<GroceryCount> {
         InkWell(
           onTap: () async {
             setState(() {
-              // count > 1 && count != 0 ? count-- : count = 1;
-              if (count > 1) {
-                count--;
-              } else if (count == 0) {
-                count = count;
-              }
+              count > 1 ? count-- : count = 0;
+              // if (count > 1) {
+              //   count--;
+              // } else if (count == 0) {
+              //   count = count;
+              // }
               price = widget.price * count;
-              // print(price);
             });
-            if (count > 0) {
+            if (count >= 0) {
               var addResponce = await _addToCartController.addTocart(
                 _homeController.userId,
                 widget.productId,
@@ -52,13 +51,6 @@ class _GroceryCountState extends State<GroceryCount> {
                 price.toInt(),
                 _homeController.tokenGlobal,
               );
-
-              print('Message from ui ${addResponce}');
-
-              //delayed
-              // Future.delayed(Duration(microseconds: 500), () {
-              //   Navigator.pop(context);
-              // });
             }
           },
           child: Container(
